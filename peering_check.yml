@@ -1,0 +1,41 @@
+---
+  - name: Verify peering 
+    hosts: localhost
+    
+    vars_prompt:
+      - name: "region"
+        prompt: "Enter Region Name: "
+        private: no
+        
+
+      - name: "cluster"
+        prompt: "Enter cluster Name: "
+        private: no
+
+    tasks:
+
+    - name: Parse string from {{ cluster }}
+      shell: "echo {{ cluster }} |sed -e 's/^[ \t]*//' |cut -c1-8"
+      register: value_a
+    - set_fact:
+        GET_VALUE: "{{ value_a.stdout|regex_replace('(\r\n)','') }}"
+
+    - name: Verify peering in {{ region }} region
+      #shell: "awk '/{{ region }}/ {do_print=1} do_print==1 {print} NF==0 {do_print=0}' ./region |grep {{ GET_VALUE }}"
+      shell: "sed -n '/{{ region }}/,/^$/p' ./region |grep {{ GET_VALUE }}"
+      register: result
+      ignore_errors: yes
+
+    - name: List of Available Cluster for peering in {{ region }} region
+      shell: "awk '/{{ region }}/ {do_print=1} do_print==1 {print} NF==0 {do_print=0}' ./region"
+      register: output
+      when: result.rc == 0
+      ignore_errors: yes
+
+    - debug:
+        msg: "{{ output.stdout_lines | regex_replace('(\r\n)','') }}"
+      when: result.rc == 0
+
+    - debug:
+        msg: "No cluster matching for {{ cluster }} in {{ region }} region"
+      when: result.rc != 0

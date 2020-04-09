@@ -1,0 +1,35 @@
+# Region File
+# Region
+#   DataCenter
+#     Cluster
+
+US2
+
+LatinAmerica
+  mex01
+    stxf-mex0101
+    stxm-mex0101
+  sao01
+    stxf-sao0101
+    stxm-sao0101
+
+Canada
+  mon01
+    stxf-mon0101
+    stxm-mon0101
+
+Europe
+
+AsiaPacific
+  sng01
+    stxm-sng0101
+    stxf-sng0101
+  tok04
+    stxf-tok0401
+  tok05
+    stxf-tok0501
+
+Australia
+  mel01
+    stxf-mel0101
+    stxm-mel0101

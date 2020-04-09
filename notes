@@ -1,0 +1,2 @@
+more region |egrep -v "#|^[[:blank:]]" |sed -r '/^\s*$/d'
+sed -n '/^Latin/,/^Canada/p' region

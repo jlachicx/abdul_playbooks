@@ -1,0 +1,40 @@
+---
+   - name: verify version
+     hosts: localhost
+     gather_facts: no
+
+     tasks:
+     - name: Get NetApp info (Password Authentication)
+       na_ontap_info:
+         state: info
+         hostname: "192.168.2.136"
+         username: "admin"
+         password: "Temp12345"
+         validate_certs: no
+         https: no
+         gather_subset:
+           system_node_info
+       register: ontap_info
+
+     - set_fact:
+           nodes: "{{ ontap_info.ontap_info.system_node_info.keys()|list }}"
+
+
+     - set_fact:
+           first_node: "{{ nodes[0] }}"
+
+     - fail:
+         msg: "ontap version not matching in cluster nodes"
+       when: ontap_info.ontap_info.system_node_info[item].product_version != ontap_info.ontap_info.system_node_info[first_node].product_version
+       loop: "{{ nodes }}"
+
+     - name: Getting ontap version from Product version 
+       set_fact:
+          ontap_version: "{{ ontap_info.ontap_info.system_node_info[first_node].product_version.split()[2]|regex_replace(':','') }}"
+
+
+     - set_fact:
+         ontap_ver: "{{ format(ontap_version) }}"
+
+     - debug:
+         msg: "{{ ontap_ver }}"

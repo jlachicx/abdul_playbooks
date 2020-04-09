@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+   - name: Check File
+     shell: cat /home/ansible/amoeed/hostname.txt
+     register: result
+     ignore_errors: yes
+
+   - name: Define Variable
+     set_fact:
+       hostname: "{{ item.split('.')[0] | lower }}"
+     with_items: "{{ result.stdout }}"
+     when: result is success
+
+   - name: Display Variable
+     debug:  
+       msg: "{{ item }}"
+     with_items: "{{ hostname }}"
+     ignore_errors: yes

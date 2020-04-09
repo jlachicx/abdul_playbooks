@@ -1,0 +1,26 @@
+---
+  - name: Dictionaries 
+    hosts: localhost
+    gather_facts: no
+
+    vars:
+      users:
+        - { name: 'jane', groups: 'wheel' }
+        - { name: 'joe', groups: 'root' }
+
+
+    tasks:
+
+    - name: Users exist and are in the correct groups
+      debug:
+        msg: "name: {{ item.name }} Group: {{ item.groups }}"    
+      loop:
+        - { name: 'jane', groups: 'wheel' }
+        - { name: 'joe', groups: 'root' }   
+   
+    - set_fact:
+        user_name: "{{ user_name|default([]) +  [ item.name ] }}"
+      loop: "{{ users }}"
+
+
+    - debug: var=user_name

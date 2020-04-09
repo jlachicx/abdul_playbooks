@@ -1,0 +1,11 @@
+---
+  - name: Filter functions
+    hosts: localhost
+    
+    tasks:
+    - shell: cat ontap_version.yml
+      register: result
+
+    - debug:
+        msg: '{{ item }}'
+      loop: '{{ result.stdout | from_yaml_all | list }}'

@@ -1,0 +1,43 @@
+---
+   - name: verify version
+     hosts: localhost
+     gather_facts: no
+     
+     vars:
+        - node_name_series: [ 0, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z ]
+        - node_name_sequences: {a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9, j: 10, k: 11, l: 12, m: 13, n: 14 }
+     tasks:
+     - set_fact:
+         nodesequence: 'e'
+
+     - name: print node_name_sequence
+       debug: 
+         msg: "{{ node_name_sequences[nodesequence]|int }}"
+
+       #loop: "{{ node_name_sequences[4]|list }}"
+
+
+     - pause:
+
+     - set_fact:
+           nodes: "{{ ontap_info.ontap_info.system_node_info.keys()|list }}"
+
+
+     - set_fact:
+           first_node: "{{ nodes[0] }}"
+
+     - fail:
+         msg: "ontap version not matching in cluster nodes"
+       when: ontap_info.ontap_info.system_node_info[item].product_version != ontap_info.ontap_info.system_node_info[first_node].product_version
+       loop: "{{ nodes }}"
+
+     - name: Getting ontap version from Product version 
+       set_fact:
+          ontap_version: "{{ ontap_info.ontap_info.system_node_info[first_node].product_version.split()[2]|regex_replace(':','') }}"
+
+
+     - set_fact:
+         ontap_ver: "{{ format(ontap_version) }}"
+
+     - debug:
+         msg: "{{ ontap_ver }}"

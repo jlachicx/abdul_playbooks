@@ -1,0 +1,14 @@
+---
+  - name: verify when condition
+    hosts: localhost
+    gather_facts: yes
+
+    tasks:
+    - name: store data in varibale
+      set_fact: 
+        disk: "{{ ansible_devices.sdb.vendor }}"
+
+    - debug:
+        msg: "Vendor name is {{ disk }}"
+      when:
+        - disk == 'VMware'

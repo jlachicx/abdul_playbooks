@@ -1,0 +1,30 @@
+---
+   - name: verify version
+     hosts: localhost
+     gather_facts: no
+
+     tasks:
+     - name: Get NetApp info (Password Authentication)
+       na_ontap_info:
+         state: info
+         hostname: "192.168.2.136"
+         username: "admin"
+         password: "Temp12345"
+         validate_certs: no
+         https: no
+         gather_subset:
+           net_interface_info
+       register: ontap_interface_info
+
+     - set_fact:
+         interfaces: "{{ item.value.address }}"
+       when:
+         - item.key | regex_search ('^abdultest-01')
+       with_dict: "{{ ontap_interface_info.ontap_info.net_interface_info }}"
+
+
+     - debug:
+         msg: "{{ item }}"
+       loop: "{{ interfaces }}"
+
+

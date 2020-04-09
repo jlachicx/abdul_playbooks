@@ -1,0 +1,46 @@
+---
+###############################################################################
+# pb_ontap_config.yml
+# Main playbook to do the base and svm configuration for an ontap cluster
+# Version 1.0.0a
+# Marc Ferber NetApp 2019 10 07
+###############################################################################
+- hosts: localhost
+  gather_facts: no
+  vars_prompt:
+    - name: netapp_hostname
+      prompt: Enter the NetApp cluster name
+      private: no
+    - name: netapp_username
+      prompt: Enter the NetApp cluster account
+      private: no
+    - name: netapp_password
+      prompt: Enter the NetApp cluster password
+      no_log: true
+  vars:
+    input: &input
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+  tasks:
+    - name: Check for cluster varfiles
+      find:
+         paths: "/home/ansible/ontap95p6/ansible-data/varfiles/{{ netapp_hostname }}"
+         patterns: "var_{{ netapp_hostname }}*.yml"
+      register: reg_cluster_varfiles_list
+    - set_fact:
+         cluster_varfiles_list: "{{ reg_cluster_varfiles_list.files|map(attribute='path')|sort }}"
+
+
+    - debug:
+        msg: "{{ cluster_varfiles_list }}"
+
+    - name: Extract datacenter from netapp_hostname for regular case
+      set_fact:
+        #datacenter: "{{ netapp_hostname[-7:][0:5] | lower }}"
+        datacenter: "{{ netapp_hostname[0:4] | lower }}"
+      when:
+        - not netapp_hostname is regex("-[a-zA-Z][a-zA-Z]$")
+
+    - debug:
+        msg: "{{ datacenter }}"

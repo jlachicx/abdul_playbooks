@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars_prompt:
+    - name: netapp_hostname
+      prompt: Enter the NetApp cluster name
+      private: no
+  vars:
+    clustervarfile: "{{ '/home/ansible/ontap95p6/ansible-data/varfiles/' + netapp_hostname + '/var_' + netapp_hostname  + '*'  + '.yml' }}"
+
+
+  tasks:
+  - debug:
+      msg: "{{ clustervarfile }}"

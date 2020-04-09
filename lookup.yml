@@ -1,0 +1,8 @@
+---
+  - hosts: localhost
+    vars:
+      contents: "{{ lookup('file', '/home/ansible/amoeed/test.txt') }}"
+
+    tasks:
+    - debug:  
+        msg: "file content is : {{ contents }}"
