@@ -1,0 +1,33 @@
+---
+   - name: verify version
+     hosts: localhost
+     gather_facts: no
+
+     tasks:
+     - name: Get NetApp info (Password Authentication)
+       na_ontap_info:
+         state: info
+         hostname: "192.168.2.136"
+         username: "admin"
+         password: "Temp12345"
+         validate_certs: no
+         https: no
+         gather_subset:
+           net_interface_info
+       register: ontap_interface_info
+
+     - name: Saving node mgmt lif informations
+       set_fact:
+         nodemgmt: "{{ nodemgmt |default([]) + [ item ] }}"
+       with_items: "{{ ontap_interface_info.ontap_info.net_interface_info }}"
+       when: ontap_interface_info.ontap_info.net_interface_info[item].role == "node_mgmt"
+    
+     - name: Dest Interface IP
+       set_fact:
+         dest_ip: "{{ dest_ip|default([])  + [ ontap_interface_info.ontap_info.net_interface_info[item].address ] }}"
+       loop: "{{ nodemgmt }}"
+     
+     - debug:
+         msg: "{{ item }}"
+       loop: 
+         - "{{ dest_ip }}"

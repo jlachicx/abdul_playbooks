@@ -2,12 +2,16 @@
    - name: verify version
      hosts: localhost
      gather_facts: no
+     vars:
+       nodes:
+         - 192.168.2.136
+         - 192.168.2.141
 
      tasks:
      - name: Get NetApp info (Password Authentication)
        na_ontap_info:
          state: info
-         hostname: "192.168.2.136"
+         hostname: "{{ item }}"
          username: "admin"
          password: "Temp12345"
          validate_certs: no
@@ -15,16 +19,25 @@
          gather_subset:
            net_interface_info
        register: ontap_interface_info
-
+       loop: "{{ nodes }}"
+     
      - set_fact:
-         interfaces: "{{ ontap_interface_info.ontap_info.net_interface_info.keys() }}"
+         interfaces: "{{ interfaces | default([])  + [ ontap_interface_info.results[item|int].ontap_info.net_interface_info.keys() ] }}"
+       with_sequence: start=0 end="{{((nodes|length|int)-1)}}"
+     - debug: var=interfaces
+     
+     - pause:
 
      - name: Dest Interface IP
        set_fact:
-         dest_ip: "{{ dest_ip|default([])  + [ ontap_interface_info.ontap_info.net_interface_info[item].address ] }}"
-         dest_interface: "{{ dest_interface|default([]) + [ item ] }}"
-       when: item is regex('^abdultest-01')
-       loop: "{{ interfaces }}"
+         dest_ip: "{{ dest_ip|default([])  + [ ontap_interface_info.results[0].ontap_info.net_interface_info[item].address ] }}"
+       when: item is regex('^cluster')
+       loop: "{{ interfaces[0] }}"
+        
+       #with_indexed_items: "{{ interfaces }}"
+            
+     - debug: var=dest_ip
+     - pause:
 
      - debug:
          msg: "{{ item }}"

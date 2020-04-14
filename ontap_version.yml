@@ -32,7 +32,6 @@
        set_fact:
           ontap_version: "{{ ontap_info.ontap_info.system_node_info[first_node].product_version.split()[2]|regex_replace(':','') }}"
 
-
      - set_fact:
          ontap_ver: "{{ format(ontap_version) }}"
 
