@@ -1,0 +1,39 @@
+---
+- name: Get NetApp info from Destination Cluster - "{{ item }}"
+  na_ontap_info:
+    state: info
+    hostname: "{{ item }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    validate_certs: no
+    https: true
+    gather_subset:
+      - net_interface_info
+  register: dest_ontap_interface_info
+
+- set_fact:
+    dest_ontap_facts: "{{ dest_ontap_interface_info.ontap_info }}"
+
+- set_fact:
+    dest_ic_ips: []
+
+- name: Gather InterCluster lif informations from destination cluster - "{{ item }}"
+  set_fact:
+    dest_ic_ips: "{{ dest_ic_ips  + [ dest_ontap_facts.net_interface_info[item].address ] }}"
+  with_items: "{{ dest_ontap_facts.net_interface_info }}"
+  when: dest_ontap_facts.net_interface_info[item].role == 'intercluster'
+
+- name: Create New cluster peer relationship
+  na_ontap_cluster_peer:
+    state: present
+    source_intercluster_lifs: "{{ source_ic_ips }}"
+    dest_intercluster_lifs: "{{ dest_ic_ips }}"
+    passphrase: suckitboi
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    dest_hostname: "{{ item }}"
+    https: true
+    validate_certs: false
+
+  

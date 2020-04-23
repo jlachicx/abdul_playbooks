@@ -1,0 +1,55 @@
+---
+  - name: verify version
+    hosts: localhost
+    gather_facts: no
+    vars:
+      nodes:
+        - 192.168.2.136
+        - 192.168.2.141
+
+    tasks:
+    - name: Get NetApp info (Password Authentication)
+      na_ontap_info:
+        state: info
+        hostname: "{{ item }}"
+        username: "admin"
+        password: "Temp12345"
+        validate_certs: no
+        https: no
+        gather_subset:
+          net_interface_info
+      register: ontap_interface_info
+      loop: "{{ nodes }}"
+    
+    ## Generate Index value for the nodes
+    #- set_fact:
+    #    node_index: "{{ node_index|default([]) + [item.0] }}"
+    #  with_indexed_items: "{{ nodes }}"
+    
+    ## Generate list of interfaces
+    - set_fact:
+        interfaces: "{{ interfaces | default([])  + [ ontap_interface_info.results[item|int].ontap_info.net_interface_info.keys() ] }}"
+      with_sequence: start=0 end="{{((nodes|length|int)-1)}}"
+    
+    - set_fact:
+        lif1: "{{ lif1 |default([]) + "
+    
+    - set_fact:
+        lifs: "{{ lifs|default([]) + [ { item: interfaces } ] }}"
+      loop: "{{ nodes }}"
+
+    - debug: var=lifs
+    - pause:
+
+    ## Search required interface and store value for peering
+    - name: Dest Interface IP
+      set_fact:
+        dest_ip: "{{ dest_ip|default([])  +  [  ontap_interface_info.results[item.0].ontap_info.net_interface_info[item.1].address  ]  }}"
+      when: item.1 is regex('^mgmt')
+      with_nested:
+        - "{{ node_index }}"
+        - "{{ interfaces }}"
+    
+    - debug: var=dest_ip
+    
+

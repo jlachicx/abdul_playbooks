@@ -1,0 +1,95 @@
+---
+  - name: verify version
+    hosts: localhost
+    gather_facts: no
+    vars:
+      nodes:
+        - 192.168.2.136
+        - 192.168.2.141
+
+    tasks:
+    - name: Get NetApp info (Password Authentication)
+      na_ontap_info:
+        state: info
+        hostname: "{{ item }}"
+        username: "admin"
+        password: "Temp12345"
+        validate_certs: no
+        https: no
+        gather_subset:
+          net_interface_info
+      register: ontap_interface_info
+      loop: "{{ nodes }}"
+    
+    ## Generate list of interfaces
+    - set_fact:
+        interfaces: "{{ interfaces | default([])  +  ontap_interface_info.results[item|int].ontap_info.net_interface_info.keys()  }}"
+      
+      with_sequence: start=0 end="{{((nodes|length|int)-1)}}"
+
+    - set_fact:
+        interfaces: "{{ interfaces |unique }}"
+    
+    #- debug: var=interfaces
+    #- pause:
+
+    - set_fact:
+        #msg: "{{ ontap_interface_info |json_query('results[*].ontap_info.net_interface_info') }}"
+        data: "{{ data|default([]) + ontap_interface_info |json_query('results[*].ontap_info.net_interface_info.*') }}"
+      #when: ontap_interface_info |json_query('results[*].ontap_info.net_interface_info) is regex('^mgmt')
+      #loop: "{{ interfaces }}" 
+        
+   # - debug: var=data
+
+    - set_fact:
+        data: "{{ data }}"
+
+    - debug: 
+        msg: "{{ data[0] }}"
+
+    - pause:
+
+    - set_fact:
+        #data1: "{{ data1 |default([]) + item.mgmt1.home_node[0:-3] + '  ' + item.address  }}"
+        data1: "{{ data1 |default([]) +  [ item.address ] }}"
+      when: item.role == 'node_mgmt'  
+      loop: "{{ data[1] }}"
+          
+    - debug: var=data1
+    - pause:
+
+    - set_fact:
+         data1: "{{ data1 |default([]) + [ item.home_node[0:-3] + '  ' +  item.address ]  }}"
+      loop: "{{ data }}"
+    
+      
+    - debug: var=data1
+
+    #- debug:
+     #   msg: "{{ item.item }} {{ item.ontap_info.cluster_mgmt.address }}"
+      #loop: 
+
+
+    - pause:
+
+    - set_fact:
+        interfaces: "{{ interfaces | default([])  +  ontap_interface_info.results[item|int].ontap_info.net_interface_info.keys()  }}"
+      with_sequence: start=0 end="{{((nodes|length|int)-1)}}"
+
+    - set_fact:
+         interfaces: "{{ interfaces |unique }}"
+
+    ## Search required interface and store value for peering
+    - debug: var=interfaces
+    - pause:
+    - name: Dest Interface IP
+      set_fact:
+        dest_ip: "{{ dest_ip|default([])  + [ ontap_interface_info.results[item.0].ontap_info.net_interface_info[item.1].address ] }}"
+      when: item.1.startswith('abdul')
+      with_nested:
+        - "{{ node_index }}"
+        - "{{ interfaces }}"
+    
+    - debug: var=dest_ip
+    
+

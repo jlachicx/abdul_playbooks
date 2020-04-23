@@ -1,0 +1,49 @@
+---
+  - name: Check node model
+    hosts: localhost
+    gather_facts: no
+    
+    tasks:
+    - name: Get NetApp info (Password Authentication)
+      na_ontap_info:
+        state: info
+        hostname: "192.168.2.136"
+        username: "admin"
+        password: "Temp12345"
+        validate_certs: no
+        https: no
+      register: ontap_info
+    
+    - set_fact:
+        ontap_facts: "{{ ontap_info.ontap_info }}"
+    
+    - name: Include var files
+      include_vars:
+        file: /home/gituser/repo/abdul_playbooks/varfiles/var_platform_AFF-A8080.yml
+        file: /home/gituser/repo/abdul_playbooks/varfiles/var_platform_AFF-A700.yml
+   
+    - name: Building Ethernet port list to be checked for LINK UP
+      set_fact:
+        ports: "{{ ports| default([]) + [ item ]  }}"
+      loop:
+        - "{{ ontap_facts.net_port_info.keys() }}"
+      
+    - set_fact:
+         ports: "{{ item  }}"
+      loop: "{{ ports }}"
+    
+    ######## Checking LINK on Ethernet Ports
+    - set_fact:
+        check_result: "{{ check_result |default([]) + [ '  - Checking LINK on needed Ethernet ports' ] }}"
+
+    - set_fact:
+        check_result: "{{ check_result  + [ ('    [ ] LINK on port ' + item + ' (' + ontap_facts.net_port_info[item].link_status + ') : passed') ]}}"
+        testpassed: "{{ testpassed |default([]) + [ ('    [ ] LINK on port ' + item + ' (' + ontap_facts.net_port_info[item].link_status + ') : passed') ]}}"
+      loop: "{{ ports }}"
+      when: ontap_facts.net_port_info[item].link_status == 'up'
+
+    - debug: var=check_result
+
+    
+        
+    

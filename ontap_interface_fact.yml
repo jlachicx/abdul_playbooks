@@ -1,47 +1,79 @@
 ---
-   - name: verify version
-     hosts: localhost
-     gather_facts: no
-     vars:
-       nodes:
-         - 192.168.2.136
-         - 192.168.2.141
+  - name: verify version
+    hosts: localhost
+    gather_facts: no
+    vars:
+      netapp_destination_cluster:
+        - 192.168.2.136
+        - 192.168.2.141
+     # lifs: { cluster1: [ lif1, lif2 ], cluster2: [lif1, lif2] } 
 
-     tasks:
-     - name: Get NetApp info (Password Authentication)
-       na_ontap_info:
-         state: info
-         hostname: "{{ item }}"
-         username: "admin"
-         password: "Temp12345"
-         validate_certs: no
-         https: no
-         gather_subset:
-           net_interface_info
-       register: ontap_interface_info
-       loop: "{{ nodes }}"
-     
-     - set_fact:
-         interfaces: "{{ interfaces | default([])  + [ ontap_interface_info.results[item|int].ontap_info.net_interface_info.keys() ] }}"
-       with_sequence: start=0 end="{{((nodes|length|int)-1)}}"
-     - debug: var=interfaces
-     
-     - pause:
+    vars_prompt:
+    - name: netapp_source_cluster
+      prompt: "Source Cluster to Peer:"
+      private: no
+    
+    - name: netapp_username
+      prompt: "Username:"
+      private: no
+    
+    - name: netapp_password
+      prompt: "Password:"
 
-     - name: Dest Interface IP
-       set_fact:
-         dest_ip: "{{ dest_ip|default([])  + [ ontap_interface_info.results[0].ontap_info.net_interface_info[item].address ] }}"
-       when: item is regex('^cluster')
-       loop: "{{ interfaces[0] }}"
-        
-       #with_indexed_items: "{{ interfaces }}"
-            
-     - debug: var=dest_ip
-     - pause:
+    tasks:
+    - name: Get NetApp info (Password Authentication)
+      na_ontap_info:
+        state: info
+        hostname: "{{ item }}"
+        username: "admin"
+        password: "Temp12345"
+        validate_certs: no
+        https: no
+        gather_subset:
+          net_interface_info
+      register: ontap_interface_info
+      loop: "{{ netapp_destination_cluster }}"
+    
+    #- debug:
+    #    msg: "{{ lifs }}"
+    #- pause: 
 
-     - debug:
-         msg: "{{ item }}"
-       loop: 
-         - "{{ dest_ip }}"
+    - set_fact:
+        data: "{{ data|default([]) +  ontap_interface_info |json_query('results[*].ontap_info.net_interface_info.*') }}"
+      loop: "{{ netapp_destination_cluster }}"
+    
+    - debug: var=data
+ 
+    - pause:
 
+    - set_fact:
+        #dest_ic_ips: "{{ dest_ic_ips | default([]) + [ { 'address': item.address,  'node': item.home_node[0:-3] } ] }}"
+        dest_ic_ips: "{{ dest_ic_ips | default([]) + [ { item.home_node[0:-3]: item.address } ] }}"
+      when: item.role == 'node_mgmt' 
+      loop: "{{ data | flatten |unique }}"
+
+    - debug: var=dest_ic_ips
+       
+    - pause:
+
+    - name: Create New cluster peer relationship
+      na_ontap_cluster_peer:
+        state: present
+        #source_intercluster_lifs: "{{ source_ic_ips }}"
+        #dest_intercluster_lifs: "{{  }}"
+        passphrase: suckitboi
+        hostname: "{{ netapp_source_cluster }}"
+        username: "{{ netapp_username }}"
+        password: "{{ netapp_password }}"
+        dest_hostname: "{{ item }}"
+        https: true
+        validate_certs: false
+      loop: "{{ netapp_destination_cluster }}"
+
+
+      
+    
+
+    
+    
 
