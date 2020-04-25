@@ -48,12 +48,12 @@
       set_fact:
          interfaces: "{{ ontap_facts.net_interface_info.keys() }}"
          
-    #- name: Get LIF for vserver - vs1
-    #  set_fact:
-    #     vs1_lif: "{{ vs1_lif | default([]) + [ ontap_facts.net_interface_info[item].address ] }}"
-    #  when: ontap_facts.net_interface_info[item].vserver == 'vs1'
-    #  with_items: "{{ interfaces }}"
-
+    - name: Get LIF for vserver - vs1
+      set_fact:
+         vs1_lif: "{{ vs1_lif | default([]) + [ ontap_facts.net_interface_info[item].address ] }}"
+      with_items: "{{ interfaces }}"
+      when: ontap_facts.net_interface_info[item].vserver == 'vs1'
+      
     - name: Create vserver - vs2
       na_ontap_svm:
         state: present
