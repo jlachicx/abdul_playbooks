@@ -1,22 +1,19 @@
 ---
-  - name: vserver and lif
+  - name: vserver setup and lif
     hosts: localhost
     gather_facts: no
     
     vars:
-      input: &input
-        hostname: "192.168.2.136"
-        username: "{{ netapp_username }}"
-        password: "{{ netapp_password }}"
+      netapp_hostname: 192.168.2.136
 
     tasks:
     - include_vars:
-        file: vars/netapp_var.yml 
+        file: vars/netapp_var.yml # Encrypted file for username/password
 
     - name: Gathering existing vserver LIFs information
       na_ontap_info:
         state: info
-        hostname: "192.168.2.136"
+        hostname: "{{ netapp_hostname }}"
         username: "{{ netapp_username }}"
         password: "{{ netapp_password }}"
         gather_subset:
@@ -30,22 +27,43 @@
     
     - set_fact:
         ontap_facts: "{{ ontap_info.ontap_info }}"
+    
+    - name: Generate list of existing aggr
+      set_fact:
+        aggr_list: "{{ ontap_facts.vserver_info.vs1.aggr_list.aggr_name }}"
 
-    - debug: var=ontap_facts
+    - name: Generate list of existing allowed_protocol
+      set_fact:
+        allowed_proto: "{{ ontap_facts.vserver_info.vs1.allowed_protocols.protocol }}"
 
-    - set_fact:
-         aggr_vs1: "{{ ontap_facts.vserver_info.vs1.aggr_list }}"
-
-    - debug: var=aggr_vs1
+    - name: Get existing rootvol name
+      set_fact:
+        rootvol_name: "{{ ontap_facts.vserver_info.vs1.root_volume }}"
+  
+    - name: Get root volume aggr for exsiting vserver
+      set_fact:
+        rootvol_aggr: "{{ ontap_facts.vserver_info.vs1.root_volume_aggregate }}"
 
     - name: Generate list of interfaces
       set_fact:
          interfaces: "{{ ontap_facts.net_interface_info.keys() }}"
- 
+         
     - name: Get LIF for vserver - vs1
       set_fact:
          vs1_lif: "{{ vs1_lif | default([]) + [ ontap_facts.net_interface_info[item].address ] }}"
       when: ontap_facts.net_interface_info[item].vserver == 'vs1'
       loop: "{{ interfaces }}"
 
-    - debug: var=vs1_lif
+    - name: Create vserver - vs2
+      na_ontap_svm:
+        state: present
+        name: vs2
+        root_volume: "{{ rootvol_name }}"
+        root_volume_aggregate: "{{ rootvol_aggr }}"
+        root_volume_security_style: unix
+        aggr_list: "{{ aggr_list }}"
+        allowed_protocols: "{{ allowed_proto }}"
+        hostname: "{{ netapp_hostname }}"
+        username: "{{ netapp_username }}"
+        password: "{{ netapp_password }}"
+        validate_certs: no

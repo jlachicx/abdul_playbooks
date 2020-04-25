@@ -9,30 +9,29 @@
         - { name: 'joe', groups: 'root' }
 
       drive_types:
-        ssd:
+        ssd: 
           raid_size: 23
           spares_per_node: 1
-        sas:
+        sas: 
           raid_size: 22
           spares_per_node: 2
-        fcal:
+        fcal: 
           raid_size: 22
           spares_per_node: 2
 
     tasks:
 
-    - debug:
-        msg: "{{ drive_types.sas.spares_per_node }}"
+    - debug: var=drive_types
+        #msg: "{{ drive_types.sas.spares_per_node }}"
         #msg: "{{ drive_types['sas']['spares_per_node'] }}"
       
     - pause: 
 
     - name: Users exist and are in the correct groups
-      debug:
-        msg: "name: {{ item.name }} Group: {{ item.groups }}"    
-      loop:
-        - { name: 'jane', groups: 'wheel' }
-        - { name: 'joe', groups: 'root' }   
+      debug: var=users
+      #  msg: "name: {{ item.name }} Group: {{ item.groups }}"    
+      #loop: "{{ users }}"
+        
    
     - set_fact:
         user_name: "{{ user_name|default([]) +  [ item.name ] }}"

@@ -17,11 +17,12 @@
 
     vars:
       # First load the regions from whichever file you need
-      #regions: "{{ lookup('file', 'region-peers.yml') | from_yaml }}"
+      regions: "{{ lookup('file', 'regions.yml') | from_yaml }}"
+      peers: "{{ query('sl_region_peers', regions=regions, hostname=netapp_source_cluster) }}"
       
-      netapp_dest_cluster:
-        - 192.168.2.136
-        - 192.168.2.141
+      #netapp_dest_cluster:
+      #  - 192.168.2.136
+      #  - 192.168.2.141
       
       input: &input
         hostname: "{{ netapp_source_cluster }}"
@@ -29,11 +30,14 @@
         password: "{{ netapp_password }}"
     
     tasks:
-    #- name: Show peer clusters for "{{ netapp_source_cluster }}"
-    #  set_fact:
-    #    netapp_dest_cluster: "{{ query('sl_region_peers', regions=regions, hostname=netapp_source_cluster) }}"
+    - debug: var=regions
+    - pause:
+    - name: Show peer clusters for "{{ netapp_source_cluster }}"
+      set_fact:
+        netapp_dest_cluster: "{{ query('sl_region_peers', regions=regions, hostname=netapp_source_cluster) }}"
     
     - debug: var=netapp_dest_cluster
+    - pause:
 
     - name: Gathering Intercluster LIFs on Source cluster - "{{ netapp_source_cluster }}"
       na_ontap_info:

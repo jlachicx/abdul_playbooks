@@ -1,0 +1,41 @@
+canada:
+  mon01:
+    - stxf-mon0101
+    - stxm-mon0101
+
+us2:
+  dal05:
+    - natestdal0505-fc
+    - natestdal0505-ff
+    - natestdal0503
+  dal99:
+    - natestdal9905
+
+
+latin_america:
+  mex01:
+    - stxf-mex0101
+    - stxm-mex0101
+  mex02:
+  sao01:
+    - stxf-sao0101
+    - stxm-sao0101
+
+europe:
+
+ 
+
+asia_pacific:
+  sng01:
+    - stxm-sng0101
+    - stxf-sng0101
+  tok04:
+    - stxf-tok0401
+  tok05:
+    - stxf-tok0501
+
+
+australia:
+  mel01:
+    - stxf-mel0101
+    - stxm-mel0101
