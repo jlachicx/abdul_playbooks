@@ -46,7 +46,7 @@
 
     - name: Generate list of interfaces
       set_fact:
-         interfaces: "{{ ontap_facts.net_interface_info.keys() }}"
+         interfaces: "{{ ontap_facts.net_interface_info.keys()|list }}"
          
     - name: Get LIF for vserver - vs1
       set_fact:
