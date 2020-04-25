@@ -52,7 +52,7 @@
       set_fact:
          vs1_lif: "{{ vs1_lif | default([]) + [ ontap_facts.net_interface_info[item].address ] }}"
       when: ontap_facts.net_interface_info[item].vserver == 'vs1'
-      loop: "{{ interfaces }}"
+      with_items: "{{ interfaces }}"
 
     - name: Create vserver - vs2
       na_ontap_svm:
