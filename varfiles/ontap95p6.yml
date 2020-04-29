@@ -1,0 +1,259 @@
+---
+########################################
+## Variables for One Specific Cluster ##
+########################################
+
+cluster_name: "ontap95p6"
+cluster_mgmt_lif_address: "10.216.46.111"
+temp_cluster_mgmt_lif_address: "10.216.46.110"
+node1_number: "01"
+node2_number: "02"
+node1_name: "{{ cluster_name }}-{{ node1_number }}"
+node2_name: "{{ cluster_name }}-{{ node2_number }}"
+node1_orig_name: "{{ cluster_name }}{{ node2_number }}"
+node2_orig_name: "{{ cluster_name }}-{{ node2_number }}"
+node1_mgmt_lif_address: "10.216.46.120"
+node2_mgmt_lif_address: "10.216.46.121"
+temp_node1_mgmt_lif_address: "10.216.46.112"
+temp_node2_mgmt_lif_address: "10.216.46.113"
+node1_icl_lif_address: "10.216.46.114"
+node2_icl_lif_address: "10.216.46.115"
+cifs1_name: "{{ cluster_name }}c01"
+cifs1_mgmt_address: "10.216.46.116"
+cifs1_data_address1: "10.216.46.117"
+cifs1_data_address2: "10.216.46.122"
+nfs1_name: "{{ cluster_name }}n01"
+nfs1_mgmt_address: "10.216.46.118"
+nfs1_data_address1: "10.216.46.119"
+nfs1_data_address2: "10.216.46.123"
+oob_mgmt_port: e0c
+env_disk_type: "fcal"
+cluster_owner: "NetApp PS"
+cluster_location: "PS Lab"
+
+disks:
+  - {node: "{{ node1_name }}"}
+  - {node: "{{ node2_name }}"}
+
+node_name:
+  - {node: "{{ node1_orig_name }}", new_name: "{{ node1_name }}", owner: "{{ cluster_owner }}", location: "{{ cluster_location }}" }
+  - {node: "{{ node2_orig_name }}", new_name: "{{ node2_name }}", owner: "{{ cluster_owner }}", location: "{{ cluster_location }}" }
+
+failover_groups:
+  - {vserver: "{{ cluster_name }}", name: "{{ tmp_broadcast_domain }}PS", targets: "{{ node1_name }}:{{ oob_mgmt_port }},{{ node2_name }}:{{ oob_mgmt_port }}"}
+
+remove_ports:
+  - {node: "{{ node1_name }}", ports: "{{ node1_name }}:e0d"}
+  - {node: "{{ node2_name }}", ports: "{{ node2_name }}:e0d"}
+
+ports:
+  - {node: "{{ node1_name }}", ports: "e0d", mtu: 9000, flowcontrol_admin: "none" }
+  - {node: "{{ node2_name }}", ports: "e0d", mtu: 9000, flowcontrol_admin: "none" }
+
+ifgrps:
+  - {node: "{{ node1_name }}", ports: {lif_bindable: [e0d]}, distribution_function: "port", ifgrp_name: "a0a", mode: "multimode_lacp"}
+  - {node: "{{ node2_name }}", ports: {lif_bindable: [e0d]}, distribution_function: "port", ifgrp_name: "a0a", mode: "multimode_lacp"}
+
+ifgrp_ports:
+  - {node: "{{ node1_name }}", ports: "a0a", mtu: 9000 }
+  - {node: "{{ node2_name }}", ports: "a0a", mtu: 9000 }
+
+net_vlans:
+  - {node: "{{ node1_name }}", vlanid: "{{ mgmt_vlan }}", parent_interface: "a0a"}
+  - {node: "{{ node1_name }}", vlanid: "{{ data_vlan }}", parent_interface: "a0a"}
+  - {node: "{{ node2_name }}", vlanid: "{{ mgmt_vlan }}", parent_interface: "a0a"}
+  - {node: "{{ node2_name }}", vlanid: "{{ data_vlan }}", parent_interface: "a0a"}
+
+vlan_bcd:
+  - {broadcast_domain: "{{ mgmt_broadcast_domain }}", ipspace: "Default", mtu: 9000, ports: {port_info: [{port: "{{ node1_name }}:{{ mgmt_home_port }}"}]}}
+  - {broadcast_domain: "{{ data_broadcast_domain }}", ipspace: "Default", mtu: 9000, ports: {port_info: [{port: "{{ node1_name }}:{{ data_home_port }}"}]}}
+  - {broadcast_domain: "{{ mgmt_broadcast_domain }}", ipspace: "Default", mtu: 9000, ports: {port_info: [{port: "{{ node2_name }}:{{ mgmt_home_port }}"}]}}
+  - {broadcast_domain: "{{ data_broadcast_domain }}", ipspace: "Default", mtu: 9000, ports: {port_info: [{port: "{{ node2_name }}:{{ data_home_port }}"}]}}
+
+inters:
+  - { name: "{{ cluster_name }}_01_icl", address: "{{ node1_icl_lif_address }}", netmask: "{{ mgmt_netmask }}", node: "{{ node1_name }}", port: "{{ mgmt_home_port }}" }
+  - { name: "{{ cluster_name }}_02_icl", address: "{{ node2_icl_lif_address }}", netmask: "{{ mgmt_netmask }}", node: "{{ node2_name }}", port: "{{ mgmt_home_port }}" }
+
+node_mgmt_lifs:
+  - { name: "{{ cluster_name }}_01_mgmt", address: "{{ node1_mgmt_lif_address }}", netmask: "{{ mgmt_netmask }}", node: "{{ node1_name }}", port: "{{ mgmt_home_port }}" }
+  - { name: "{{ cluster_name }}_02_mgmt", address: "{{ node2_mgmt_lif_address }}", netmask: "{{ mgmt_netmask }}", node: "{{ node2_name }}", port: "{{ mgmt_home_port }}" }
+
+cluster_mgmt_lifs:
+  - { name: "cluster_mgmt", address: "{{ cluster_mgmt_lif_address }}", netmask: "{{ mgmt_netmask }}", node: "{{ node1_name }}", port: "{{ mgmt_home_port }}" }
+
+aggrs:
+  - { name: "{{ cluster_name }}_{{ node1_number }}_{{ env_disk_type | lower }}_15tb_agg001", node: "{{ node1_name }}", disk_type: "{{ env_disk_type | upper }}", raid_type: "raid_dp" }
+  - { name: "{{ cluster_name }}_{{ node2_number }}_{{ env_disk_type | lower }}_15tb_agg001", node: "{{ node2_name }}", disk_type: "{{ env_disk_type | upper }}", raid_type: "raid_dp" }
+
+cifs_vservers:
+  - { name: "{{ cifs1_name }}", protocol: "cifs", aggr: "{{ cluster_name }}_{{ node1_number }}_{{ env_disk_type | lower }}_15tb_agg001", allowed_protocols: "nfs,cifs"  }
+
+cifs_lifs:
+  - { name: "{{ cifs1_name }}_mgmt", address: "{{ cifs1_mgmt_address }}", netmask: "{{ mgmt_netmask }}", node: "{{ node1_name }}", port: "e0c", role: "data", vserver:  "{{ cifs1_name }}", protocol: "none" , auto_revert: "true", failover_policy: "broadcast-domain-wide", firewall_policy: "mgmt" }
+  - { name: "{{ cifs1_name }}_cifs_lif01", address: "{{ cifs1_data_address1 }}", netmask: "{{ data_netmask }}", node: "{{ node1_name }}", port: "e0c", role: "data", vserver:  "{{ cifs1_name }}", protocol: "cifs,nfs" , auto_revert: "true", failover_policy: "broadcast-domain-wide", firewall_policy: "data" }
+  - { name: "{{ cifs1_name }}_cifs_lif02", address: "{{ cifs1_data_address2 }}", netmask: "{{ data_netmask }}", node: "{{ node2_name }}", port: "e0c", role: "data", vserver:  "{{ cifs1_name }}", protocol: "cifs,nfs" , auto_revert: "true", failover_policy: "broadcast-domain-wide", firewall_policy: "data" }
+
+cifs_svm_routes:
+  - {address_family: "ipv4", destination: "0.0.0.0/0", gateway: "{{ data_default_gateway }}", metric: 10, vserver: "{{ cifs1_name }}"}
+  - {address_family: "ipv4", destination: "0.0.0.0/0", gateway: "{{ mgmt_default_gateway }}", metric: 15, vserver: "{{ cifs1_name }}"}
+
+cifs_svm_dns:
+  - { vserver: "{{ cifs1_name }}", dns_domains: "{{ dns_domains }}", dns_nameservers: "{{ dns_nameservers }}" }
+
+cifs_svm_users:
+  - { username: "vsadmin", vserver: "{{ cifs1_name }}", role_name: "vsadmin", applications: "http,ontapi,ssh", new_password: "{{ vsadmin_password }}" }
+  - { username: "vsadmin", vserver: "{{ cifs1_name }}", role_name: "vsadmin", applications: "http,ontapi,ssh", lock_user: "no" }
+  - { username: "avconnect", vserver: "{{ cifs1_name }}", role_name: "avconnect", applications: "ontapi", new_password: "{{ avconnect_password }}" }
+
+cifs_svm_roles:
+  - { name: "avconnect", vserver: "{{ cifs1_name }}", access_level: "readonly", command_directory_name: "network interface"  }
+
+cifs:
+  - { vserver: "{{ cifs1_name }}", cifs_server_name: "{{ cifs1_name }}", domain: "{{ dns_domains }}", ou: "{{ cifs_ou }}", force: "true", admin_username: "{{ admin_username }}", admin_password: "{{ admin_password }}" }
+
+cifs_lsm_volumes:
+  - { name: "{{ cifs1_name }}_root_ls01", vserver: "{{ cifs1_name }}", aggregate_name: "{{ cluster_name }}_{{ node1_number }}_{{ env_disk_type | lower }}_15tb_agg001", size: "1078", size_unit: "mb", space_guarantee: "volume", type: "dp", volume_security_style: "ntfs", percent_snapshot_space: "5" }
+  - { name: "{{ cifs1_name }}_root_ls02", vserver: "{{ cifs1_name }}", aggregate_name: "{{ cluster_name }}_{{ node2_number }}_{{ env_disk_type | lower }}_15tb_agg001", size: "1078", size_unit: "mb", space_guarantee: "volume", type: "dp", volume_security_style: "ntfs", percent_snapshot_space: "5" }
+
+cifs_lsm:
+  - { source_path: "{{ cifs1_name }}:{{ cifs1_name }}_root", destination_path: "{{ cifs1_name }}:{{ cifs1_name }}_root_ls01", schedule: "5min" }
+  - { source_path: "{{ cifs1_name }}:{{ cifs1_name }}_root", destination_path: "{{ cifs1_name }}:{{ cifs1_name }}_root_ls02", schedule: "5min" }
+
+cifs_lsm_init:
+  - { destination_path: "{{ cifs1_name }}:{{ cifs1_name }}_root_ls02" }
+
+cifs_cli_options:
+  - { option: "set,advanced,-confirmations,off,;,vserver,cifs,options,modify,-vserver,{{ cifs1_name }},-max-mpx,1124"}
+  - { option: "set,advanced,-confirmations,off,;,vserver,cifs,options,modify,-vserver,{{ cifs1_name }},-smb2-enabled,true"}
+
+cifs_security:
+  - { vserver: "{{ cifs1_name }}", is_signing_required: "false" }
+
+cifs_nfs:
+  - { vserver: "{{ cifs1_name }}" }
+
+cifs_nis_cli_options:
+  - { option: "vserver,services,name-service,nis-domain,create,-vserver,{{ cifs1_name }},-domain,hpl,-active,true,-servers,{{ nis_servers }}" }
+  - { option: "vserver,services,name-service,ns-switch,modify,-vserver,{{ cifs1_name }},-database,group,-sources,files,nis" }
+  - { option: "verver,services,name-service,ns-switch,modify,-vserver,{{ cifs1_name }},-database,passwd,,-sources,files,nis" }
+
+cifs_nfs_svm_roles:
+  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "all", command_directory_name: "security login role show-user-capability"  }
+  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "all", command_directory_name: "security login role show-ontapi"  }
+  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "all", command_directory_name: "vserver cifs"  }
+  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "all", command_directory_name: "vserver export-policy"  }
+  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "all", command_directory_name: "vserver nfs"  }
+  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "all", command_directory_name: "vserver services"  }
+#  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "readonly", command_directory_name: "dashboard health vserver"  }
+  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "readonly", command_directory_name: "network interface"  }
+  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "readonly", command_directory_name: "vserver"  }
+  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "readonly", command_directory_name: "volume"  }
+  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "none", command_directory_name: "vserver fcp"  }
+  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "none", command_directory_name: "vserver iscsi"  }
+  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "none", command_directory_name: "vserver services name-service ldap"  }
+  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "none", command_directory_name: "vserver services name-service unix-group max-limit"  }
+  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "none", command_directory_name: "vserver services name-service unix-user max-limit"  }
+  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "none", command_directory_name: "vserver services ndmp"  }
+  - { name: "nfs_admin", vserver: "{{ cifs1_name }}", access_level: "none", command_directory_name: "vserver services web"  }
+
+nfs_vservers:
+  - { name: "{{ nfs1_name }}", protocol: "nfs", aggr: "{{ cluster_name }}_{{ node1_number }}_{{ env_disk_type | lower }}_15tb_agg001", allowed_protocols: "nfs,cifs"  }
+
+nfs_lifs:
+  - { name: "{{ nfs1_name }}_mgmt", address: "{{ nfs1_mgmt_address }}", netmask: "{{ mgmt_netmask }}", node: "{{ node1_name }}", port: "e0c", role: "data", vserver:  "{{ nfs1_name }}", protocol: "none" , auto_revert: "true", failover_policy: "broadcast-domain-wide", firewall_policy: "mgmt" }
+  - { name: "{{ nfs1_name }}_nfs_lif01", address: "{{ nfs1_data_address1 }}", netmask: "{{ data_netmask }}", node: "{{ node1_name }}", port: "e0c", role: "data", vserver:  "{{ nfs1_name }}", protocol: "nfs,cifs" , auto_revert: "true", failover_policy: "broadcast-domain-wide", firewall_policy: "data" }
+  - { name: "{{ nfs1_name }}_nfs_lif02", address: "{{ nfs1_data_address2 }}", netmask: "{{ data_netmask }}", node: "{{ node2_name }}", port: "e0c", role: "data", vserver:  "{{ nfs1_name }}", protocol: "nfs,cifs" , auto_revert: "true", failover_policy: "broadcast-domain-wide", firewall_policy: "data" }
+
+nfs_svm_routes:
+  - {address_family: "ipv4", destination: "0.0.0.0/0", gateway: "{{ data_default_gateway }}", metric: 10, vserver: "{{ nfs1_name }}"}
+  - {address_family: "ipv4", destination: "0.0.0.0/0", gateway: "{{ mgmt_default_gateway }}", metric: 15, vserver: "{{ nfs1_name }}"}
+
+nfs_svm_dns:
+  - { vserver: "{{ nfs1_name }}", dns_domains: "{{ dns_domains }}", dns_nameservers: "{{ dns_nameservers }}" }
+
+nis_cli_options:
+  - { option: "vserver,services,name-service,nis-domain,create,-vserver,{{ nfs1_name }},-domain,hpl,-active,true,-servers,{{ nis_servers }}" }
+  - { option: "vserver,services,name-service,ns-switch,modify,-vserver,{{ nfs1_name }},-database,group,-sources,files,nis" }
+  - { option: "verver,services,name-service,ns-switch,modify,-vserver,{{ nfs1_name }},-database,passwd,,-sources,files,nis" }
+
+nfs_svm_users:
+  - { username: "vsadmin", vserver: "{{ nfs1_name }}", role_name: "vsadmin", applications: "http,ontapi,ssh", new_password: "{{ vsadmin_password }}" }
+  - { username: "vsadmin", vserver: "{{ nfs1_name }}", role_name: "vsadmin", applications: "http,ontapi,ssh", lock_user: "no" }
+
+nfs_svm_roles:
+  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "all", command_directory_name: "security login role show-user-capability"  }
+  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "all", command_directory_name: "security login role show-ontapi"  }
+  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "all", command_directory_name: "vserver cifs"  }
+  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "all", command_directory_name: "vserver export-policy"  }
+  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "all", command_directory_name: "vserver nfs"  }
+  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "all", command_directory_name: "vserver services"  }
+#  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "readonly", command_directory_name: "dashboard health vserver"  }
+  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "readonly", command_directory_name: "network interface"  }
+  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "readonly", command_directory_name: "vserver"  }
+  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "readonly", command_directory_name: "volume"  }
+  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "none", command_directory_name: "vserver fcp"  }
+  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "none", command_directory_name: "vserver iscsi"  }
+  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "none", command_directory_name: "vserver services name-service ldap"  }
+  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "none", command_directory_name: "vserver services name-service unix-group max-limit"  }
+  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "none", command_directory_name: "vserver services name-service unix-user max-limit"  }
+  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "none", command_directory_name: "vserver services ndmp"  }
+  - { name: "nfs_admin", vserver: "{{ nfs1_name }}", access_level: "none", command_directory_name: "vserver services web"  }
+
+nfs:
+  - { vserver: "{{ nfs1_name }}" }
+
+nfs_lsm_volumes:
+  - { name: "{{ nfs1_name }}_root_ls01", vserver: "{{ nfs1_name }}", aggregate_name: "{{ cluster_name }}_01_{{ env_disk_type | lower }}_15tb_agg001", size: "1078", size_unit: "mb", space_guarantee: "volume", type: "dp", volume_security_style: "unix", percent_snapshot_space: "5" }
+  - { name: "{{ nfs1_name }}_root_ls02", vserver: "{{ nfs1_name }}", aggregate_name: "{{ cluster_name }}_02_{{ env_disk_type | lower }}_15tb_agg001", size: "1078", size_unit: "mb", space_guarantee: "volume", type: "dp", volume_security_style: "unix", percent_snapshot_space: "5" }
+
+nfs_lsm:
+  - { source_path: "{{ nfs1_name }}:{{ nfs1_name }}_root", destination_path: "{{ nfs1_name }}:{{ nfs1_name }}_root_ls01", schedule: "5min" }
+  - { source_path: "{{ nfs1_name }}:{{ nfs1_name }}_root", destination_path: "{{ nfs1_name }}:{{ nfs1_name }}_root_ls02", schedule: "5min" }
+
+nfs_lsm_init:
+  - { destination_path: "{{ nfs1_name }}:{{ nfs1_name }}_root_ls02" }
+
+nfs_cifs:
+  - { vserver: "{{ nfs1_name }}", cifs_server_name: "{{ nfs1_name }}", domain: "{{ dns_domains }}", ou: "{{ cifs_ou }}", force: "true", admin_username: "{{ admin_username }}", admin_password: "{{ admin_password }}" }
+
+nfs_cifs_cli_options:
+  - { option: "set,advanced,-confirmations,off,;,vserver,cifs,options,modify,-vserver,{{ nfs1_name }},-max-mpx,1124"}
+  - { option: "set,advanced,-confirmations,off,;,vserver,cifs,options,modify,-vserver,{{ nfs1_name }},-smb2-enabled,true"}
+
+nfs_cifs_security:
+  - { vserver: "{{ nfs1_name }}", is_signing_required: "false" }
+
+nfs_cifs_svm_users:
+  - { username: "avconnect", vserver: "{{ nfs1_name }}", role_name: "avconnect", applications: "ontapi", new_password: "{{ avconnect_password }}" }
+
+nfs_cifs_svm_roles:
+  - { name: "avconnect", vserver: "{{ nfs1_name }}", access_level: "readonly", command_directory_name: "network interface"  }
+
+licenses:
+  - {serial_number: "180121058", license_code: "SMKQROWJNQYQSDAAAAAAAAAAAAAA"}
+  - {serial_number: "180121059", license_code: "SMKQROWJNQYQSDAAAAAAAAAAAAAA"}
+  - {serial_number: "4082368507", license_code: "MHEYKUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368508", license_code: "KWZBMUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368508", license_code: "GARJOUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368508", license_code: "MNBKSUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368507", license_code: "YBCNLUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368507", license_code: "ANGJKUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368507", license_code: "EPMNPUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368507", license_code: "ATDVRUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368507", license_code: "QJKCQUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368507", license_code: "UFTUNUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368507", license_code: "CEIRQUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368509", license_code: "ILVFNUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368508", license_code: "SUOYOUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368507", license_code: "MHEYKUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368508", license_code: "KWZBMUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368508", license_code: "GARJOUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368508", license_code: "MNBKSUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368507", license_code: "YBCNLUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368509", license_code: "ANGJKUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368509", license_code: "EPMNPUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368507", license_code: "ATDVRUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368509", license_code: "QJKCQUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368509", license_code: "UFTUNUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368507", license_code: "CEIRQUNFXMSMUCEZFAAAAAAAAAAA"}
+  - {serial_number: "4082368507", license_code: "ILVFNUNFXMSMUCEZFAAAAAAAAAAA"}

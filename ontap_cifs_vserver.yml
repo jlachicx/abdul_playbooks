@@ -1,0 +1,377 @@
+---
+
+- name: Gather Ontap Info
+  na_ontap_info:
+    state: info
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: 32
+    https: true
+    validate_certs: false
+  connection: local
+  register: ontap_info
+
+- name: Create CIFS Vserver
+  na_ontap_svm:
+    state: present
+    name: "{{ item.name }}"
+    root_volume: "{{ item.name }}_root"
+    allowed_protocols: "{{ item.allowed_protocols }}"
+    root_volume_aggregate: "{{ item.aggr }}"
+    root_volume_security_style: "{{ 'ntfs' if item.protocol.lower() is search('cifs') else 'unix'}}"
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs_vservers }}"
+  when: cifs_vservers != None
+
+- name: Create CIFS Interfaces
+  na_ontap_interface:
+    state: present
+    interface_name: "{{ item.name }}"
+    home_port: "{{ item.port }}"
+    home_node: "{{ item.node }}"
+    role: "{{ item.role }}"
+    protocols: "{{ item.protocol }}"
+    admin_status: up
+    failover_policy: "{{ item.failover_policy }}"
+    firewall_policy: "{{ item.firewall_policy }}"
+    is_auto_revert: "{{ item.auto_revert }}"
+    address: "{{ item.address }}"
+    netmask: "{{ item.netmask }}"
+    vserver: "{{ item.vserver }}"
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    https: true
+    validate_certs: false
+  connection: local
+  loop:
+    "{{ cifs_lifs }}"
+  when: cifs_lifs != None
+
+- name: Create CIFS SVM routes
+  na_ontap_net_routes:
+    state: present
+    vserver: "{{ item.vserver }}"
+    destination: "{{ item.destination }}"
+    gateway: "{{ item.gateway }}"
+    metric: "{{ item.metric }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    hostname: "{{ hostname }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs_svm_routes }}"
+  when: cifs_svm_routes != None
+
+- name: Setup CIFS DNS
+  na_ontap_dns:
+    state: present
+    vserver: "{{ item.vserver }}"
+    domains: "{{ item.dns_domains }}"
+    nameservers: "{{ item.dns_nameservers }}"
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    skip_validation: yes
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs_svm_dns }}"
+  when: cifs_svm_dns != None
+
+- name: Create CIFS Server
+  na_ontap_cifs_server:
+    state: present
+    vserver: "{{ item.vserver }}"
+    domain: "{{ item.domain }}"
+    cifs_server_name: "{{ item.cifs_server_name }}"
+    force: "{{ 'false' if item.force is not defined else item.force }}"
+    admin_password: "{{ item.admin_password }}"
+    admin_user_name: "{{ item.admin_username }}"
+    ou: "{{ item.ou | default(omit)}}"
+    service_state: started
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs }}"
+  when: cifs != None
+
+- name: Create LS mirror volumes
+  na_ontap_volume:
+    state: present
+    name: "{{ item.name }}"
+    aggregate_name: "{{ item.aggregate_name }}"
+    size: "{{ item.size }}"
+    size_unit: "{{ item.size_unit }}"
+    space_guarantee: "{{ item.space_guarantee }}"
+    percent_snapshot_space: "{{ item.percent_snapshot_space }}"
+    volume_security_style: "{{ item.volume_security_style }}"
+    type: "{{ item.type }}"
+    vserver: "{{ item.vserver }}"
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs_lsm_volumes }}"
+  when: cifs_lsm_volumes != None
+
+- name: Create LS Snapmirrors
+  na_ontap_snapmirror:
+    state: present
+    relationship_type: "load_sharing"
+    schedule: "{{ item.schedule }}"
+    source_path: "{{ item.source_path }}"
+    destination_path: "{{ item.destination_path }}"
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs_lsm }}"
+  when: cifs_lsm != None
+
+- name: Init 2nd LSM Mirrors
+  na_ontap_command:
+    command: "snapmirror,initialize,-destination-path,{{ item.destination_path }}"
+    hostname: "{{ hostname }}"    
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs_lsm_init }}"
+  when: cifs_lsm_init != None
+
+- name: Set CIFS Option
+  na_ontap_command:
+    command: "{{ item.option }}"
+    hostname: "{{ hostname }}"    
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs_cli_options }}"
+  when: cifs_cli_options != None
+
+- name: Set CIFS Security
+  na_ontap_vserver_cifs_security:
+    is_signing_required: "{{ item.is_signing_required }}"
+    vserver: "{{ item.vserver }}"
+    hostname: "{{ hostname }}"    
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs_security }}"
+  when: cifs_security != None
+
+- name: Setup SVM roles
+  na_ontap_user_role:
+    state: present
+    name: "{{ item.name }}"
+    access_level: "{{ item.access_level }}"
+    command_directory_name: "{{ item.command_directory_name }}"
+    vserver: "{{ item.vserver }}"
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs_svm_roles }}"
+  when: cifs_svm_roles != None
+
+- name: Setup SVM users
+  na_ontap_user:
+    state: present
+    name: "{{ item.username }}"
+    applications: "{{ item.applications }}"
+    authentication_method: password
+    role_name: "{{ item.role_name }}"
+    set_password: "{{ omit if item.new_password is not defined else item.new_password }}"
+    lock_user: "{{ omit if item.lock_user is not defined else item.lock_user }}"
+    vserver: "{{ item.vserver }}"
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs_svm_users }}"
+  when: cifs_svm_users != None
+
+- name: Create SVM domain users
+  na_ontap_user:
+    state: present
+    name: "{{ item.username }}"
+    application: "{{ item.applications }}"
+    authentication_method:  "{{ item.authentication_method }}"
+    role_name: "{{ item.role_name }}"
+    vserver:  "{{ omit if item.vserver is not defined else item.vserver }}"
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs_domain_users }}"
+  when: cifs_domain_users != None
+
+- name:  "Set CIFS User Group Domain"
+  set_fact:
+    cifs_ug_domain: "{{ item.value.domain }}"
+  with_dict: "{{ domains }}"
+  when: item.key == cifs_domain
+
+- name:  "Find All CIFS Users"
+  set_fact:
+    all_cifs_ug: "{{ item.value }}"
+  with_dict: "{{ cifs_ugs_dict }}"
+  when: item.key == 'all'
+
+- name:  "Find Domain CIFS Users"
+  set_fact:
+    domain_cifs_ug: "{{ item.value }}"
+  with_dict: "{{ cifs_ugs_dict }}"
+  when: item.key == cifs_ug_domain
+
+- name:  "Define CIFS Users and Groups"
+  set_fact:
+    cifs_ugs: "{{ all_cifs_ug + domain_cifs_ug }}"
+
+- name: Setup CIFS UG
+  na_ontap_command:
+    command: "vserver,cifs,users-and-groups,local-group,add-member,-group-name,{{ item.group_name }},-member-names,{{ item.member_names }},-vserver,{{ item.vserver }}"
+    hostname: "{{ hostname }}"    
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs_ugs }}"
+  when: cifs_ugs != None
+
+- name: Create NFS Server (CIFS)
+  na_ontap_nfs:
+    state: present
+    service_state: started
+    vserver: "{{ item.vserver }}"
+    nfsv3: enabled
+    nfsv4: disabled
+    nfsv41: disabled
+    vstorage_state: disabled
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs_nfs }}"
+  when: cifs_nfs != None
+
+- name: Setup NIS (CIFS)
+  na_ontap_command:
+    command: "{{ item.option }}"
+    hostname: "{{ hostname }}"    
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs_nis_cli_options }}"
+  when: cifs_nis_cli_options != None
+
+- name: Setup SVM nfsadmin roles (CIFS)
+  na_ontap_user_role:
+    state: present
+    name: "{{ item.name }}"
+    access_level: "{{ item.access_level }}"
+    command_directory_name: "{{ item.command_directory_name }}"
+    vserver: "{{ item.vserver }}"
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs_nfs_svm_roles }}"
+  when: cifs_nfs_svm_roles != None
+
+- name: Create SVM domain users (CIFS)
+  na_ontap_user:
+    state: present
+    name: "{{ item.username }}"
+    application: "{{ item.applications }}"
+    authentication_method:  "{{ item.authentication_method }}"
+    role_name: "{{ item.role_name }}"
+    vserver:  "{{ omit if item.vserver is not defined else item.vserver }}"
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs_nfs_domain_users }}"
+  when: cifs_nfs_domain_users != None
+
+- name: Create Domain Auth Tunnel
+  na_ontap_command:
+    command: "domain-tunnel,create,-vserver,{{ item.vserver }}"
+    hostname: "{{ hostname }}"    
+    username: "{{ username }}"
+    password: "{{ password }}"
+    ontapi: "{{ ontap_info.ontap_info.ontap_version }}"
+    https: true
+    validate_certs: false
+  connection: local
+  with_items:
+    "{{ cifs }}"
+  when: cifs != None

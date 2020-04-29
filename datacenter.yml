@@ -1,0 +1,32 @@
+---
+###############################################################################
+# pb_ontap_config.yml
+# Main playbook to do the base and svm configuration for an ontap cluster
+# Version 1.0.0a
+# Marc Ferber NetApp 2019 10 07
+###############################################################################
+- hosts: localhost
+  gather_facts: no
+  vars_prompt:
+    - name: netapp_hostname
+      prompt: Enter the NetApp cluster name
+      private: no
+    - name: netapp_username
+      prompt: Enter the NetApp cluster account
+      private: no
+    - name: netapp_password
+      prompt: Enter the NetApp cluster password
+      no_log: true
+  tasks:
+    - name: Extract datacenter from netapp_hostname for regular case
+      set_fact:
+        #datacenter: "{{ netapp_hostname[-7:][0:5] | lower }}"
+        #storname: "{{ netapp_hostname[0:4] | lower }}"
+        storname: "{{ netapp_hostname[-7:(netapp_hostname|length)] | lower }}"
+        #storname: "{{ netapp_hostname[0:4] | lower }}"
+        datacenter: "{{ netapp_hostname[-7:-2] }}"
+      #when:
+      #  - not netapp_hostname is regex("-[a-zA-Z][a-zA-Z]$")
+
+    - debug:
+        msg: "{{ datacenter }}"

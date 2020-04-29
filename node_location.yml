@@ -1,0 +1,65 @@
+---
+- hosts: localhost
+  gather_facts: no
+  
+  vars:
+    - node_name_series: [ 0, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z ]
+    - node_name_sequences: {a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9, j: 10, k: 11, l: 12, m: 13, n: 14, o: 15, p: 16, q: 17, r: 18, s: 19, t: 20, u: 21, v: 22, w: 23, x: 24, y: 25, z: 26 }
+     
+  vars_prompt:
+    - name: netapp_hostname
+      prompt: Enter the NetApp cluster name
+      private: no
+    - name: netapp_username
+      prompt: Enter the NetApp cluster account
+      private: no
+    - name: netapp_password
+      prompt: Enter the NetApp cluster password
+      no_log: true
+  tasks:
+  
+  - name: Get Ontap facts
+    na_ontap_info:
+      state: info
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+      https: true
+      ontapi: 32
+      validate_certs: false
+      gather_subset:
+        - "!volume_info"
+        - "!lun_info"
+    register: ontap_info
+
+  - set_fact:
+      ontap_facts: "{{ ontap_info.ontap_info }}"
+
+  - set_fact:
+      node_location: "{{ node_location |default([]) + [{ 'name': item, 'location': ontap_facts.system_node_info[item].node_location }] }}"
+    with_items: "{{ ontap_facts.system_node_info }}"
+  
+  - set_fact:
+      last_node: "{{ node_location|sort(attribute='name')|length }}"
+
+  - debug: var=last_node
+
+  - pause:
+      prompt: "Enter number of new nodes for Expansion "
+    register: reg_numofnodes
+
+  - fail:
+      msg: "Enter approriate nubmer of cluster node for expansion.. Exiting.."
+    when:   reg_numofnodes.user_input == ""
+  
+  - set_fact:
+      num_of_new_nodes: "{{ reg_numofnodes.user_input }}"
+    
+  - set_fact:
+      nodesequence: "{{ nodesequence|default([]) + [ node_name_series[item|int] ] }}"
+    with_sequence: start="{{last_node|int+1}}" end="{{last_node|int + num_of_new_nodes|int }}"
+   
+  
+  - debug: var=nodesequence
+
+

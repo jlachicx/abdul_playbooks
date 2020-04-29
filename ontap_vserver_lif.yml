@@ -8,8 +8,8 @@
 
     tasks:
     - include_vars:
-        file: vars/netapp_var.yml # Encrypted file for username/password
-
+        file: vars/netapp_var.yml 
+        
     - name: Gathering existing vserver LIFs information
       na_ontap_info:
         state: info

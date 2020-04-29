@@ -10,6 +10,9 @@
 
     tasks:
 
+    - debug: var=node_name_sequences
+    - pause:
+
     - set_fact:
         num_of_new_nodes: 4
       when: "{{ last_node |int == 2 }}"

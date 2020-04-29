@@ -4,9 +4,10 @@
     gather_facts: no
 
     vars:
-      users:
-        - { name: 'jane', groups: 'wheel' }
-        - { name: 'joe', groups: 'root' }
+      master:
+        users:
+          - { name: 'jane', groups: 'wheel' }
+          - { name: 'joe', groups: 'root' }
 
       drive_types:
         ssd: 
@@ -21,21 +22,19 @@
 
     tasks:
 
-    - debug: var=drive_types
+   # - debug: var=drive_types
         #msg: "{{ drive_types.sas.spares_per_node }}"
         #msg: "{{ drive_types['sas']['spares_per_node'] }}"
       
-    - pause: 
-
     - name: Users exist and are in the correct groups
-      debug: var=users
-      #  msg: "name: {{ item.name }} Group: {{ item.groups }}"    
-      #loop: "{{ users }}"
+      debug:
+        msg: "name: {{ item.name }} Group: {{ item.groups }}"    
+      loop: "{{ master.users }}"
         
    
-    - set_fact:
-        user_name: "{{ user_name|default([]) +  [ item.name ] }}"
-      loop: "{{ users }}"
+  #  - set_fact:
+  #      user_name: "{{ user_name|default([]) +  [ item.name ] }}"
+  #    loop: "{{ users }}"
 
 
-    - debug: var=user_name
+  #  - debug: var=user_name
