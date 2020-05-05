@@ -5,11 +5,13 @@
     
     vars:
       netapp_hostname: 192.168.2.136
-
+    
     tasks:
     - include_vars:
         file: vars/netapp_var.yml 
-        
+    - include_vars:
+        file: vars/cred.yml
+
     - name: Gathering existing vserver LIFs information
       na_ontap_info:
         state: info

@@ -6,24 +6,24 @@
     - node_name_series: [ 0, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z ]
     - node_name_sequences: {a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9, j: 10, k: 11, l: 12, m: 13, n: 14, o: 15, p: 16, q: 17, r: 18, s: 19, t: 20, u: 21, v: 22, w: 23, x: 24, y: 25, z: 26 }
      
-  vars_prompt:
-    - name: netapp_hostname
-      prompt: Enter the NetApp cluster name
-      private: no
-    - name: netapp_username
-      prompt: Enter the NetApp cluster account
-      private: no
-    - name: netapp_password
-      prompt: Enter the NetApp cluster password
-      no_log: true
+ # vars_prompt:
+   # - name: netapp_hostname
+   #   prompt: Enter the NetApp cluster name
+   #   private: no
+   # - name: netapp_username
+   #   prompt: Enter the NetApp cluster account
+   #   private: no
+   # - name: netapp_password
+   #   prompt: Enter the NetApp cluster password
+   #   no_log: true
   tasks:
   
   - name: Get Ontap facts
     na_ontap_info:
       state: info
-      hostname: "{{ netapp_hostname }}"
-      username: "{{ netapp_username }}"
-      password: "{{ netapp_password }}"
+      hostname: "192.168.2.136"
+      username: "admin"
+      password: "Temp12345"
       https: true
       ontapi: 32
       validate_certs: false
@@ -42,24 +42,54 @@
   - set_fact:
       last_node: "{{ node_location|sort(attribute='name')|length }}"
 
-  - debug: var=last_node
-
   - pause:
       prompt: "Enter number of new nodes for Expansion "
     register: reg_numofnodes
 
-  - fail:
-      msg: "Enter approriate nubmer of cluster node for expansion.. Exiting.."
-    when:   reg_numofnodes.user_input == ""
-  
   - set_fact:
-      num_of_new_nodes: "{{ reg_numofnodes.user_input }}"
-    
+      num_of_new_nodes: 2
+    when:   reg_numofnodes.user_input == "" 
+
+  - fail: 
+       msg: "Exapnsion not possible for ODD numbers... Existing.. "
+    when: reg_numofnodes.user_input |int is not divisibleby 2
+
+  - set_fact:
+      num_of_new_nodes: "{{ reg_numofnodes.user_input |int }}"
+    when:   reg_numofnodes.user_input != ""
+
+  - name: Count total number of nodes in the cluster
+    set_fact: 
+      total_count: "{{ num_of_new_nodes|int + last_node|int }}"
+ 
+  - pause:
+      prompt: "Enter cluster name "
+    register: cluster
+  
+  - name: set short name
+    set_fact:
+      envshort: "{{ cluster.user_input[0:4] | lower }}"
+
+  - name: Refused if total cluster node count exceeds 22 - FAIL
+    fail:
+      msg: 
+        - "Total node count exceed to 22"
+        - "cluster expansion not possible for {{ envshort }}.. exiting" 
+    when:  total_count|int > 22
+  
+  - name: Total node count for an {{ envshort }} exceeds 8 - FAIL
+    fail:
+      msg: 
+        - "Total node count exceed to 8"
+        - "cluster expansion not possible for {{ envshort }}.. exiting" 
+    when: 
+      - envshort == "stbf" or envshort == "stxf"
+      - total_count|int > 8
+ 
   - set_fact:
       nodesequence: "{{ nodesequence|default([]) + [ node_name_series[item|int] ] }}"
     with_sequence: start="{{last_node|int+1}}" end="{{last_node|int + num_of_new_nodes|int }}"
-   
-  
+ 
   - debug: var=nodesequence
 
 

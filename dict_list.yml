@@ -1,0 +1,43 @@
+---
+- name: Test playbook for checking dictionaries
+  hosts: localhost
+
+  vars:
+   proto: 'abc, dyz, 445'
+   svm_clone:
+     dict1: {hostname: "test", ip: "127.0.0.1"}
+
+     list_dict2:
+        - {hostname: "test2", ip: "127.0.0.2"}
+        - {hostname: "test3", ip: "127.0.0.3"}
+     list_dict3: 
+       - {hostname: "test4", ip: [ "127.0.0.4", "127.0.0.5", "127.0.0.6" ] }
+
+  tasks:
+    - debug:
+        msg: '{{ proto }}'
+    - pause:
+
+    - name: Accessing direct dictionary
+      debug: msg=" hostname is {{ svm_clone.dict1['hostname'] }} and ip is {{ svm_clone.dict1['ip'] }}"
+
+    - name: Accessing list of dictionary
+      debug: 
+        msg:  "hostname is {{item.hostname}} and ip is {{item.ip}}"
+      with_items: "{{ svm_clone.list_dict2 }}"
+
+    - name: Accessing dictionary with one of the value as lists
+      debug: 
+        msg: "hostname is {{item.hostname}} and ip is {{item.ip}}"
+      #template: src=host.j2 dest=/root/message.txt
+      with_items: "{{ svm_clone.list_dict3 }}"
+
+#The example refers to jinja2 file name 'host.j2" with contents:
+
+#{% for host1 in list_dict3 %}
+#   Current host is {{host1.hostname}}
+#   The ips for this host are:
+#   {% for ip1 in host1.ip %}
+#   - {{ip1}}
+#   {% endfor %} 
+#{% endfor %}

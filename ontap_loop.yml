@@ -6,10 +6,17 @@
     vars:
       host_info:
         - { host: station1, ip: 192.168.2.10, netmask: 255.255.255.0 }
-        - { host: station2, ip: 192.168.2.20, netmask: 255.255.255.0 }
-        - { host: station3, ip: 192.168.2.30, netmask: 255.255.255.0 }
+       # - { host: station2, ip: 192.168.2.20, netmask: 255.255.255.0 }
+       # - { host: station3, ip: 192.168.2.30, netmask: 255.255.255.0 }
 
     tasks:
+    - debug:
+        msg: "{{ item.host }}" #  +  item.ip + item.cert |default(omit) }}" 
+       # msg: "{{ item.host  +  item.ip + item.cert |default(omit) }}" 
+      loop: "{{ host_info }}"
+
+    - pause:
+
     - set_fact:
         ip: "{{ ip |default([]) +  [ { 'ip': item.ip,  'netmask': item.netmask, 'idx': idx } ]  }}"
       loop: "{{ host_info }}"

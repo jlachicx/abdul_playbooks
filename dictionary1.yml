@@ -1,0 +1,25 @@
+---
+- name: dictionary
+  hosts: localhost
+  gather_facts: no
+
+
+  vars:
+  #  users:
+  #    alice:
+  #      name: Alice Appleworth
+  #      telephone: 123-456-7890
+  #    bob:
+  #      name: Bob Bananarama
+  #      telephone: 987-654-3210
+    users:
+      - { user: amoeed, telephone: '416-388-1978' }
+  tasks:
+  - name: Print phone records
+    debug:
+      #msg: "User {{ item.user }} phone number is {{ item.telephone }}"
+      msg: "User {{ users.user }} phone number is {{ users.telephone }}"
+    #loop: "{{ users }}"
+
+   #   msg: "User {{ item.key }} is {{ item.value.name }} ({{ item.value.telephone }})"
+   # loop: "{{ lookup('dict', users) }}"  
