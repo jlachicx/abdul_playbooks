@@ -1,0 +1,11 @@
+
+Please turn up the ports listed below on is08.sr01.dal05 on VLAN 112, no flowcontrol, no spanning-tree portfast (switches downstream).
+ 
+Port descriptions:
+ 
+  - Eth8: ncs5.sr01.dal05
+  - Eth9: ncs6.sr01.dal05
+  - Eth10: vsff-dal0555a
+  - Eth11: vsff-dal0555b
+ 
+Thank you for your support.

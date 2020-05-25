@@ -1,0 +1,18 @@
+######## Checking Node name
+
+  - set_fact          :
+      check_result    : "{{ check_result + [ '  - Checking Node names' ]                                                  }}"
+    
+  - name              : Check Node name passed
+    set_fact          :
+      check_result    : "{{ check_result + [ ('    [ ] Node name ' + item.name + ' : passed') ]                           }}"
+      testpassed      : "{{ testpassed   + [ ('    [ ] Node name ' + item.name + ' : passed') ]                           }}"
+    with_items        : "{{ node_location                                                                                 }}"
+    when              : ontap_facts.system_node_info[item.name] is defined
+
+  - name              : Check Node name failed
+    set_fact          :
+      check_result    : "{{ check_result + [ ('    [!] Node name ' + item.name + ' : !! failed !!') ]                     }}"
+      testfailed      : "{{ testfailed   + [ ('    [!] Node name ' + item.name + ' : !! failed !!') ]                     }}"
+    with_items        : "{{ node_location                                                                                 }}"
+    when              : ontap_facts.system_node_info[item.name] is not defined

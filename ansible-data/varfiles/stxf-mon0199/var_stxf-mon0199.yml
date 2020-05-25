@@ -1,0 +1,328 @@
+####################################################
+#### Template version                           ####
+####################################################
+template_version: 1.0.0d
+# END template version
+
+####################################################
+#### Cluster Name                               ####
+####################################################
+cluster_name: stxf-mon0199
+# END Cluster Name
+
+####################################################
+#### DataCenter                                 ####
+####################################################
+datacenter: mon01
+# END DataCenter
+
+####################################################
+#### Rack Layout                                ####
+####################################################
+##### Top of mon01.sr01.rk234 #####
+mss03.sr01.mon01_location: mon01.sr01.rk234.sl04
+ncs5.sr01.mon01_location: mon01.sr01.rk234.sl06
+stxf-mon0199ab-shelf01_location: mon01.sr01.rk234.sl15
+stxf-mon0199ab-shelf00_location: mon01.sr01.rk234.sl17
+stxf-mon0199a_location: mon01.sr01.rk234.sl19
+stxf-mon0199b_location: mon01.sr01.rk234.sl23
+
+##### Top of mon01.sr01.rk235 #####
+mss04.sr01.mon01_location: mon01.sr01.rk235.sl04
+ncs6.sr01.mon01_location: mon01.sr01.rk235.sl06
+stxf-mon0199ab-shelf11_location: mon01.sr01.rk235.sl15
+stxf-mon0199ab-shelf10_location: mon01.sr01.rk235.sl17
+# END Rack Layout
+
+####################################################
+#### Netapp Cluster Switch (NCS)                ####
+####################################################
+ncs1: ncs5.sr01.mon01
+ncs2: ncs6.sr01.mon01
+# END Netapp Cluster Switch
+
+####################################################
+#### Internal Switch (IS)                       ####
+####################################################
+is1: is09.sr01.mon01
+is1_start_port: 1
+is1_rack: 321
+# END Internal Switch
+
+####################################################
+#### Internal Switch Port Turnup                ####
+####################################################
+# 
+# Please turn up the ports listed below on is09.sr01.mon01 on VLAN 112, no flowcontrol, no spanning-tree portfast (switches downstream).
+#  
+# Port descriptions:
+#  
+#   - Eth1: ncs5.sr01.mon01
+#   - Eth2: ncs6.sr01.mon01
+#   - Eth3: stxf-mon0199a
+#   - Eth4: stxf-mon0199b
+#  
+# Thank you for your support.
+# END IS Port Turnup
+
+####################################################
+#### Netapp Management Switch (NMS)             ####
+####################################################
+# END Netapp Management Switch
+
+####################################################
+#### Netapp Management Switch (NMS) Port turnup ####
+####################################################
+# END NMS Port Turnup
+
+####################################################
+#### Master Services Switches (MSS)             ####
+####################################################
+mss1: mss03.sr01.mon01
+mss2: mss04.sr01.mon01
+# END Master Services Switches
+
+####################################################
+#### Master Services Switches Port Turnup       ####
+####################################################
+# 
+# Please turn up ports 1 thru 8 on
+#  
+#   - mss03.sr01.mon01
+#   - mss04.sr01.mon01
+#  
+# Please make sure that:
+#  
+#   - All ports and port-channels are access ports on VLAN 30
+#   - All ports and port-channels have flow control disabled
+#   - Portfast is enabled on all included physical interfaces and port channels
+#   - All port are 10 gb/sec
+#   - Ports are not configured for auto speed negotiation
+#  
+# Port descriptions:
+#  
+# ============================================
+#  mss04.sr01.mon01
+# ============================================
+#  
+#   - Port 01  ==> stxf-mon0199a:e1a
+#   - Port 02  ==> stxf-mon0199a:e1c
+#   - Port 03  ==> stxf-mon0199a:e10a
+#   - Port 04  ==> stxf-mon0199a:e10c
+#   - Port 05  ==> stxf-mon0199b:e1a
+#   - Port 06  ==> stxf-mon0199b:e1c
+#   - Port 07  ==> stxf-mon0199b:e10a
+#   - Port 08  ==> stxf-mon0199b:e10c
+# 
+# ============================================
+#  Port Channels on mss04.sr01.mon01
+# ============================================
+#  
+#   - 01+03 stxf-mon0199a:a0a
+#   - 02+04 stxf-mon0199a:a0c
+#   - 05+07 stxf-mon0199b:a0a
+#   - 06+08 stxf-mon0199b:a0c
+#  
+# ============================================
+#  mss03.sr01.mon01
+# ============================================
+#  
+#   - Port 01  ==> stxf-mon0199a:e1b
+#   - Port 02  ==> stxf-mon0199a:e1d
+#   - Port 03  ==> stxf-mon0199a:e10b
+#   - Port 04  ==> stxf-mon0199a:e10d
+#   - Port 05  ==> stxf-mon0199b:e1b
+#   - Port 06  ==> stxf-mon0199b:e1d
+#   - Port 07  ==> stxf-mon0199b:e10b
+#   - Port 08  ==> stxf-mon0199b:e10d
+#  
+# ============================================
+#  Port Channels on mss03.sr01.mon01
+# ============================================
+#  
+#   - 01+03 stxf-mon0199a:a0b
+#   - 02+04 stxf-mon0199a:a0d
+#   - 05+07 stxf-mon0199b:a0b
+#   - 06+08 stxf-mon0199b:a0d
+#  
+# Thank you for your support.
+# END MSS Port Turnup
+
+####################################################
+#### Interface IPs                              ####
+####################################################
+ncs_a: { ip: '172.26.139.32', name: 'ncs5.sr01.mon01.softlayer.local', mask: '255.255.255.0', gateway: '172.26.139.1'}
+ncs_b: { ip: '172.26.139.33', name: 'ncs6.sr01.mon01.softlayer.local', mask: '255.255.255.0', gateway: '172.26.139.1'}
+cluster_mgmt: { ip: '172.26.139.34', name: 'stxf-mon0199.softlayer.local', mask: '255.255.255.0', gateway: '172.26.139.1'}
+node_a_mgmt: { ip: '172.26.139.35', name: 'stxf-mon0199a.softlayer.local', mask: '255.255.255.0', gateway: '172.26.139.1'}
+node_b_mgmt: { ip: '172.26.139.36', name: 'stxf-mon0199b.softlayer.local', mask: '255.255.255.0', gateway: '172.26.139.1'}
+node_a_sp: { ip: '172.26.139.37', name: 'stxf-mon0199a-rlm.softlayer.local', mask: '255.255.255.0', gateway: '172.26.139.1'}
+node_b_sp: { ip: '172.26.139.38', name: 'stxf-mon0199b-rlm.softlayer.local', mask: '255.255.255.0', gateway: '172.26.139.1'}
+svm_ad_auth: { ip: '172.26.139.39', name: 'stxf-mon0199-ad-tunnel.softlayer.local', mask: '255.255.255.0', gateway: '172.26.139.1'}
+svm_vs00_mgmt: { ip: '172.26.139.40', name: 'stxf-mon0199-vs00.softlayer.local', mask: '255.255.255.0', gateway: '172.26.139.1'}
+cluster_zapi: { ip: '172.26.139.41', name: 'stxf-mon0199-zapi.softlayer.local', mask: '255.255.255.0', gateway: '172.26.139.1'}
+smiclna_01: { ip: '10.3.126.171', name: 'smiclna_01.stxf-mon0199', mask: '255.255.255.0', gateway: '10.3.126.1'}
+smiclnb_01: { ip: '10.3.126.172', name: 'smiclnb_01.stxf-mon0199', mask: '255.255.255.0', gateway: '10.3.126.1'}
+fslifna_01: { ip: '10.3.126.173', name: 'fsf-mon0199a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.3.126.1'}
+fslifnb_01: { ip: '10.3.126.174', name: 'fsf-mon0199b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.3.126.1'}
+fslifna_02: { ip: '10.3.126.175', name: 'fsf-mon0199a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.3.126.1'}
+fslifnb_02: { ip: '10.3.126.176', name: 'fsf-mon0199b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.3.126.1'}
+fslifna_03: { ip: '10.3.126.177', name: 'fsf-mon0199a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.3.126.1'}
+fslifnb_03: { ip: '10.3.126.178', name: 'fsf-mon0199b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.3.126.1'}
+fslifna_04: { ip: '10.3.126.179', name: 'fsf-mon0199a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.3.126.1'}
+fslifnb_04: { ip: '10.3.126.180', name: 'fsf-mon0199b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.3.126.1'}
+fslifna_05: { ip: '10.3.126.181', name: 'fsf-mon0199a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.3.126.1'}
+fslifnb_05: { ip: '10.3.126.182', name: 'fsf-mon0199b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.3.126.1'}
+fslifna_06: { ip: '10.3.126.183', name: 'fsf-mon0199a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.3.126.1'}
+fslifnb_06: { ip: '10.3.126.184', name: 'fsf-mon0199b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.3.126.1'}
+iscsilifna_01: { ip: '10.3.126.185', name: 'stxf-mon0199a_iscsi_lif', mask: '255.255.255.0', gateway: '10.3.126.1'}
+iscsilifnb_01: { ip: '10.3.126.186', name: 'stxf-mon0199b_iscsi_lif', mask: '255.255.255.0', gateway: '10.3.126.1'}
+iscsilifna_02: { ip: '10.3.126.187', name: 'stxf-mon0199a_iscsi_lif', mask: '255.255.255.0', gateway: '10.3.126.1'}
+iscsilifnb_02: { ip: '10.3.126.188', name: 'stxf-mon0199b_iscsi_lif', mask: '255.255.255.0', gateway: '10.3.126.1'}
+iscsilifna_03: { ip: '10.3.126.189', name: 'stxf-mon0199a_iscsi_lif', mask: '255.255.255.0', gateway: '10.3.126.1'}
+iscsilifnb_03: { ip: '10.3.126.190', name: 'stxf-mon0199b_iscsi_lif', mask: '255.255.255.0', gateway: '10.3.126.1'}
+# END Interface IPs
+
+####################################################
+#### DNS Servers and Domain                     ####
+####################################################
+dnsdomain: softlayer.local
+dns_server1: 172.26.146.20
+dns_server2: 172.26.146.21
+# END DNS Servers and Domain
+
+####################################################
+#### AutoSupport                                ####
+####################################################
+mailhosts: mx-outbound.softlayer.local
+mailto: storsys@softlayer.com
+mailfrom: stxf-mon0199@softlayer.com
+transport: https
+# END AutoSupport
+
+####################################################
+#### NTP Servers                                ####
+####################################################
+ntpserver: time.softlayer.local
+# END NTP Servers
+
+####################################################
+#### ONTAP Version                              ####
+####################################################
+ontap_version: 9.5P5
+# END ONTAP Version
+
+############  Ansible Playbook Variable Information ##################
+
+####################################################
+#### Base Config Playbook Vars                  ####
+####################################################
+node_location:
+  - { name: 'stxf-mon0199b', location: 'mon01.sr01.rk234.sl23' }
+  - { name: 'stxf-mon0199a', location: 'mon01.sr01.rk234.sl19' }
+zapi_ip:
+  - { svm: 'stxf-mon0199', name: 'zapi_mgmt', port: 'e0M', node: 'stxf-mon0199a', ip: '172.26.139.41', mask: '255.255.255.0' }
+cluster_routes:
+  - { svm: 'stxf-mon0199', dest: '10.0.0.0/8', gw: '10.3.126.1', metric: 20 }
+  - { svm: 'stxf-mon0199', dest: '0.0.0.0/0', gw: '172.26.139.1', metric: 20 }
+firewall_policy:
+  - { vserver: 'stxf-mon0199', policy: 'deny-all', service: 'telnet' }
+  - { vserver: 'stxf-mon0199', policy: 'deny-all', service: 'ssh' }
+  - { vserver: 'stxf-mon0199', policy: 'deny-all', service: 'snmp' }
+  - { vserver: 'stxf-mon0199', policy: 'deny-all', service: 'rsh' }
+  - { vserver: 'stxf-mon0199', policy: 'deny-all', service: 'ntp' }
+  - { vserver: 'stxf-mon0199', policy: 'deny-all', service: 'ndmps' }
+  - { vserver: 'stxf-mon0199', policy: 'deny-all', service: 'ndmp' }
+  - { vserver: 'stxf-mon0199', policy: 'deny-all', service: 'https' }
+  - { vserver: 'stxf-mon0199', policy: 'deny-all', service: 'http' }
+  - { vserver: 'stxf-mon0199', policy: 'deny-all', service: 'dns' }
+data_aggregates:
+  - { name: 'aggr_stxf_mon0199a_ssd01', node: 'stxf-mon0199a', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
+  - { name: 'aggr_stxf_mon0199b_ssd01', node: 'stxf-mon0199b', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
+autosupport_budget:
+  - { subsystem: 'networking', sizelimit: '4MB', timelimit: '1m' }
+  - { subsystem: 'splog_latest', sizelimit: '1MB', timelimit: '4m' }
+  - { subsystem: 'SAN', sizelimit: '800MB', timelimit: '5m' }
+  - { subsystem: 'NFS', sizelimit: '10MB', timelimit: '4m' }
+  - { subsystem: 'Platform', sizelimit: '4MB', timelimit: '8m' }
+  - { subsystem: 'wafl', sizelimit: '30MB', timelimit: '10m' }
+  - { subsystem: 'kernel', sizelimit: '6MB', timelimit: '4m' }
+  - { subsystem: 'asup_ems', sizelimit: '4MB', timelimit: '2m' }
+  - { subsystem: 'storage', sizelimit: '26MB', timelimit: '12m' }
+  - { subsystem: 'mhost', sizelimit: '17MB', timelimit: '4m' }
+  - { subsystem: 'performance', sizelimit: '200MB', timelimit: '30m' }
+  - { subsystem: 'performance_asup', sizelimit: '800MB', timelimit: '25m' }
+# END Base config Playbook vars
+
+####################################################
+#### Advanced Config Playbook Vars              ####
+####################################################
+vserver_detail:
+  - { name: 'stxf-mon0199_vs00', vol: 'stxf_mon0199_vs00_root', sec_style: 'unix', ss_pol: 'none', subtype: 'default', allowed_protocols: [iscsi, nfs], domains: 'softlayer.local', nameservers: '172.26.146.20,172.26.146.21' }
+svm_mgmt_lif:
+  - { svm: 'stxf-mon0199_vs00', name: 'mgmt1', port: 'e0M', node: stxf-mon0199a, ip: '172.26.139.40', mask: '255.255.255.0' }
+smicl_ip:
+  - { svm: 'stxf-mon0199', name: 'smiclna_01.stxf-mon0199', port: 'a0a', node: 'stxf-mon0199a', ip: '10.3.126.171', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199', name: 'smiclnb_01.stxf-mon0199', port: 'a0b', node: 'stxf-mon0199b', ip: '10.3.126.172', mask: '255.255.255.0' }
+iscsi_ip:
+  - { svm: 'stxf-mon0199_vs00', name: 'iscsilifna_01', port: 'a0a', node: 'stxf-mon0199a', ip: '10.3.126.185', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199_vs00', name: 'iscsilifna_02', port: 'a0b', node: 'stxf-mon0199a', ip: '10.3.126.187', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199_vs00', name: 'iscsilifna_03', port: 'a0c', node: 'stxf-mon0199a', ip: '10.3.126.189', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199_vs00', name: 'iscsilifnb_01', port: 'a0a', node: 'stxf-mon0199b', ip: '10.3.126.186', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199_vs00', name: 'iscsilifnb_02', port: 'a0b', node: 'stxf-mon0199b', ip: '10.3.126.188', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199_vs00', name: 'iscsilifnb_03', port: 'a0d', node: 'stxf-mon0199b', ip: '10.3.126.190', mask: '255.255.255.0' }
+iscsi_portset:
+  - { name: 'iscsips_nab01', svm: 'stxf-mon0199_vs00', portname: [iscsilifna_01,iscsilifnb_02] }
+  - { name: 'iscsips_nab02', svm: 'stxf-mon0199_vs00', portname: [iscsilifna_02,iscsilifnb_01] }
+  - { name: 'iscsips_nab03', svm: 'stxf-mon0199_vs00', portname: [iscsilifna_03,iscsilifnb_03] }
+nfs_ip:
+  - { svm: 'stxf-mon0199_vs00', name: 'fslifna_01', port: 'a0a', node: 'stxf-mon0199a', ip: '10.3.126.173', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199_vs00', name: 'fslifna_02', port: 'a0b', node: 'stxf-mon0199a', ip: '10.3.126.175', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199_vs00', name: 'fslifna_03', port: 'a0c', node: 'stxf-mon0199a', ip: '10.3.126.177', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199_vs00', name: 'fslifna_04', port: 'a0a', node: 'stxf-mon0199a', ip: '10.3.126.179', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199_vs00', name: 'fslifna_05', port: 'a0b', node: 'stxf-mon0199a', ip: '10.3.126.181', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199_vs00', name: 'fslifna_06', port: 'a0c', node: 'stxf-mon0199a', ip: '10.3.126.183', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199_vs00', name: 'fslifnb_01', port: 'a0a', node: 'stxf-mon0199b', ip: '10.3.126.174', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199_vs00', name: 'fslifnb_02', port: 'a0b', node: 'stxf-mon0199b', ip: '10.3.126.176', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199_vs00', name: 'fslifnb_03', port: 'a0d', node: 'stxf-mon0199b', ip: '10.3.126.178', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199_vs00', name: 'fslifnb_04', port: 'a0a', node: 'stxf-mon0199b', ip: '10.3.126.180', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199_vs00', name: 'fslifnb_05', port: 'a0b', node: 'stxf-mon0199b', ip: '10.3.126.182', mask: '255.255.255.0' }
+  - { svm: 'stxf-mon0199_vs00', name: 'fslifnb_06', port: 'a0d', node: 'stxf-mon0199b', ip: '10.3.126.184', mask: '255.255.255.0' }
+nfs_config:
+  - { svm: 'stxf-mon0199_vs00', nfsv3: 'enabled', nfsv4: 'enabled', nfsv41: 'enabled', tcp: 'enabled', udp: 'disabled', nfsv41_pnfs: 'disabled', showmount: 'disabled', nfsv4_id_domain: 'slnfsv4.com', vstorage_state: 'disabled' }
+export_policies:
+  - { name: 'stxf-mon0199_vs00_ep', svm: 'stxf-mon0199_vs00' }
+nfs_rules:
+  - { name: 'default', svm: 'stxf-mon0199_vs00', clientmatch: '1.1.1.1', rorule: 'never', rwrule: 'never', protocol: 'nfs,cifs', allowsuid: no, superuser: 'none' }
+  - { name: 'stxf-mon0199_vs00_ep', svm: 'stxf-mon0199_vs00', clientmatch: '0.0.0.0/0', rorule: 'any', rwrule: 'never', protocol: 'nfs,cifs', allowsuid: no, superuser: 'none' }
+nfs_root_vol:
+  - { volume: 'stxf_mon0199_vs00_root', policy: 'stxf-mon0199_vs00_ep', unixperm: '711', unixtxtperm: '---rwx--x--x' }
+quota_policies:
+  - { name: 'stxf-mon0199_vs00_tracking', svm: 'stxf-mon0199_vs00' }
+  - { name: 'stxf-mon0199_vs00_qp', svm: 'stxf-mon0199_vs00' }
+svm_routes:
+  - { svm: 'stxf-mon0199_vs00', dest: '10.0.0.0/8', gw: '10.3.126.1', metric: 20 }
+  - { svm: 'stxf-mon0199_vs00', dest: '172.16.0.0/12', gw: '172.26.139.1', metric: 20 }
+efficiency_policies:
+  - { name: 'pp_dedupe_thresh_pct_1', svm: 'stxf-mon0199_vs00', thresholdpercent: '1' }
+  - { name: 'pp_dedupe_thresh_pct_10', svm: 'stxf-mon0199_vs00', thresholdpercent: '10' }
+  - { name: 'pp_dedupe_thresh_pct_2', svm: 'stxf-mon0199_vs00', thresholdpercent: '2' }
+  - { name: 'pp_dedupe_thresh_pct_20', svm: 'stxf-mon0199_vs00', thresholdpercent: '20' }
+  - { name: 'pp_dedupe_thresh_pct_25', svm: 'stxf-mon0199_vs00', thresholdpercent: '25' }
+  - { name: 'pp_dedupe_thresh_pct_3', svm: 'stxf-mon0199_vs00', thresholdpercent: '3' }
+  - { name: 'pp_dedupe_thresh_pct_5', svm: 'stxf-mon0199_vs00', thresholdpercent: '5' }
+ls_mirror:
+  - { source_path: 'stxf-mon0199://stxf-mon0199_vs00/stxf_mon0199_vs00_root', destination_path: 'stxf-mon0199://stxf-mon0199_vs00/stxf_mon0199_vs00_root_m2', aggregate: 'aggr_stxf_mon0199b_ssd01', vserver: 'stxf-mon0199_vs00', destination_volume: 'stxf_mon0199_vs00_root_m2', relationship_type: 'load_sharing', schedule: '5min' }
+  - { source_path: 'stxf-mon0199://stxf-mon0199_vs00/stxf_mon0199_vs00_root', destination_path: 'stxf-mon0199://stxf-mon0199_vs00/stxf_mon0199_vs00_root_m1', aggregate: 'aggr_stxf_mon0199a_ssd01', vserver: 'stxf-mon0199_vs00', destination_volume: 'stxf_mon0199_vs00_root_m1', relationship_type: 'load_sharing', schedule: '5min' }
+# END Advanced config Playbook vars
+
+####################################################
+#### Control Section                            ####
+####################################################
+operation: 'newinstall'
+usrinputs: { cluster: 'stxf-mon0199', ontap_version: '9.5P5', server_room: '1', rack: '234', adj_rack: '235', ncs_start: '5', internal_switch: '9', is_start_port: '1', is_rack: '321', mgmt_vlan: '112', ms_switch: '3', data_vlan: '30', adn: '0', platform: 'AFF-A700', a_version: '2.9.1', cmdline: '/usr/local/venv/bin/python2 /usr/local/venv/bin/ansible-playbook -b -K pb_new_cluster_deployment.yml' }
+netinfos:
+  - { subnet: '10.3.126.0', mask: '24', netmask: '255.255.255.0', description: 'MON01 netapp.service 10.x', gateway: '10.3.126.1', freehosts: 106 }
+  - { subnet: '172.26.139.0', mask: '24', netmask: '255.255.255.0', description: 'storage.internal', gateway: '172.26.139.1', freehosts: 177 }
+varfile_version: 'pb_new_cluster_deployment.yml v 1.0.0b'
+# END Control Section

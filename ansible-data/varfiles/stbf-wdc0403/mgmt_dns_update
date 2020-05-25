@@ -1,0 +1,10 @@
+172.17.125.32 ncs1.sr07.wdc04.softlayer.local add
+172.17.125.33 ncs2.sr07.wdc04.softlayer.local add
+172.17.125.34 stbf-wdc0403.softlayer.local add
+172.17.125.35 stbf-wdc0403a.softlayer.local add
+172.17.125.36 stbf-wdc0403b.softlayer.local add
+172.17.125.37 stbf-wdc0403a-rlm.softlayer.local add
+172.17.125.38 stbf-wdc0403b-rlm.softlayer.local add
+172.17.125.39 stbf-wdc0403-ad-tunnel.softlayer.local add
+172.17.125.40 stbf-wdc0403-vs00.softlayer.local add
+172.17.125.41 stbf-wdc0403-zapi.softlayer.local add

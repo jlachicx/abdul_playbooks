@@ -1,0 +1,61 @@
+
+Please turn up ports 1 thru 8 on
+ 
+  - mss03.sr01.dal05
+  - mss04.sr01.dal05
+ 
+Please make sure that:
+ 
+  - All ports and port-channels are access ports on VLAN 30
+  - All ports and port-channels have flow control disabled
+  - Portfast is enabled on all included physical interfaces and port channels
+  - All port are 10 gb/sec
+  - Ports are not configured for auto speed negotiation
+ 
+Port descriptions:
+ 
+============================================
+ mss04.sr01.dal05
+============================================
+ 
+  - Port 01  ==> stbf-dal0555a:e1a
+  - Port 02  ==> stbf-dal0555a:e1c
+  - Port 03  ==> stbf-dal0555a:e10a
+  - Port 04  ==> stbf-dal0555a:e10c
+  - Port 05  ==> stbf-dal0555b:e1a
+  - Port 06  ==> stbf-dal0555b:e1c
+  - Port 07  ==> stbf-dal0555b:e10a
+  - Port 08  ==> stbf-dal0555b:e10c
+
+============================================
+ Port Channels on mss04.sr01.dal05
+============================================
+ 
+  - 01+03 stbf-dal0555a:a0a
+  - 02+04 stbf-dal0555a:a0c
+  - 05+07 stbf-dal0555b:a0a
+  - 06+08 stbf-dal0555b:a0c
+ 
+============================================
+ mss03.sr01.dal05
+============================================
+ 
+  - Port 01  ==> stbf-dal0555a:e1b
+  - Port 02  ==> stbf-dal0555a:e1d
+  - Port 03  ==> stbf-dal0555a:e10b
+  - Port 04  ==> stbf-dal0555a:e10d
+  - Port 05  ==> stbf-dal0555b:e1b
+  - Port 06  ==> stbf-dal0555b:e1d
+  - Port 07  ==> stbf-dal0555b:e10b
+  - Port 08  ==> stbf-dal0555b:e10d
+ 
+============================================
+ Port Channels on mss03.sr01.dal05
+============================================
+ 
+  - 01+03 stbf-dal0555a:a0b
+  - 02+04 stbf-dal0555a:a0d
+  - 05+07 stbf-dal0555b:a0b
+  - 06+08 stbf-dal0555b:a0d
+ 
+Thank you for your support.

@@ -1,0 +1,31 @@
+
+Please turn up ports 1 thru 2 on
+ 
+  - mss03.sr01.dal05
+  - mss04.sr01.dal05
+ 
+Please make sure that:
+ 
+  - All ports and port-channels are access ports on VLAN 24
+  - All ports and port-channels have flow control disabled
+  - Portfast is enabled on all included physical interfaces and port channels
+  - All port are 10 gb/sec
+  - Ports are not configured for auto speed negotiation
+ 
+Port descriptions:
+ 
+============================================
+ mss04.sr01.dal05
+============================================
+ 
+  - Port 01  ==> intstordal0555a:e0f
+  - Port 02  ==> intstordal0555b:e0f
+
+============================================
+ mss03.sr01.dal05
+============================================
+ 
+  - Port 01  ==> intstordal0555a:e0e
+  - Port 02  ==> intstordal0555b:e0e
+ 
+Thank you for your support.

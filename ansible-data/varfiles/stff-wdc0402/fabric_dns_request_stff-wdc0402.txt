@@ -1,0 +1,6 @@
+*Please add to service.softlayer.com zone:*
+
+fsf-wdc0402a-fz      600   IN NS    fsf-wdc0402a.service.softlayer.com.
+fsf-wdc0402a         86400 IN A     10.201.14.42
+fsf-wdc0402b-fz      600   IN NS    fsf-wdc0402b.service.softlayer.com.
+fsf-wdc0402b         86400 IN A     10.201.14.43

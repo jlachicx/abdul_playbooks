@@ -1,0 +1,478 @@
+####################################################
+#### Template version                           ####
+####################################################
+template_version: 1.0.0d
+# END template version
+
+####################################################
+#### Cluster Name                               ####
+####################################################
+cluster_name: vsff-dal0555
+# END Cluster Name
+
+####################################################
+#### DataCenter                                 ####
+####################################################
+datacenter: dal05
+# END DataCenter
+
+####################################################
+#### Rack Layout                                ####
+####################################################
+##### Top of dal05.sr01.rk234 #####
+mss03.sr01.dal05_location: dal05.sr01.rk234.sl04
+ncs5.sr01.dal05_location: dal05.sr01.rk234.sl06
+vsff-dal0555ab-shelf01_location: dal05.sr01.rk234.sl15
+vsff-dal0555ab-shelf00_location: dal05.sr01.rk234.sl17
+vsff-dal0555a_location: dal05.sr01.rk234.sl19
+vsff-dal0555b_location: dal05.sr01.rk234.sl23
+
+##### Top of dal05.sr01.rk235 #####
+mss04.sr01.dal05_location: dal05.sr01.rk235.sl04
+ncs6.sr01.dal05_location: dal05.sr01.rk235.sl06
+vsff-dal0555ab-shelf11_location: dal05.sr01.rk235.sl15
+vsff-dal0555ab-shelf10_location: dal05.sr01.rk235.sl17
+# END Rack Layout
+
+####################################################
+#### Netapp Cluster Switch (NCS)                ####
+####################################################
+ncs1: ncs5.sr01.dal05
+ncs2: ncs6.sr01.dal05
+# END Netapp Cluster Switch
+
+####################################################
+#### Internal Switch (IS)                       ####
+####################################################
+is1: is08.sr01.dal05
+is1_start_port: 8
+is1_rack: 321
+# END Internal Switch
+
+####################################################
+#### Internal Switch Port Turnup                ####
+####################################################
+# 
+# Please turn up the ports listed below on is08.sr01.dal05 on VLAN 112, no flowcontrol, no spanning-tree portfast (switches downstream).
+#  
+# Port descriptions:
+#  
+#   - Eth8: ncs5.sr01.dal05
+#   - Eth9: ncs6.sr01.dal05
+#   - Eth10: vsff-dal0555a
+#   - Eth11: vsff-dal0555b
+#  
+# Thank you for your support.
+# END IS Port Turnup
+
+####################################################
+#### Netapp Management Switch (NMS)             ####
+####################################################
+# END Netapp Management Switch
+
+####################################################
+#### Netapp Management Switch (NMS) Port turnup ####
+####################################################
+# END NMS Port Turnup
+
+####################################################
+#### Master Services Switches (MSS)             ####
+####################################################
+mss1: mss03.sr01.dal05
+mss2: mss04.sr01.dal05
+# END Master Services Switches
+
+####################################################
+#### Master Services Switches Port Turnup       ####
+####################################################
+# 
+# Please turn up ports 1 thru 8 on
+#  
+#   - mss03.sr01.dal05
+#   - mss04.sr01.dal05
+#  
+# Please make sure that:
+#  
+#   - All ports and port-channels are access ports on VLAN 30
+#   - All ports and port-channels have flow control disabled
+#   - Portfast is enabled on all included physical interfaces and port channels
+#   - All port are 10 gb/sec
+#   - Ports are not configured for auto speed negotiation
+#  
+# Port descriptions:
+#  
+# ============================================
+#  mss04.sr01.dal05
+# ============================================
+#  
+#   - Port 01  ==> vsff-dal0555a:e1a
+#   - Port 02  ==> vsff-dal0555a:e1c
+#   - Port 03  ==> vsff-dal0555a:e10a
+#   - Port 04  ==> vsff-dal0555a:e10c
+#   - Port 05  ==> vsff-dal0555b:e1a
+#   - Port 06  ==> vsff-dal0555b:e1c
+#   - Port 07  ==> vsff-dal0555b:e10a
+#   - Port 08  ==> vsff-dal0555b:e10c
+# 
+# ============================================
+#  Port Channels on mss04.sr01.dal05
+# ============================================
+#  
+#   - 01+03 vsff-dal0555a:a0a
+#   - 02+04 vsff-dal0555a:a0c
+#   - 05+07 vsff-dal0555b:a0a
+#   - 06+08 vsff-dal0555b:a0c
+#  
+# ============================================
+#  mss03.sr01.dal05
+# ============================================
+#  
+#   - Port 01  ==> vsff-dal0555a:e1b
+#   - Port 02  ==> vsff-dal0555a:e1d
+#   - Port 03  ==> vsff-dal0555a:e10b
+#   - Port 04  ==> vsff-dal0555a:e10d
+#   - Port 05  ==> vsff-dal0555b:e1b
+#   - Port 06  ==> vsff-dal0555b:e1d
+#   - Port 07  ==> vsff-dal0555b:e10b
+#   - Port 08  ==> vsff-dal0555b:e10d
+#  
+# ============================================
+#  Port Channels on mss03.sr01.dal05
+# ============================================
+#  
+#   - 01+03 vsff-dal0555a:a0b
+#   - 02+04 vsff-dal0555a:a0d
+#   - 05+07 vsff-dal0555b:a0b
+#   - 06+08 vsff-dal0555b:a0d
+#  
+# Thank you for your support.
+# END MSS Port Turnup
+
+####################################################
+#### Interface IPs                              ####
+####################################################
+ncs_a: { ip: '172.18.107.180', name: 'ncs5.sr01.dal05.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+ncs_b: { ip: '172.18.107.181', name: 'ncs6.sr01.dal05.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+cluster_mgmt: { ip: '172.18.107.172', name: 'vsff-dal0555.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_a_mgmt: { ip: '172.18.107.173', name: 'vsff-dal0555a.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_b_mgmt: { ip: '172.18.107.174', name: 'vsff-dal0555b.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_a_sp: { ip: '172.18.107.175', name: 'vsff-dal0555a-rlm.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_b_sp: { ip: '172.18.107.176', name: 'vsff-dal0555b-rlm.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+svm_ad_auth: { ip: '172.18.107.182', name: 'vsff-dal0555-ad-tunnel.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+svm_vs0_mgmt: { ip: '172.18.107.177', name: 'vsff-dal0555-vs0.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+cluster_zapi: { ip: '172.18.107.178', name: 'vsff-dal0555-zapi.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+datalifna_01: { ip: '10.2.110.186', name: 'vsff-dal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifnb_01: { ip: '10.2.110.187', name: 'vsff-dal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifna_02: { ip: '10.2.110.188', name: 'vsff-dal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifnb_02: { ip: '10.2.110.189', name: 'vsff-dal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifna_03: { ip: '10.2.110.190', name: 'vsff-dal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifnb_03: { ip: '10.2.110.191', name: 'vsff-dal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifna_04: { ip: '10.2.110.192', name: 'vsff-dal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifnb_04: { ip: '10.2.110.193', name: 'vsff-dal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifna_05: { ip: '10.2.110.194', name: 'vsff-dal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifnb_05: { ip: '10.2.110.195', name: 'vsff-dal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifna_06: { ip: '10.2.110.202', name: 'vsff-dal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifnb_06: { ip: '10.2.110.203', name: 'vsff-dal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+# END Interface IPs
+
+####################################################
+#### DNS Servers and Domain                     ####
+####################################################
+dnsdomain: softlayer.local
+dns_server1: 172.18.18.21
+dns_server2: 172.18.18.20
+# END DNS Servers and Domain
+
+####################################################
+#### AutoSupport                                ####
+####################################################
+mailhosts: mx-outbound.softlayer.local
+mailto: storsys@softlayer.com
+mailfrom: vsff-dal0555@softlayer.com
+transport: https
+# END AutoSupport
+
+####################################################
+#### NTP Servers                                ####
+####################################################
+ntpserver: time.softlayer.local
+# END NTP Servers
+
+####################################################
+#### ONTAP Version                              ####
+####################################################
+ontap_version: 9.5P5
+# END ONTAP Version
+
+############  Ansible Playbook Variable Information ##################
+
+####################################################
+#### Base Config Playbook Vars                  ####
+####################################################
+node_location:
+  - { name: 'vsff-dal0555b', location: 'dal05.sr01.rk234.sl23' }
+  - { name: 'vsff-dal0555a', location: 'dal05.sr01.rk234.sl19' }
+zapi_ip:
+  - { svm: 'vsff-dal0555', name: 'zapi_mgmt', port: 'e0M', node: 'vsff-dal0555a', ip: '172.18.107.178', mask: '255.255.255.0' }
+cluster_routes:
+  - { svm: 'vsff-dal0555', dest: '0.0.0.0/0', gw: '172.18.107.1', metric: 20 }
+firewall_policy:
+  - { vserver: 'vsff-dal0555', policy: 'deny-all', service: 'telnet' }
+  - { vserver: 'vsff-dal0555', policy: 'deny-all', service: 'ssh' }
+  - { vserver: 'vsff-dal0555', policy: 'deny-all', service: 'snmp' }
+  - { vserver: 'vsff-dal0555', policy: 'deny-all', service: 'rsh' }
+  - { vserver: 'vsff-dal0555', policy: 'deny-all', service: 'ntp' }
+  - { vserver: 'vsff-dal0555', policy: 'deny-all', service: 'ndmps' }
+  - { vserver: 'vsff-dal0555', policy: 'deny-all', service: 'ndmp' }
+  - { vserver: 'vsff-dal0555', policy: 'deny-all', service: 'https' }
+  - { vserver: 'vsff-dal0555', policy: 'deny-all', service: 'http' }
+data_aggregates:
+  - { name: 'aggr1_vsff_dal0555a', node: 'vsff-dal0555a', diskcount: '20', raidsize: '20', raidtype: 'raid_dp' }
+  - { name: 'aggr1_vsff_dal0555b', node: 'vsff-dal0555b', diskcount: '20', raidsize: '20', raidtype: 'raid_dp' }
+  - { name: 'aggr2_vsff_dal0555a', node: 'vsff-dal0555a', diskcount: '20', raidsize: '20', raidtype: 'raid_dp' }
+  - { name: 'aggr2_vsff_dal0555b', node: 'vsff-dal0555b', diskcount: '20', raidsize: '20', raidtype: 'raid_dp' }
+autosupport_budget:  
+  - { subsystem: 'networking', sizelimit: '4MB', timelimit: '1m' }
+  - { subsystem: 'splog_latest', sizelimit: '1MB', timelimit: '4m' }
+  - { subsystem: 'SAN', sizelimit: '800MB', timelimit: '5m' }
+  - { subsystem: 'NFS', sizelimit: '10MB', timelimit: '4m' }
+  - { subsystem: 'Platform', sizelimit: '4MB', timelimit: '8m' }
+  - { subsystem: 'wafl', sizelimit: '30MB', timelimit: '10m' }
+  - { subsystem: 'kernel', sizelimit: '6MB', timelimit: '4m' }
+  - { subsystem: 'asup_ems', sizelimit: '4MB', timelimit: '2m' }
+  - { subsystem: 'storage', sizelimit: '26MB', timelimit: '12m' }
+  - { subsystem: 'mhost', sizelimit: '17MB', timelimit: '4m' }
+  - { subsystem: 'performance', sizelimit: '200MB', timelimit: '30m' }
+  - { subsystem: 'performance_asup', sizelimit: '800MB', timelimit: '25m' }
+# END Base config Playbook vars
+
+####################################################
+#### Advanced Config Playbook Vars              ####
+####################################################
+vserver_detail:
+  - { name: 'vs0', vol: 'root_vs0', sec_style: 'unix', ss_pol: 'none', subtype: 'default', allowed_protocols: [nfs], domains: 'softlayer.local', nameservers: '172.18.18.21,172.18.18.20' }
+svm_mgmt_lif:
+  - { svm: 'vs0', name: 'mgmt1', port: 'e0M', node: vsff-dal0555a, ip: '172.18.107.177', mask: '255.255.255.0' }
+nfs_ip:
+  - { svm: 'vs0', name: 'datalifna_01', port: 'a0a', node: 'vsff-dal0555a', fqdn: 'vsff-dal0555a-fz.service.softlayer.com', ip: '10.2.110.186', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifna_02', port: 'a0b', node: 'vsff-dal0555a', fqdn: 'vsff-dal0555a-fz.service.softlayer.com', ip: '10.2.110.188', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifna_03', port: 'a0c', node: 'vsff-dal0555a', fqdn: 'vsff-dal0555a-fz.service.softlayer.com', ip: '10.2.110.190', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifna_04', port: 'a0a', node: 'vsff-dal0555a', fqdn: 'vsff-dal0555a-fz.service.softlayer.com', ip: '10.2.110.192', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifna_05', port: 'a0b', node: 'vsff-dal0555a', fqdn: 'vsff-dal0555a-fz.service.softlayer.com', ip: '10.2.110.194', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifna_06', port: 'a0c', node: 'vsff-dal0555a', fqdn: 'vsff-dal0555a-fz.service.softlayer.com', ip: '10.2.110.202', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifnb_01', port: 'a0a', node: 'vsff-dal0555b', fqdn: 'vsff-dal0555b-fz.service.softlayer.com', ip: '10.2.110.187', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifnb_02', port: 'a0b', node: 'vsff-dal0555b', fqdn: 'vsff-dal0555b-fz.service.softlayer.com', ip: '10.2.110.189', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifnb_03', port: 'a0d', node: 'vsff-dal0555b', fqdn: 'vsff-dal0555b-fz.service.softlayer.com', ip: '10.2.110.191', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifnb_04', port: 'a0a', node: 'vsff-dal0555b', fqdn: 'vsff-dal0555b-fz.service.softlayer.com', ip: '10.2.110.193', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifnb_05', port: 'a0b', node: 'vsff-dal0555b', fqdn: 'vsff-dal0555b-fz.service.softlayer.com', ip: '10.2.110.195', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifnb_06', port: 'a0d', node: 'vsff-dal0555b', fqdn: 'vsff-dal0555b-fz.service.softlayer.com', ip: '10.2.110.203', mask: '255.255.255.0' }
+nfs_config:
+  - { svm: 'vs0', nfsv3: 'enabled', nfsv4: 'disabled', nfsv41: 'disabled', tcp: 'enabled', udp: 'disabled', nfsv41_pnfs: 'disabled', showmount: 'enabled', nfsv4_id_domain: 'slnfsv4.com', vstorage_state: 'disabled' }
+export_policies:
+  - { name: 'cci_root_ep', svm: 'vs0' }
+  - { name: 'cci_templates_ep', svm: 'vs0' }
+  - { name: 'cci_vol_ep', svm: 'vs0' }
+  - { name: 'root_vs0_ep', svm: 'vs0' }
+  - { name: 'virt_vol_ep', svm: 'vs0' }
+nfs_rules:
+  - { name: 'default', svm: 'vs0', clientmatch: '0.0.0.0/0', rorule: 'never', rwrule: 'never', protocol: 'nfs', anon: 65534, allowdev: true, allowsuid: yes, superuser: 'none' }
+  - { name: 'root_vs0_ep', svm: 'vs0', clientmatch: '0.0.0.0/0', rorule: 'any', rwrule: 'never', protocol: 'any', anon: 65534, allowdev: true, allowsuid: yes, superuser: 'sys' }
+nfs_root_vol:
+  - { svm: 'vs0', volume: 'root_vs0', policy: 'root_vs0_ep', unixperm: '711', unixtxtperm: '---rwx--x--x' }
+nfs_volumes: 
+  - { svm: 'vs0', vol: 'cci_root', aggr: 'aggr1_vsff_dal0555a', size: '21', size_unit: 'mb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_root_ep', space_guar: 'volume', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root', ss_space: '0' }
+  - { svm: 'vs0', vol: 'templates', aggr: 'aggr2_vsff_dal0555b', size: '1', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_templates_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/templates', ss_space: '0' }
+  - { svm: 'vs0', vol: 'archives', aggr: 'aggr2_vsff_dal0555b', size: '30', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_templates_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/archives', ss_space: '0' }
+  - { svm: 'vs0', vol: 'public', aggr: 'aggr2_vsff_dal0555b', size: '1', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_templates_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/public', ss_space: '0' }
+  - { svm: 'vs0', vol: 'iso', aggr: 'aggr2_vsff_dal0555b', size: '100', size_unit: 'gb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/iso', ss_space: '0' }
+  - { svm: 'vs0', vol: 'iso_public', aggr: 'aggr2_vsff_dal0555b', size: '1', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/iso_public', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol001_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol001_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol002_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol002_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol003_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol003_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol004_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol004_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol005_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol005_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol006_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol006_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol007_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol007_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol008_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol008_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol009_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol009_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol010_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol010_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol011_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol011_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol012_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol012_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol013_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol013_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol014_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol014_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol015_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol015_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol016_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol016_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol017_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol017_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol018_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol018_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol019_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol019_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol020_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol020_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol021_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol021_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol022_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol022_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol023_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol023_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol024_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol024_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol025_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol025_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol026_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol026_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol027_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol027_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol028_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol028_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol029_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol029_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol030_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol030_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol031_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol031_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol032_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol032_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol033_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol033_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol034_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol034_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol035_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol035_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol036_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol036_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol037_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol037_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol038_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol038_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol039_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol039_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol040_ccistordal0555', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol040_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol041_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol041_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol042_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol042_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol043_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol043_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol044_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol044_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol045_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol045_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol046_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol046_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol047_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol047_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol048_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol048_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol049_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol049_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol050_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol050_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol051_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol051_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol052_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol052_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol053_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol053_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol054_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol054_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol055_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol055_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol056_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol056_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol057_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol057_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol058_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol058_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol059_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol059_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol060_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol060_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol061_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol061_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol062_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol062_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol063_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol063_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol064_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol064_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol065_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol065_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol066_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol066_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol067_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol067_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol068_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol068_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol069_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol069_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol070_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol070_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol071_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol071_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol072_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol072_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol073_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol073_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol074_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol074_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol075_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol075_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol076_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol076_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol077_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol077_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol078_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol078_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol079_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol079_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol080_ccistordal0555', aggr: 'aggr1_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol080_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol081_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol081_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol082_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol082_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol083_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol083_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol084_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol084_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol085_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol085_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol086_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol086_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol087_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol087_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol088_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol088_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol089_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol089_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol090_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol090_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol091_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol091_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol092_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol092_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol093_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol093_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol094_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol094_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol095_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol095_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol096_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol096_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol097_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol097_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol098_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol098_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol099_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol099_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol100_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol100_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol101_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol101_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol102_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol102_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol103_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol103_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol104_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol104_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol105_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol105_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol106_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol106_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol107_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol107_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol108_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol108_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol109_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol109_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol110_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol110_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol111_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol111_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol112_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol112_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol113_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol113_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol114_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol114_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol115_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol115_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol116_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol116_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol117_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol117_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol118_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol118_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol119_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol119_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol120_ccistordal0555', aggr: 'aggr2_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol120_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol121_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol121_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol122_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol122_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol123_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol123_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol124_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol124_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol125_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol125_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol126_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol126_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol127_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol127_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol128_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol128_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol129_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol129_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol130_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol130_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol131_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol131_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol132_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol132_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol133_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol133_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol134_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol134_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol135_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol135_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol136_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol136_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol137_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol137_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol138_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol138_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol139_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol139_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol140_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol140_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol141_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol141_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol142_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol142_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol143_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol143_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol144_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol144_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol145_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol145_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol146_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol146_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol147_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol147_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol148_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol148_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol149_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol149_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol150_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol150_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol151_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol151_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol152_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol152_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol153_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol153_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol154_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol154_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol155_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol155_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol156_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol156_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol157_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol157_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol158_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol158_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol159_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol159_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol160_ccistordal0555', aggr: 'aggr2_vsff_dal0555b', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol160_ccistordal0555', ss_space: '0' }
+  - { svm: 'vs0', vol: 'backing_files_001', aggr: 'aggr1_vsff_dal0555a', size: '10', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '755', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/backing_files_001', ss_space: '0' }
+quota_policies:
+  - { name: 'quota_policy_vs0_1', svm: 'vs0' }
+svm_routes:
+  - { svm: 'vs0', dest: '10.0.0.0/8', gw: '10.2.110.1', metric: 20 }
+  - { svm: 'vs0', dest: '172.16.0.0/12', gw: '172.18.107.1', metric: 20 }
+efficiency_policies:
+  - { name: 'pp_dedupe_thresh_pct_1', svm: 'vs0', thresholdpercent: '1' }
+  - { name: 'pp_dedupe_thresh_pct_10', svm: 'vs0', thresholdpercent: '10' }
+  - { name: 'pp_dedupe_thresh_pct_2', svm: 'vs0', thresholdpercent: '2' }
+  - { name: 'pp_dedupe_thresh_pct_20', svm: 'vs0', thresholdpercent: '20' }
+  - { name: 'pp_dedupe_thresh_pct_25', svm: 'vs0', thresholdpercent: '25' }
+  - { name: 'pp_dedupe_thresh_pct_3', svm: 'vs0', thresholdpercent: '3' }
+  - { name: 'pp_dedupe_thresh_pct_5', svm: 'vs0', thresholdpercent: '5' }
+ls_mirror:
+  - { source_path: 'vsff-dal0555://vs0/root_vs0', destination_path: 'vsff-dal0555://vs0/root_vs0_m2', aggregate: 'aggr1_vsff_dal0555b', vserver: 'vs0', destination_volume: 'root_vs0_m2', relationship_type: 'load_sharing', schedule: '5min' }
+  - { source_path: 'vsff-dal0555://vs0/root_vs0', destination_path: 'vsff-dal0555://vs0/root_vs0_m1', aggregate: 'aggr1_vsff_dal0555a', vserver: 'vs0', destination_volume: 'root_vs0_m1', relationship_type: 'load_sharing', schedule: '5min' }
+# END Advanced config Playbook vars
+
+####################################################
+#### Control Section                            ####
+####################################################
+operation: 'newinstall'
+usrinputs: { cluster: 'vsff-dal0555', ontap_version: '9.5P5', server_room: '1', rack: '234', adj_rack: '235', ncs_start: '5', internal_switch: '8', is_start_port: '8', is_rack: '321', mgmt_vlan: '112', ms_switch: '3', data_vlan: '30', adn: '0', platform: 'AFF-A700', a_version: '2.9.1', cmdline: '/usr/local/venv/bin/python2 /usr/local/venv/bin/ansible-playbook -b -K pb_new_cluster_deployment.yml' }
+netinfos:
+  - { subnet: '10.2.110.0', mask: '24', netmask: '255.255.255.0', description: 'storage #3 (netapp)', gateway: '10.2.110.1', freehosts: 176 }
+  - { subnet: '172.18.107.0', mask: '24', netmask: '255.255.255.0', description: 'storage devices', gateway: '172.18.107.1', freehosts: 83 }
+varfile_version: 'pb_new_cluster_deployment.yml v 1.0.0b'
+testenv: yes
+# END Control Section

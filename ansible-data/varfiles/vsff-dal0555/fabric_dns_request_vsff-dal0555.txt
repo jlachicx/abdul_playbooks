@@ -1,0 +1,10 @@
+*Please add to service.softlayer.com zone:*
+
+vsff-dal0555a-fz     600   IN NS    vsff-dal0555a.service.softlayer.com.
+vsff-dal0555a        86400 IN A     10.2.110.32
+vsff-dal0555b-fz     600   IN NS    vsff-dal0555b.service.softlayer.com.
+vsff-dal0555b        86400 IN A     10.2.110.33
+ccistordal0555a-fz   86400 IN CNAME vsff-dal0555a-fz.service.softlayer.com.
+ccistordal0555a      86400 IN CNAME vsff-dal0555a.service.softlayer.com.
+ccistordal0555b-fz   86400 IN CNAME vsff-dal0555b-fz.service.softlayer.com.
+ccistordal0555b      86400 IN CNAME vsff-dal0555b.service.softlayer.com.

@@ -1,0 +1,64 @@
+Please turn up ports 1 thru 8 on
+
+  - mss39.sr07.wdc04
+  - mss40.sr07.wdc04
+
+All ports and port-channels should be access ports on VLAN 30.
+
+All ports and port-channels should have flow control disabled.
+
+All port-channels should use LACP.
+
+Enable portfast on all included physical interfaces and port channels
+
+ 10Gb/s port speed. Do not configure for auto speed negotiation.
+
+Port descriptions:
+
+================
+mss40.sr07.wdc04
+================
+
+Port 01 ==> stbf-wdc0403a:e1a
+Port 02 ==> stbf-wdc0403a:e1c
+Port 03 ==> stbf-wdc0403a:e10a
+Port 04 ==> stbf-wdc0403a:e10c
+Port 05 ==> stbf-wdc0403b:e1a
+Port 06 ==> stbf-wdc0403b:e1c
+Port 07 ==> stbf-wdc0403b:e10a
+Port 08 ==> stbf-wdc0403b:e10c
+
+
+Port Channels on mss40.sr07.wdc04
+=============
+
+01+03 ==> stbf-wdc0403a:a0a
+02+04 ==> stbf-wdc0403a:a0c
+05+07 ==> stbf-wdc0403b:a0a
+06+08 ==> stbf-wdc0403b:a0c
+
+
+================
+mss39.sr07.wdc04
+================
+
+Port 01 ==> stbf-wdc0403a:e1b
+Port 02 ==> stbf-wdc0403a:e1d
+Port 03 ==> stbf-wdc0403a:e10b
+Port 04 ==> stbf-wdc0403a:e10d
+Port 05 ==> stbf-wdc0403b:e1b
+Port 06 ==> stbf-wdc0403b:e1d
+Port 07 ==> stbf-wdc0403b:e10b
+Port 08 ==> stbf-wdc0403b:e10d
+
+
+Port Channels on mss39.sr07.wdc04
+=============
+
+01+03 ==> stbf-wdc0403a:a0b
+02+04 ==> stbf-wdc0403a:a0d
+05+07 ==> stbf-wdc0403b:a0b
+06+08 ==> stbf-wdc0403b:a0d
+
+Thank you for your support.
+

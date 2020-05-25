@@ -1,0 +1,38 @@
+---
+ - name: expansion testing
+   hosts: localhost
+   gather_facts: no
+
+   vars:
+     nodes: [ test1, test2, test3, test4, test5, test6, test7, test8 ]
+     node1_name: test1
+     node2_name: test2
+     num_of_new_nodes: 4
+     nodesequence: [ c, d, e, f ]
+
+     remove_ports:
+            - { node: "{{ node1_name }}", ports: "{{ node1_name }}:e2a,{{ node1_name }}:e3a,{{ node1_name }}:e2b,{{ node1_name }}:e3b" }
+            - { node: "{{ node2_name }}", ports: "{{ node2_name }}:e2a,{{ node2_name }}:e3a,{{ node2_name }}:e2b,{{ node2_name }}:e3b" }
+   
+   vars_files:
+      - varfiles/expansion_var.yml
+   tasks:
+
+   - debug: var=remove_ports
+   - pause:
+
+   - set_fact:
+       hapair_taggedinfo: "{{ taggedinfo|selectattr('name','match','.*iscsi_lif$')|rejectattr('lifname','match',rejecthan1)|rejectattr('lifname','match',rejecthan2)|list }}"
+     vars:
+       rejecthan1: "{{ '^iscsilifn' + nodesequence[0] }}"
+       rejecthan2: "{{ '^iscsilifn' + nodesequence[1] }}"
+     when: num_of_new_nodes|int == 4
+    
+   - debug: var=hapair_taggedinfo
+   - pause:
+   - set_fact:
+       iscsi_ip: "{{ iscsi_ip + [ { 'svm': svmname, 'name': item.lifname, 'port': iscsilifports[idx|int], 'node': item.name.split('_')[0], 'ip': item.ipaddress, 'mask': item.netmask } ] }}"
+     with_items:
+       - "{{ hapair_taggedinfo }}"
+     loop_control:
+       index_var: idx

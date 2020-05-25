@@ -1,0 +1,61 @@
+
+Please turn up ports 1 thru 8 on
+ 
+  - mss53.sr07.wdc04
+  - mss54.sr07.wdc04
+ 
+Please make sure that:
+ 
+  - All ports and port-channels are access ports on VLAN 30
+  - All ports and port-channels have flow control disabled
+  - Portfast is enabled on all included physical interfaces and port channels
+  - All port are 10 gb/sec
+  - Ports are not configured for auto speed negotiation
+ 
+Port descriptions:
+ 
+============================================
+ mss54.sr07.wdc04
+============================================
+ 
+  - Port 01  ==> stff-wdc0402a:e1a
+  - Port 02  ==> stff-wdc0402a:e1c
+  - Port 03  ==> stff-wdc0402a:e10a
+  - Port 04  ==> stff-wdc0402a:e10c
+  - Port 05  ==> stff-wdc0402b:e1a
+  - Port 06  ==> stff-wdc0402b:e1c
+  - Port 07  ==> stff-wdc0402b:e10a
+  - Port 08  ==> stff-wdc0402b:e10c
+
+============================================
+ Port Channels on mss54.sr07.wdc04
+============================================
+ 
+  - 01+03 stff-wdc0402a:a0a
+  - 02+04 stff-wdc0402a:a0c
+  - 05+07 stff-wdc0402b:a0a
+  - 06+08 stff-wdc0402b:a0c
+ 
+============================================
+ mss53.sr07.wdc04
+============================================
+ 
+  - Port 01  ==> stff-wdc0402a:e1b
+  - Port 02  ==> stff-wdc0402a:e1d
+  - Port 03  ==> stff-wdc0402a:e10b
+  - Port 04  ==> stff-wdc0402a:e10d
+  - Port 05  ==> stff-wdc0402b:e1b
+  - Port 06  ==> stff-wdc0402b:e1d
+  - Port 07  ==> stff-wdc0402b:e10b
+  - Port 08  ==> stff-wdc0402b:e10d
+ 
+============================================
+ Port Channels on mss53.sr07.wdc04
+============================================
+ 
+  - 01+03 stff-wdc0402a:a0b
+  - 02+04 stff-wdc0402a:a0d
+  - 05+07 stff-wdc0402b:a0b
+  - 06+08 stff-wdc0402b:a0d
+ 
+Thank you for your support.

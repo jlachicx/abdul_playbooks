@@ -1,0 +1,8 @@
+Please turn up the ports listed below on is36.sr01.dal13 on VLAN 112, no flowcontrol, no spanning-tree portfast (switches downstream).
+
+Port descriptions:
+
+  - Eth1: ncs13.sr01.dal13
+  - Eth2: ncs14.sr01.dal13
+  - Eth3: stbf-dal1303a
+  - Eth4: stbf-dal1303b

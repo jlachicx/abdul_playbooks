@@ -1,0 +1,12 @@
+---
+  - name: find and replace
+    hosts: localhost
+    gather_facts: no
+
+
+    tasks:
+    - name: find replace
+      replace:
+        path: /var/tmp/sudoers
+        regexp: 'iqbal'
+        replace: 'iqbal, faisal'

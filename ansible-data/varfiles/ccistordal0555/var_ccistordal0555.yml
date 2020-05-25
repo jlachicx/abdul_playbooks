@@ -1,0 +1,333 @@
+####################################################
+#### Template version                           ####
+####################################################
+template_version: 1.0.0d
+# END template version
+
+####################################################
+#### Cluster Name                               ####
+####################################################
+cluster_name: ccistordal0555
+# END Cluster Name
+
+####################################################
+#### DataCenter                                 ####
+####################################################
+datacenter: dal05
+# END DataCenter
+
+####################################################
+#### Rack Layout                                ####
+####################################################
+##### Top of dal05.sr01.rk234 #####
+mss03.sr01.dal05_location: dal05.sr01.rk234.sl04
+ncs5.sr01.dal05_location: dal05.sr01.rk234.sl06
+ccistordal0555ab-shelf01_location: dal05.sr01.rk234.sl15
+ccistordal0555ab-shelf00_location: dal05.sr01.rk234.sl17
+ccistordal0555a_location: dal05.sr01.rk234.sl19
+ccistordal0555b_location: dal05.sr01.rk234.sl23
+
+##### Top of dal05.sr01.rk235 #####
+mss04.sr01.dal05_location: dal05.sr01.rk235.sl04
+ncs6.sr01.dal05_location: dal05.sr01.rk235.sl06
+ccistordal0555ab-shelf11_location: dal05.sr01.rk235.sl15
+ccistordal0555ab-shelf10_location: dal05.sr01.rk235.sl17
+# END Rack Layout
+
+####################################################
+#### Netapp Cluster Switch (NCS)                ####
+####################################################
+ncs1: ncs5.sr01.dal05
+ncs2: ncs6.sr01.dal05
+# END Netapp Cluster Switch
+
+####################################################
+#### Internal Switch (IS)                       ####
+####################################################
+is1: is08.sr01.dal05
+is1_start_port: 1
+is1_rack: 321
+# END Internal Switch
+
+####################################################
+#### Internal Switch Port Turnup                ####
+####################################################
+# 
+# Please turn up the ports listed below on is08.sr01.dal05 on VLAN 112, no flowcontrol, no spanning-tree portfast (switches downstream).
+#  
+# Port descriptions:
+#  
+#   - Eth1: ncs5.sr01.dal05
+#   - Eth2: ncs6.sr01.dal05
+#   - Eth3: ccistordal0555a
+#   - Eth4: ccistordal0555b
+#  
+# Thank you for your support.
+# END IS Port Turnup
+
+####################################################
+#### Netapp Management Switch (NMS)             ####
+####################################################
+# END Netapp Management Switch
+
+####################################################
+#### Netapp Management Switch (NMS) Port turnup ####
+####################################################
+# END NMS Port Turnup
+
+####################################################
+#### Master Services Switches (MSS)             ####
+####################################################
+mss1: mss03.sr01.dal05
+mss2: mss04.sr01.dal05
+# END Master Services Switches
+
+####################################################
+#### Master Services Switches Port Turnup       ####
+####################################################
+# 
+# Please turn up ports 1 thru 8 on
+#  
+#   - mss03.sr01.dal05
+#   - mss04.sr01.dal05
+#  
+# Please make sure that:
+#  
+#   - All ports and port-channels are access ports on VLAN 30
+#   - All ports and port-channels have flow control disabled
+#   - Portfast is enabled on all included physical interfaces and port channels
+#   - All port are 10 gb/sec
+#   - Ports are not configured for auto speed negotiation
+#  
+# Port descriptions:
+#  
+# ============================================
+#  mss04.sr01.dal05
+# ============================================
+#  
+#   - Port 01  ==> ccistordal0555a:e1a
+#   - Port 02  ==> ccistordal0555a:e1c
+#   - Port 03  ==> ccistordal0555a:e10a
+#   - Port 04  ==> ccistordal0555a:e10c
+#   - Port 05  ==> ccistordal0555b:e1a
+#   - Port 06  ==> ccistordal0555b:e1c
+#   - Port 07  ==> ccistordal0555b:e10a
+#   - Port 08  ==> ccistordal0555b:e10c
+# 
+# ============================================
+#  Port Channels on mss04.sr01.dal05
+# ============================================
+#  
+#   - 01+03 ccistordal0555a:a0a
+#   - 02+04 ccistordal0555a:a0c
+#   - 05+07 ccistordal0555b:a0a
+#   - 06+08 ccistordal0555b:a0c
+#  
+# ============================================
+#  mss03.sr01.dal05
+# ============================================
+#  
+#   - Port 01  ==> ccistordal0555a:e1b
+#   - Port 02  ==> ccistordal0555a:e1d
+#   - Port 03  ==> ccistordal0555a:e10b
+#   - Port 04  ==> ccistordal0555a:e10d
+#   - Port 05  ==> ccistordal0555b:e1b
+#   - Port 06  ==> ccistordal0555b:e1d
+#   - Port 07  ==> ccistordal0555b:e10b
+#   - Port 08  ==> ccistordal0555b:e10d
+#  
+# ============================================
+#  Port Channels on mss03.sr01.dal05
+# ============================================
+#  
+#   - 01+03 ccistordal0555a:a0b
+#   - 02+04 ccistordal0555a:a0d
+#   - 05+07 ccistordal0555b:a0b
+#   - 06+08 ccistordal0555b:a0d
+#  
+# Thank you for your support.
+# END MSS Port Turnup
+
+####################################################
+#### Interface IPs                              ####
+####################################################
+ncs_a: { ip: '172.18.107.180', name: 'ncs5.sr01.dal05.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+ncs_b: { ip: '172.18.107.181', name: 'ncs6.sr01.dal05.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+cluster_mgmt: { ip: '172.18.107.172', name: 'ccistordal0555.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_a_mgmt: { ip: '172.18.107.173', name: 'ccistordal0555a.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_b_mgmt: { ip: '172.18.107.174', name: 'ccistordal0555b.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_a_sp: { ip: '172.18.107.175', name: 'ccistordal0555a-rlm.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_b_sp: { ip: '172.18.107.176', name: 'ccistordal0555b-rlm.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+svm_ad_auth: { ip: '172.18.107.182', name: 'ccistordal0555-ad-tunnel.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+svm_vs0_mgmt: { ip: '172.18.107.177', name: 'ccistordal0555-vs0.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+cluster_zapi: { ip: '172.18.107.178', name: 'ccistordal0555-zapi.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+datalifna_01: { ip: '10.2.110.186', name: 'ccistordal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifnb_01: { ip: '10.2.110.187', name: 'ccistordal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifna_02: { ip: '10.2.110.188', name: 'ccistordal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifnb_02: { ip: '10.2.110.189', name: 'ccistordal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifna_03: { ip: '10.2.110.190', name: 'ccistordal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifnb_03: { ip: '10.2.110.191', name: 'ccistordal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifna_04: { ip: '10.2.110.192', name: 'ccistordal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifnb_04: { ip: '10.2.110.193', name: 'ccistordal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifna_05: { ip: '10.2.110.194', name: 'ccistordal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifnb_05: { ip: '10.2.110.195', name: 'ccistordal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifna_06: { ip: '10.2.110.202', name: 'ccistordal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+datalifnb_06: { ip: '10.2.110.203', name: 'ccistordal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+# END Interface IPs
+
+####################################################
+#### DNS Servers and Domain                     ####
+####################################################
+dnsdomain: softlayer.local
+dns_server1: 172.18.18.21
+dns_server2: 172.18.18.20
+# END DNS Servers and Domain
+
+####################################################
+#### AutoSupport                                ####
+####################################################
+mailhosts: mx-outbound.softlayer.local
+mailto: storsys@softlayer.com
+mailfrom: ccistordal0555@softlayer.com
+transport: https
+# END AutoSupport
+
+####################################################
+#### NTP Servers                                ####
+####################################################
+ntpserver: time.softlayer.local
+# END NTP Servers
+
+####################################################
+#### ONTAP Version                              ####
+####################################################
+ontap_version: 9.5P5
+# END ONTAP Version
+
+############  Ansible Playbook Variable Information ##################
+
+####################################################
+#### Base Config Playbook Vars                  ####
+####################################################
+node_location:
+  - { name: 'ccistordal0555b', location: 'dal05.sr01.rk234.sl23' }
+  - { name: 'ccistordal0555a', location: 'dal05.sr01.rk234.sl19' }
+zapi_ip:
+  - { svm: 'ccistordal0555', name: 'zapi_mgmt', port: 'e0M', node: 'ccistordal0555a', ip: '172.18.107.178', mask: '255.255.255.0' }
+cluster_routes:
+  - { svm: 'ccistordal0555', dest: '0.0.0.0/0', gw: '172.18.107.1', metric: 20 }
+firewall_policy:
+  - { vserver: 'ccistordal0555', policy: 'deny-all', service: 'telnet' }
+  - { vserver: 'ccistordal0555', policy: 'deny-all', service: 'ssh' }
+  - { vserver: 'ccistordal0555', policy: 'deny-all', service: 'snmp' }
+  - { vserver: 'ccistordal0555', policy: 'deny-all', service: 'rsh' }
+  - { vserver: 'ccistordal0555', policy: 'deny-all', service: 'ntp' }
+  - { vserver: 'ccistordal0555', policy: 'deny-all', service: 'ndmps' }
+  - { vserver: 'ccistordal0555', policy: 'deny-all', service: 'ndmp' }
+  - { vserver: 'ccistordal0555', policy: 'deny-all', service: 'https' }
+  - { vserver: 'ccistordal0555', policy: 'deny-all', service: 'http' }
+  - { vserver: 'ccistordal0555', policy: 'deny-all', service: 'dns' }
+data_aggregates:
+  - { name: 'aggr1_ccistordal0555a', node: 'ccistordal0555a', diskcount: '20', raidsize: '20', raidtype: 'raid_dp' }
+  - { name: 'aggr1_ccistordal0555b', node: 'ccistordal0555b', diskcount: '20', raidsize: '20', raidtype: 'raid_dp' }
+  - { name: 'aggr2_ccistordal0555a', node: 'ccistordal0555a', diskcount: '20', raidsize: '20', raidtype: 'raid_dp' }
+  - { name: 'aggr2_ccistordal0555b', node: 'ccistordal0555b', diskcount: '20', raidsize: '20', raidtype: 'raid_dp' }
+autosupport_budget:
+  - { subsystem: 'networking', sizelimit: '4MB', timelimit: '1m' }
+  - { subsystem: 'splog_latest', sizelimit: '1MB', timelimit: '4m' }
+  - { subsystem: 'SAN', sizelimit: '800MB', timelimit: '5m' }
+  - { subsystem: 'NFS', sizelimit: '10MB', timelimit: '4m' }
+  - { subsystem: 'Platform', sizelimit: '4MB', timelimit: '8m' }
+  - { subsystem: 'wafl', sizelimit: '30MB', timelimit: '10m' }
+  - { subsystem: 'kernel', sizelimit: '6MB', timelimit: '4m' }
+  - { subsystem: 'asup_ems', sizelimit: '4MB', timelimit: '2m' }
+  - { subsystem: 'storage', sizelimit: '26MB', timelimit: '12m' }
+  - { subsystem: 'mhost', sizelimit: '17MB', timelimit: '4m' }
+  - { subsystem: 'performance', sizelimit: '200MB', timelimit: '30m' }
+  - { subsystem: 'performance_asup', sizelimit: '800MB', timelimit: '25m' }
+# END Base config Playbook vars
+
+####################################################
+#### Advanced Config Playbook Vars              ####
+####################################################
+vserver_detail:
+  - { name: 'vs0', vol: 'root_vs0', sec_style: 'unix', ss_pol: 'none', subtype: 'default', allowed_protocols: [nfs], domains: 'softlayer.local', nameservers: '172.18.18.21,172.18.18.20' }
+svm_mgmt_lif:
+  - { svm: 'vs0', name: 'mgmt1', port: 'e0M', node: ccistordal0555a, ip: '172.18.107.177', mask: '255.255.255.0' }
+nfs_ip:
+  - { svm: 'vs0', name: 'datalifna_01', port: 'a0a', node: 'ccistordal0555a', fqdn: 'ccistordal0555a-fz.service.softlayer.com', ip: '10.2.110.186', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifna_02', port: 'a0b', node: 'ccistordal0555a', fqdn: 'ccistordal0555a-fz.service.softlayer.com', ip: '10.2.110.188', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifna_03', port: 'a0c', node: 'ccistordal0555a', fqdn: 'ccistordal0555a-fz.service.softlayer.com', ip: '10.2.110.190', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifna_04', port: 'a0a', node: 'ccistordal0555a', fqdn: 'ccistordal0555a-fz.service.softlayer.com', ip: '10.2.110.192', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifna_05', port: 'a0b', node: 'ccistordal0555a', fqdn: 'ccistordal0555a-fz.service.softlayer.com', ip: '10.2.110.194', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifna_06', port: 'a0c', node: 'ccistordal0555a', fqdn: 'ccistordal0555a-fz.service.softlayer.com', ip: '10.2.110.202', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifnb_01', port: 'a0a', node: 'ccistordal0555b', fqdn: 'ccistordal0555b-fz.service.softlayer.com', ip: '10.2.110.187', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifnb_02', port: 'a0b', node: 'ccistordal0555b', fqdn: 'ccistordal0555b-fz.service.softlayer.com', ip: '10.2.110.189', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifnb_03', port: 'a0d', node: 'ccistordal0555b', fqdn: 'ccistordal0555b-fz.service.softlayer.com', ip: '10.2.110.191', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifnb_04', port: 'a0a', node: 'ccistordal0555b', fqdn: 'ccistordal0555b-fz.service.softlayer.com', ip: '10.2.110.193', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifnb_05', port: 'a0b', node: 'ccistordal0555b', fqdn: 'ccistordal0555b-fz.service.softlayer.com', ip: '10.2.110.195', mask: '255.255.255.0' }
+  - { svm: 'vs0', name: 'datalifnb_06', port: 'a0d', node: 'ccistordal0555b', fqdn: 'ccistordal0555b-fz.service.softlayer.com', ip: '10.2.110.203', mask: '255.255.255.0' }
+nfs_config:
+  - { svm: 'vs0', nfsv3: 'enabled', nfsv4: 'disabled', nfsv41: 'disabled', tcp: 'enabled', udp: 'disabled', nfsv41_pnfs: 'disabled', showmount: 'disabled', nfsv4_id_domain: 'slnfsv4.com', vstorage_state: 'disabled' }
+export_policies:
+  - { name: 'cci_root_ep', svm: 'vs0' }
+  - { name: 'cci_templates_ep', svm: 'vs0' }
+  - { name: 'cci_vol_ep', svm: 'vs0' }
+  - { name: 'root_vs0_ep', svm: 'vs0' }
+  - { name: 'virt_vol_ep', svm: 'vs0' }
+vol_efficiency:
+  - { volume: 'archives', svm: 'vs0' }
+  - { volume: 'iso', svm: 'vs0' }
+  - { volume: 'iso_public', svm: 'vs0' }
+  - { volume: 'public', svm: 'vs0' }
+  - { volume: 'templates', svm: 'vs0' }
+nfs_rules:
+  - { name: 'default', svm: 'vs0', clientmatch: '0.0.0.0/0', rorule: 'never', rwrule: 'never', protocol: 'nfs', anon: 65534, allowdev: true, allowsuid: yes, superuser: 'none' }
+  - { name: 'root_vs0_ep', svm: 'vs0', clientmatch: '0.0.0.0/0', rorule: 'any', rwrule: 'never', protocol: 'any', anon: 65534, allowdev: true, allowsuid: yes, superuser: 'sys' }
+nfs_root_vol:
+  - { svm: 'vs0', volume: 'root_vs0', policy: 'root_vs0_ep', unixperm: '711', unixtxtperm: '---rwx--x--x' }
+nfs_volumes:
+  - { svm: 'vs0', vol: 'cci_root', aggr: 'aggr1_ccistordal0555a', size: '21', size_unit: 'mb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_root_ep', space_guar: 'volume', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root', ss_space: '0' }
+  - { svm: 'vs0', vol: 'templates', aggr: 'aggr2_ccistordal0555b', size: '1', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_templates_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/templates', ss_space: '0' }
+  - { svm: 'vs0', vol: 'archives', aggr: 'aggr2_ccistordal0555b', size: '35', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_templates_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/archives', ss_space: '0' }
+  - { svm: 'vs0', vol: 'public', aggr: 'aggr2_ccistordal0555b', size: '1', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_templates_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/public', ss_space: '0' }
+  - { svm: 'vs0', vol: 'iso', aggr: 'aggr2_ccistordal0555b', size: '100', size_unit: 'gb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/iso', ss_space: '0' }
+  - { svm: 'vs0', vol: 'iso_public', aggr: 'aggr2_ccistordal0555b', size: '1', size_unit: 'tb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/iso_public', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol0_ccistordal0555a', aggr: 'aggr1_ccistordal0555a', size: '41564', size_unit: 'gb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol0_ccistordal0555a', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol1_ccistordal0555a', aggr: 'aggr1_ccistordal0555a', size: '41564', size_unit: 'gb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol1_ccistordal0555a', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol2_ccistordal0555a', aggr: 'aggr1_ccistordal0555a', size: '41564', size_unit: 'gb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol2_ccistordal0555a', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol0_ccistordal0555b', aggr: 'aggr1_ccistordal0555b', size: '41564', size_unit: 'gb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol0_ccistordal0555b', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol1_ccistordal0555b', aggr: 'aggr1_ccistordal0555b', size: '41564', size_unit: 'gb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol1_ccistordal0555b', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol2_ccistordal0555b', aggr: 'aggr1_ccistordal0555b', size: '41564', size_unit: 'gb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol2_ccistordal0555b', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol3_ccistordal0555a', aggr: 'aggr2_ccistordal0555a', size: '41564', size_unit: 'gb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol3_ccistordal0555a', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol4_ccistordal0555a', aggr: 'aggr2_ccistordal0555a', size: '41564', size_unit: 'gb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol4_ccistordal0555a', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol3_ccistordal0555b', aggr: 'aggr2_ccistordal0555b', size: '41564', size_unit: 'gb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol3_ccistordal0555b', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol4_ccistordal0555b', aggr: 'aggr2_ccistordal0555b', size: '41564', size_unit: 'gb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol4_ccistordal0555b', ss_space: '0' }
+  - { svm: 'vs0', vol: 'cci_vol5_ccistordal0555a', aggr: 'aggr2_ccistordal0555a', size: '41564', size_unit: 'gb', state: 'online', nearlyfullpercent: '85', unixperm: '711', type: 'RW', policy: 'cci_vol_ep', space_guar: 'none', ss_pol: 'none', sec_style: 'unix', junct_path: '/cci_root/cci_vol5_ccistordal0555a', ss_space: '0' }
+svm_routes:
+  - { svm: 'vs0', dest: '10.0.0.0/8', gw: '10.2.110.1', metric: 20 }
+  - { svm: 'vs0', dest: '172.16.0.0/12', gw: '172.18.107.1', metric: 20 }
+efficiency_policies:
+  - { name: 'pp_dedupe_thresh_pct_1', svm: 'vs0', thresholdpercent: '1' }
+  - { name: 'pp_dedupe_thresh_pct_10', svm: 'vs0', thresholdpercent: '10' }
+  - { name: 'pp_dedupe_thresh_pct_2', svm: 'vs0', thresholdpercent: '2' }
+  - { name: 'pp_dedupe_thresh_pct_20', svm: 'vs0', thresholdpercent: '20' }
+  - { name: 'pp_dedupe_thresh_pct_25', svm: 'vs0', thresholdpercent: '25' }
+  - { name: 'pp_dedupe_thresh_pct_3', svm: 'vs0', thresholdpercent: '3' }
+  - { name: 'pp_dedupe_thresh_pct_5', svm: 'vs0', thresholdpercent: '5' }
+ls_mirror:
+  - { source_path: 'ccistordal0555://vs0/root_vs0', destination_path: 'ccistordal0555://vs0/root_vs0_m2', aggregate: 'aggr1_ccistordal0555b', vserver: 'vs0', destination_volume: 'root_vs0_m2', relationship_type: 'load_sharing', schedule: '5min' }
+  - { source_path: 'ccistordal0555://vs0/root_vs0', destination_path: 'ccistordal0555://vs0/root_vs0_m1', aggregate: 'aggr1_ccistordal0555a', vserver: 'vs0', destination_volume: 'root_vs0_m1', relationship_type: 'load_sharing', schedule: '5min' }
+# END Advanced config Playbook vars
+
+####################################################
+#### Control Section                            ####
+####################################################
+operation: 'newinstall'
+usrinputs: { cluster: 'ccistordal0555', ontap_version: '9.5P5', server_room: '1', rack: '234', adj_rack: '235', ncs_start: '5', internal_switch: '8', is_start_port: '1', is_rack: '321', mgmt_vlan: '112', ms_switch: '3', data_vlan: '30', adn: '0', platform: 'AFF-A700', a_version: '2.8.4', cmdline: '/usr/bin/python2 /usr/bin/ansible-playbook -b -K pb_new_cluster_deployment.yml' }
+netinfos:
+  - { subnet: '10.2.110.0', mask: '24', netmask: '255.255.255.0', description: 'storage #3 (netapp)', gateway: '10.2.110.1', freehosts: 176 }
+  - { subnet: '172.18.107.0', mask: '24', netmask: '255.255.255.0', description: 'storage devices', gateway: '172.18.107.1', freehosts: 83 }
+varfile_version: 'pb_new_cluster_deployment.yml v 1.0.0b'
+testenv: yes
+# END Control Section

@@ -1,0 +1,61 @@
+
+Please turn up ports 1 thru 8 on
+ 
+  - mss79.sr03.dal10
+  - mss80.sr03.dal10
+ 
+Please make sure that:
+ 
+  - All ports and port-channels are access ports on VLAN 30
+  - All ports and port-channels have flow control disabled
+  - Portfast is enabled on all included physical interfaces and port channels
+  - All port are 10 gb/sec
+  - Ports are not configured for auto speed negotiation
+ 
+Port descriptions:
+ 
+============================================
+ mss80.sr03.dal10
+============================================
+ 
+  - Port 01  ==> stbf-dal1003a:e1a
+  - Port 02  ==> stbf-dal1003a:e1c
+  - Port 03  ==> stbf-dal1003a:e10a
+  - Port 04  ==> stbf-dal1003a:e10c
+  - Port 05  ==> stbf-dal1003b:e1a
+  - Port 06  ==> stbf-dal1003b:e1c
+  - Port 07  ==> stbf-dal1003b:e10a
+  - Port 08  ==> stbf-dal1003b:e10c
+
+============================================
+ Port Channels on mss80.sr03.dal10
+============================================
+ 
+  - 01+03 stbf-dal1003a:a0a
+  - 02+04 stbf-dal1003a:a0c
+  - 05+07 stbf-dal1003b:a0a
+  - 06+08 stbf-dal1003b:a0c
+ 
+============================================
+ mss79.sr03.dal10
+============================================
+ 
+  - Port 01  ==> stbf-dal1003a:e1b
+  - Port 02  ==> stbf-dal1003a:e1d
+  - Port 03  ==> stbf-dal1003a:e10b
+  - Port 04  ==> stbf-dal1003a:e10d
+  - Port 05  ==> stbf-dal1003b:e1b
+  - Port 06  ==> stbf-dal1003b:e1d
+  - Port 07  ==> stbf-dal1003b:e10b
+  - Port 08  ==> stbf-dal1003b:e10d
+ 
+============================================
+ Port Channels on mss79.sr03.dal10
+============================================
+ 
+  - 01+03 stbf-dal1003a:a0b
+  - 02+04 stbf-dal1003a:a0d
+  - 05+07 stbf-dal1003b:a0b
+  - 06+08 stbf-dal1003b:a0d
+ 
+Thank you for your support.

@@ -1,0 +1,11 @@
+
+Please turn up the ports listed below on is08.sr07.wdc04 on VLAN 106, no flowcontrol, no spanning-tree portfast (switches downstream).
+ 
+Port descriptions:
+ 
+  - Eth1: ncs3.sr07.wdc04
+  - Eth2: ncs4.sr07.wdc04
+  - Eth3: stff-wdc0402a
+  - Eth4: stff-wdc0402b
+ 
+Thank you for your support.

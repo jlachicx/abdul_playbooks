@@ -1,0 +1,326 @@
+####################################################
+#### Template version                           ####
+####################################################
+template_version: 1.0.0b
+# END template version
+
+####################################################
+#### Cluster Name                               ####
+####################################################
+cluster_name: stxf-par0102
+# END Cluster Name
+
+####################################################
+#### DataCenter                                 ####
+####################################################
+datacenter: par01
+# END DataCenter
+
+####################################################
+#### Rack Layout                                ####
+####################################################
+##### Top of par01.sr02.rk67 #####
+mss33.sr02.par01_location: par01.sr02.rk67.sl04
+ncs9.sr02.par01_location: par01.sr02.rk67.sl06
+stxf-par0102ab-shelf01_location: par01.sr02.rk67.sl15
+stxf-par0102ab-shelf00_location: par01.sr02.rk67.sl17
+stxf-par0102a_location: par01.sr02.rk67.sl19
+stxf-par0102b_location: par01.sr02.rk67.sl23
+
+##### Top of par01.sr02.rk68 #####
+mss32.sr02.par01_location: par01.sr02.rk68.sl04
+ncs10.sr02.par01_location: par01.sr02.rk68.sl06
+stxf-par0102ab-shelf11_location: par01.sr02.rk68.sl15
+stxf-par0102ab-shelf10_location: par01.sr02.rk68.sl17
+# END Rack Layout
+
+####################################################
+#### Netapp Cluster Switch (NCS)                ####
+####################################################
+ncs1: ncs9.sr02.par01
+ncs2: ncs10.sr02.par01
+# END Netapp Cluster Switch
+
+####################################################
+#### Internal Switch (IS)                       ####
+####################################################
+is1: is09.sr02.par01
+is1_rack: 70
+# END Internal Switch
+
+####################################################
+#### Internal Switch Port Turnup                ####
+####################################################
+# Please turn up the ports listed below on is09.sr02.par01 on VLAN 112, no flowcontrol, no spanning-tree portfast (switches downstream).
+#
+# Port descriptions:
+#
+#
+#  - Eth1: ncs9.sr02.par01
+#  - Eth2: ncs10.sr02.par01
+#  - Eth3: stxf-par0102a
+#  - Eth4: stxf-par0102b
+#
+#
+# END IS Port Turnup
+
+####################################################
+#### Netapp Management Switch (NMS)             ####
+####################################################
+# END Netapp Management Switch
+
+####################################################
+#### Netapp Management Switch (NMS) Port turnup ####
+####################################################
+# END NMS Port Turnup
+
+####################################################
+#### Master Services Switches (MSS)             ####
+####################################################
+mss1: mss32.sr02.par01
+mss2: mss33.sr02.par01
+# END Master Services Switches
+
+####################################################
+#### Master Services Switches Port Turnup       ####
+####################################################
+# 
+# Please turn up ports 1 thru 8 on
+#  
+#   - mss32.sr02.par01
+#   - mss33.sr02.par01
+#  
+# Please make sure that:
+#  
+#   - All ports and port-channels are access ports on VLAN 30
+#   - All ports and port-channels have flow control disabled
+#   - Portfast is enabled on all included physical interfaces and port channels
+#   - All port are 10 gb/sec
+#   - Ports are not configured for auto speed negotiation
+#  
+# Port descriptions:
+#  
+# ============================================
+#  mss33.sr02.par01
+# ============================================
+#  
+#   - Port 01  ==> stxf-par0102a:e1a
+#   - Port 02  ==> stxf-par0102a:e1c
+#   - Port 03  ==> stxf-par0102a:e10a
+#   - Port 04  ==> stxf-par0102a:e10c
+#   - Port 05  ==> stxf-par0102b:e1a
+#   - Port 06  ==> stxf-par0102b:e1c
+#   - Port 07  ==> stxf-par0102b:e10a
+#   - Port 08  ==> stxf-par0102b:e10c
+# 
+# ============================================
+#  Port Channels on mss33.sr02.par01
+# ============================================
+#  
+#   - 01+03 stxf-par0102a:a0a
+#   - 02+04 stxf-par0102a:a0c
+#   - 05+07 stxf-par0102b:a0a
+#   - 06+08 stxf-par0102b:a0c
+#  
+# ============================================
+#  mss32.sr02.par01
+# ============================================
+#  
+#   - Port 01  ==> stxf-par0102a:e1b
+#   - Port 02  ==> stxf-par0102a:e1d
+#   - Port 03  ==> stxf-par0102a:e10b
+#   - Port 04  ==> stxf-par0102a:e10d
+#   - Port 05  ==> stxf-par0102b:e1b
+#   - Port 06  ==> stxf-par0102b:e1d
+#   - Port 07  ==> stxf-par0102b:e10b
+#   - Port 08  ==> stxf-par0102b:e10d
+#  
+# ============================================
+#  Port Channels on mss32.sr02.par01
+# ============================================
+#  
+#   - 01+03 stxf-par0102a:a0b
+#   - 02+04 stxf-par0102a:a0d
+#   - 05+07 stxf-par0102b:a0b
+#   - 06+08 stxf-par0102b:a0d
+#  
+# Thank you for your support.
+# END MSS Port Turnup
+
+####################################################
+#### Interface IPs                              ####
+####################################################
+ncs_a: { ip: '172.20.139.90', name: 'ncs9.sr02.par01.softlayer.local', mask: '255.255.255.0', gateway: '172.20.139.1'}
+ncs_b: { ip: '172.20.139.91', name: 'ncs10.sr02.par01.softlayer.local', mask: '255.255.255.0', gateway: '172.20.139.1'}
+cluster_mgmt: { ip: '172.20.139.92', name: 'stxf-par0102.softlayer.local', mask: '255.255.255.0', gateway: '172.20.139.1'}
+node_a_mgmt: { ip: '172.20.139.93', name: 'stxf-par0102a.softlayer.local', mask: '255.255.255.0', gateway: '172.20.139.1'}
+node_b_mgmt: { ip: '172.20.139.94', name: 'stxf-par0102b.softlayer.local', mask: '255.255.255.0', gateway: '172.20.139.1'}
+node_a_sp: { ip: '172.20.139.95', name: 'stxf-par0102a-rlm.softlayer.local', mask: '255.255.255.0', gateway: '172.20.139.1'}
+node_b_sp: { ip: '172.20.139.96', name: 'stxf-par0102b-rlm.softlayer.local', mask: '255.255.255.0', gateway: '172.20.139.1'}
+svm_ad_auth: { ip: '172.20.139.97', name: 'stxf-par0102-ad-tunnel.softlayer.local', mask: '255.255.255.0', gateway: '172.20.139.1'}
+svm_vs00_mgmt: { ip: '172.20.139.98', name: 'stxf-par0102-vs00.softlayer.local', mask: '255.255.255.0', gateway: '172.20.139.1'}
+cluster_zapi: { ip: '172.20.139.99', name: 'stxf-par0102-zapi.softlayer.local', mask: '255.255.255.0', gateway: '172.20.139.1'}
+smiclna_01: { ip: '10.2.158.223', name: 'smiclna_01.stxf-par0102', mask: '255.255.255.0', gateway: '10.2.158.1'}
+smiclnb_01: { ip: '10.2.158.224', name: 'smiclnb_01.stxf-par0102', mask: '255.255.255.0', gateway: '10.2.158.1'}
+fslifna_01: { ip: '10.2.158.225', name: 'fsf-par0102a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.158.1'}
+fslifnb_01: { ip: '10.2.158.226', name: 'fsf-par0102b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.158.1'}
+fslifna_02: { ip: '10.2.158.227', name: 'fsf-par0102a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.158.1'}
+fslifnb_02: { ip: '10.2.158.228', name: 'fsf-par0102b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.158.1'}
+fslifna_03: { ip: '10.2.158.229', name: 'fsf-par0102a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.158.1'}
+fslifnb_03: { ip: '10.2.158.230', name: 'fsf-par0102b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.158.1'}
+fslifna_04: { ip: '10.2.158.231', name: 'fsf-par0102a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.158.1'}
+fslifnb_04: { ip: '10.2.158.232', name: 'fsf-par0102b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.158.1'}
+fslifna_05: { ip: '10.2.158.233', name: 'fsf-par0102a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.158.1'}
+fslifnb_05: { ip: '10.2.158.234', name: 'fsf-par0102b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.158.1'}
+fslifna_06: { ip: '10.2.158.235', name: 'fsf-par0102a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.158.1'}
+fslifnb_06: { ip: '10.2.158.236', name: 'fsf-par0102b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.158.1'}
+iscsilifna_01: { ip: '10.2.158.237', name: 'stxf-par0102a_iscsi_lif', mask: '255.255.255.0', gateway: '10.2.158.1'}
+iscsilifnb_01: { ip: '10.2.158.238', name: 'stxf-par0102b_iscsi_lif', mask: '255.255.255.0', gateway: '10.2.158.1'}
+iscsilifna_02: { ip: '10.2.158.239', name: 'stxf-par0102a_iscsi_lif', mask: '255.255.255.0', gateway: '10.2.158.1'}
+iscsilifnb_02: { ip: '10.2.158.240', name: 'stxf-par0102b_iscsi_lif', mask: '255.255.255.0', gateway: '10.2.158.1'}
+iscsilifna_03: { ip: '10.2.158.241', name: 'stxf-par0102a_iscsi_lif', mask: '255.255.255.0', gateway: '10.2.158.1'}
+iscsilifnb_03: { ip: '10.2.158.242', name: 'stxf-par0102b_iscsi_lif', mask: '255.255.255.0', gateway: '10.2.158.1'}
+# END Interface IPs
+
+####################################################
+#### DNS Servers and Domain                     ####
+####################################################
+dnsdomain: softlayer.local
+dns_server1: 172.20.146.20
+dns_server2: 172.20.146.21
+# END DNS Servers and Domain
+
+####################################################
+#### AutoSupport                                ####
+####################################################
+mailhosts: mx-outbound.softlayer.local
+mailto: storsys@softlayer.com
+mailfrom: stxf-par0102@softlayer.com
+transport: https
+# END AutoSupport
+
+####################################################
+#### NTP Servers                                ####
+####################################################
+ntpserver: time.softlayer.local
+# END NTP Servers
+
+####################################################
+#### ONTAP Version                              ####
+####################################################
+ontap_version: 9.5P5
+# END ONTAP Version
+
+############  Ansible Playbook Variable Information ##################
+
+####################################################
+#### Base Config Playbook Vars                  ####
+####################################################
+zapi_ip:
+  - { svm: 'stxf-par0102', name: 'zapi_mgmt', port: 'e0M', node: 'stxf-par0102a', ip: '172.20.139.99', mask: '255.255.255.0' }
+data_aggregates:
+  - { name: 'aggr_stxf_par0102a_ssd01', node: 'stxf-par0102a', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
+  - { name: 'aggr_stxf_par0102b_ssd01', node: 'stxf-par0102b', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
+node_location:
+  - { name: 'stxf-par0102b', location: 'par01.sr02.rk67.sl23' }
+  - { name: 'stxf-par0102a', location: 'par01.sr02.rk67.sl19' }
+firewall_policy:
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'telnet' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'ssh' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'snmp' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'rsh' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'ntp' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'ndmps' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'ndmp' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'https' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'http' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'dns' }
+autosupport_budget:
+  - { subsystem: 'networking', sizelimit: '4MB', timelimit: '1m' }
+  - { subsystem: 'splog_latest', sizelimit: '1MB', timelimit: '4m' }
+  - { subsystem: 'SAN', sizelimit: '800MB', timelimit: '5m' }
+  - { subsystem: 'NFS', sizelimit: '10MB', timelimit: '4m' }
+  - { subsystem: 'Platform', sizelimit: '4MB', timelimit: '8m' }
+  - { subsystem: 'wafl', sizelimit: '30MB', timelimit: '10m' }
+  - { subsystem: 'kernel', sizelimit: '6MB', timelimit: '4m' }
+  - { subsystem: 'asup_ems', sizelimit: '4MB', timelimit: '2m' }
+  - { subsystem: 'storage', sizelimit: '26MB', timelimit: '12m' }
+  - { subsystem: 'mhost', sizelimit: '17MB', timelimit: '4m' }
+  - { subsystem: 'performance', sizelimit: '200MB', timelimit: '30m' }
+  - { subsystem: 'performance_asup', sizelimit: '800MB', timelimit: '25m' }
+# END Base config Playbook vars
+
+####################################################
+#### Advanced Config Playbook Vars              ####
+####################################################
+vserver_detail:
+  - { name: stxf-par0102_vs00, vol: stxf_par0102_vs00_root, sec_style: unix, ss_pol: none, subtype: default, allowed_protocols: [iscsi, nfs], domains: softlayer.local, nameservers: '172.20.146.20,172.20.146.21' }
+svm_mgmt_lif:
+  - { svm: stxf-par0102_vs00, name: mgmt1, port: e0M, node: stxf-par0102a, ip: 172.20.139.98, mask: 255.255.255.0 }
+smicl_ip:
+  - { svm: 'stxf-par0102', name: 'smiclna_01.stxf-par0102', port: 'a0a', node: 'stxf-par0102a', ip: '10.2.158.223', mask: '255.255.255.0' }
+  - { svm: 'stxf-par0102', name: 'smiclnb_01.stxf-par0102', port: 'a0b', node: 'stxf-par0102b', ip: '10.2.158.224', mask: '255.255.255.0' }
+iscsi_ip:
+  - { svm: 'stxf-par0102_vs00', name: 'iscsilifna_01', port: 'a0a', node: 'stxf-par0102a', ip: '10.2.158.237', mask: '255.255.255.0' }
+  - { svm: 'stxf-par0102_vs00', name: 'iscsilifnb_01', port: 'a0a', node: 'stxf-par0102b', ip: '10.2.158.238', mask: '255.255.255.0' }
+  - { svm: 'stxf-par0102_vs00', name: 'iscsilifna_02', port: 'a0b', node: 'stxf-par0102a', ip: '10.2.158.239', mask: '255.255.255.0' }
+  - { svm: 'stxf-par0102_vs00', name: 'iscsilifnb_02', port: 'a0b', node: 'stxf-par0102b', ip: '10.2.158.240', mask: '255.255.255.0' }
+  - { svm: 'stxf-par0102_vs00', name: 'iscsilifna_03', port: 'a0c', node: 'stxf-par0102a', ip: '10.2.158.241', mask: '255.255.255.0' }
+  - { svm: 'stxf-par0102_vs00', name: 'iscsilifnb_03', port: 'a0d', node: 'stxf-par0102b', ip: '10.2.158.242', mask: '255.255.255.0' }
+iscsi_portset:
+  - { name: iscsips_nab01, svm: stxf-par0102_vs00, portname: [iscsilifna_01,iscsilifnb_02] }
+  - { name: iscsips_nab02, svm: stxf-par0102_vs00, portname: [iscsilifna_02,iscsilifnb_01] }
+  - { name: iscsips_nab03, svm: stxf-par0102_vs00, portname: [iscsilifna_03,iscsilifnb_03] }
+nfs_ip:
+  - { svm: stxf-par0102_vs00, name: fslifna_01, port: a0a, node: stxf-par0102a, fqdn: fsf-par0102a-fz.service.softlayer.com, ip: 10.2.158.225, mask: 255.255.255.0 }
+  - { svm: stxf-par0102_vs00, name: fslifnb_01, port: a0a, node: stxf-par0102b, fqdn: fsf-par0102b-fz.service.softlayer.com, ip: 10.2.158.226, mask: 255.255.255.0 }
+  - { svm: stxf-par0102_vs00, name: fslifna_02, port: a0b, node: stxf-par0102a, fqdn: fsf-par0102a-fz.service.softlayer.com, ip: 10.2.158.227, mask: 255.255.255.0 }
+  - { svm: stxf-par0102_vs00, name: fslifnb_02, port: a0b, node: stxf-par0102b, fqdn: fsf-par0102b-fz.service.softlayer.com, ip: 10.2.158.228, mask: 255.255.255.0 }
+  - { svm: stxf-par0102_vs00, name: fslifna_03, port: a0c, node: stxf-par0102a, fqdn: fsf-par0102a-fz.service.softlayer.com, ip: 10.2.158.229, mask: 255.255.255.0 }
+  - { svm: stxf-par0102_vs00, name: fslifnb_03, port: a0d, node: stxf-par0102b, fqdn: fsf-par0102b-fz.service.softlayer.com, ip: 10.2.158.230, mask: 255.255.255.0 }
+  - { svm: stxf-par0102_vs00, name: fslifna_04, port: a0a, node: stxf-par0102a, fqdn: fsf-par0102a-fz.service.softlayer.com, ip: 10.2.158.231, mask: 255.255.255.0 }
+  - { svm: stxf-par0102_vs00, name: fslifnb_04, port: a0a, node: stxf-par0102b, fqdn: fsf-par0102b-fz.service.softlayer.com, ip: 10.2.158.232, mask: 255.255.255.0 }
+  - { svm: stxf-par0102_vs00, name: fslifna_05, port: a0b, node: stxf-par0102a, fqdn: fsf-par0102a-fz.service.softlayer.com, ip: 10.2.158.233, mask: 255.255.255.0 }
+  - { svm: stxf-par0102_vs00, name: fslifnb_05, port: a0b, node: stxf-par0102b, fqdn: fsf-par0102b-fz.service.softlayer.com, ip: 10.2.158.234, mask: 255.255.255.0 }
+  - { svm: stxf-par0102_vs00, name: fslifna_06, port: a0c, node: stxf-par0102a, fqdn: fsf-par0102a-fz.service.softlayer.com, ip: 10.2.158.235, mask: 255.255.255.0 }
+  - { svm: stxf-par0102_vs00, name: fslifnb_06, port: a0d, node: stxf-par0102b, fqdn: fsf-par0102b-fz.service.softlayer.com, ip: 10.2.158.236, mask: 255.255.255.0 }
+nfs_config:
+  - { svm: 'stxf-par0102_vs00', nfsv3: 'enabled', nfsv4: 'enabled', nfsv41: 'enabled', tcp: 'enabled', udp: 'disabled', nfsv41_pnfs: 'disabled', showmount: 'disabled', nfsv4_id_domain: 'slnfsv4.com', vstorage_state: 'disabled' }
+export_policies:
+  - { name: 'stxf-par0102_vs00_ep', svm: 'stxf-par0102_vs00' }
+nfs_rules:
+  - { name: 'default', svm: 'stxf-par0102_vs00', clientmatch: '1.1.1.1', rorule: 'never', rwrule: 'never', protocol: 'nfs,cifs', anon: 65534, allowdev: true, allowsuid: no, superuser: 'none' }
+  - { name: 'stxf-par0102_vs00_ep', svm: 'stxf-par0102_vs00', clientmatch: '0.0.0.0/0', rorule: 'any', rwrule: 'never', protocol: 'nfs,cifs', anon: 65534, allowdev: false, allowsuid: no, superuser: 'none' }
+nfs_root_vol:
+  - { volume: 'stxf_par0102_vs00_root', policy: 'stxf-par0102_vs00_ep', unixperm: '711', unixtxtperm: '---rwx--x--x' }
+quota_policies:
+  - { name: 'stxf-par0102_vs00_qp', svm: 'stxf-par0102_vs00' }
+  - { name: 'stxf-par0102_vs00_tracking', svm: 'stxf-par0102_vs00' }
+cluster_routes:
+  - { svm: 'stxf-par0102', dest: '0.0.0.0/0', gw: '172.20.139.1', metric: '20' }
+  - { svm: 'stxf-par0102', dest: '10.0.0.0/8', gw: '10.2.158.1', metric: '20' }
+svm_routes:
+  - { svm: 'stxf-par0102_vs00', dest: '172.16.0.0/12', gw: '172.20.139.1', metric: '20' }
+  - { svm: 'stxf-par0102_vs00', dest: '10.0.0.0/8', gw: '10.2.158.1', metric: '20' }
+efficiency_policies:
+  - { name: 'pp_dedupe_thresh_pct_1', svm: 'stxf-par0102_vs00', thresholdpercent: '1' }
+  - { name: 'pp_dedupe_thresh_pct_2', svm: 'stxf-par0102_vs00', thresholdpercent: '2' }
+  - { name: 'pp_dedupe_thresh_pct_3', svm: 'stxf-par0102_vs00', thresholdpercent: '3' }
+  - { name: 'pp_dedupe_thresh_pct_5', svm: 'stxf-par0102_vs00', thresholdpercent: '5' }
+  - { name: 'pp_dedupe_thresh_pct_10', svm: 'stxf-par0102_vs00', thresholdpercent: '10' }
+  - { name: 'pp_dedupe_thresh_pct_20', svm: 'stxf-par0102_vs00', thresholdpercent: '20' }
+  - { name: 'pp_dedupe_thresh_pct_25', svm: 'stxf-par0102_vs00', thresholdpercent: '25' }
+ls_mirror:
+  - { source_path: 'stxf-par0102://stxf-par0102_vs00/stxf_par0102_vs00_root', destination_path: 'stxf-par0102://stxf-par0102_vs00/stxf_par0102_vs00_root_m1', aggregate: 'aggr_stxf_par0102a_ssd01', vserver: 'stxf-par0102_vs00', destination_volume: 'stxf_par0102_vs00_root_m1', relationship_type: 'load_sharing', schedule: '5min' }
+  - { source_path: 'stxf-par0102://stxf-par0102_vs00/stxf_par0102_vs00_root', destination_path: 'stxf-par0102://stxf-par0102_vs00/stxf_par0102_vs00_root_m2', aggregate: 'aggr_stxf_par0102b_ssd01', vserver: 'stxf-par0102_vs00', destination_volume: 'stxf_par0102_vs00_root_m2', relationship_type: 'load_sharing', schedule: '5min' }
+# END Advanced config Playbook vars
+
+#############################
+###    CONTROL SECTION    ###
+#############################
+operation: 'newinstall'
+usrinputs: { cluster: 'stxf-par0102', ontap_version: '9.5P5', server_room: '2', rack: '67', adj_rack: '68', ncs_start: '9', internal_switch: '9', is_rack: '70', mgmt_port_start: '1', mgmt_vlan: '112', ms_switch: '32', mss_inverted: '1', data_vlan: '30', adn: '0', platform: 'AFF-A700' }
+netinfos:
+  - { subnet: '172.20.139.0', mask: '24', netmask: '255.255.255.0', description: 'storage.internal', gateway: '172.20.139.1', freehosts: '84' }
+  - { subnet: '10.2.158.0', mask: '24', netmask: '255.255.255.0', description: 'netapp.service 10.x', gateway: '10.2.158.1', freehosts: '108' }
+varfile_version: '0.9.9l'

@@ -1,0 +1,76 @@
+  ######## Checking Data Aggregates
+  
+  - set_fact          :
+      check_result    : "{{ check_result + [ '  - Checking data Aggregates (name, ha policy, raid type and state)' ]      }}"
+
+  - set_fact          :
+      dataaggrs       : "{{ dataaggrs|default([]) + [ { 'name': aggrname, 'state': aggrstate, 'ha_policy': aggrhapolicy, 'raid_type': aggrraid, 'owner': aggrowner } ]   }}"
+        
+    vars              :
+      aggrname        : "{{ item                                                                                          }}"
+      aggrstate       : "{{ ontap_facts.aggregate_info[item].aggr_raid_attributes.state                                   }}"
+      aggrhapolicy    : "{{ ontap_facts.aggregate_info[item].aggr_raid_attributes.ha_policy                               }}"
+      aggrraid        : "{{ ontap_facts.aggregate_info[item].aggr_raid_attributes.raid_type                               }}"
+      aggrowner       : "{{ ontap_facts.aggregate_info[item].aggr_ownership_attributes.owner_name                         }}"
+    with_items        : "{{ ontap_facts.aggregate_info }}"
+    when              : ontap_facts.aggregate_info[item].aggr_raid_attributes.is_root_aggregate != 'true'
+    
+  # Aggredate (s) name verification
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [ ] Data aggregate name ' + item.name + ' : passed' ]                       }}"
+      testpassed      : "{{ testpassed   + [ '    [ ] Data aggregate name ' + item.name + ' : passed' ]                       }}"
+    with_items        : "{{ dataaggrs                                                                                         }}"
+    when              : data_aggregates | selectattr('name','equalto',item.name)|list|length > 0
+
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [!] Data aggregate name ' + item.name + ' : !! failed !!' ]                 }}"
+      testfailed      : "{{ testfailed   + [ '    [!] Data aggregate name ' + item.name + ' : !! failed !!' ]                 }}"
+    with_items        : "{{ dataaggrs                                                                                         }}"
+    when              : data_aggregates | selectattr('name','equalto',item.name)|list|length == 0
+
+  # Aggredate (s) status verification
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [ ] Data aggregate ' + item.name + ' state is online : passed' ]             }}"
+      testpassed      : "{{ testpassed   + [ '    [ ] Data aggregate ' + item.name + ' state is online : passed' ]             }}"
+    with_items        : "{{ dataaggrs                                                                                          }}"
+    when              : 
+                        - data_aggregates | selectattr('name','equalto',item.name)|list|length > 0 
+                        - item.state == 'online'
+
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [!] Data aggregate ' + item.name + ' state is online : !! failed !!' ]       }}"
+      testfailed      : "{{ testfailed   + [ '    [!] Data aggregate ' + item.name + ' state is online : !! failed !!' ]       }}"
+    with_items        : "{{ dataaggrs                                                                                          }}"
+    when              : 
+                        - data_aggregates | selectattr('name','equalto',item.name)|list|length == 0
+                        - item.state != 'online'
+    
+  # Aggredate (s) raid type verification
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [ ] Data aggregate ' + item.name + ' raid type is raid_dp : passed' ]        }}"
+      testpassed      : "{{ testpassed   + [ '    [ ] Data aggregate ' + item.name + ' raid type is raid_dp : passed' ]        }}"
+    with_items        : "{{ dataaggrs                                                                                          }}"
+    when              : data_aggregates | selectattr('raidtype','equalto',item.raid_type)|list|length > 0
+      
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [!] Data aggregate ' + item.name + ' raid type is raid_dp : !! failed !!' ]  }}"
+      testfailed      : "{{ testfailed   + [ '    [!] Data aggregate ' + item.name + ' raid type is raid_dp : !! failed !!' ]  }}"
+    with_items        : "{{ dataaggrs                                                                                          }}"
+    when              : data_aggregates | selectattr('raidtype','equalto',item.raid_type)|list|length == 0
+
+  # Aggredate (s) ha policy verification
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [ ] Data aggregate ' + item.name + ' ha policy is sfo : passed' ]            }}"
+      testpassed      : "{{ testpassed   + [ '    [ ] Data aggregate ' + item.name + ' ha policy is sfo : passed' ]            }}"
+    with_items        : "{{ dataaggrs                                                                                          }}"
+    when              : 
+                        - data_aggregates | selectattr('name','equalto',item.name)|list|length > 0
+                        - item.ha_policy == 'sfo'
+  
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [!] Data aggregate ' + item.name + ' ha policy is sfo : !! failed !!' ]      }}"
+      testfailed      : "{{ testfailed   + [ '    [!] Data aggregate ' + item.name + ' ha policy is sfo : !! failed !!' ]      }}"
+    with_items        : "{{ dataaggrs                                                                                          }}"
+    when              :
+                        - ( data_aggregates | selectattr('name','equalto',item.name)|list|length == 0
+                        - item.ha_policy != 'sfo'

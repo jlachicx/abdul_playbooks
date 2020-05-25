@@ -1,0 +1,6 @@
+*Please add to service.softlayer.com zone:*
+
+ccistordal0555a-fz   600   IN NS    ccistordal0555a.service.softlayer.com.
+ccistordal0555a      86400 IN A     10.2.110.32
+ccistordal0555b-fz   600   IN NS    ccistordal0555b.service.softlayer.com.
+ccistordal0555b      86400 IN A     10.2.110.33

@@ -1,0 +1,10 @@
+172.26.165.168 ncs9.sr02.mon01.softlayer.local add
+172.26.165.169 ncs10.sr02.mon01.softlayer.local add
+172.26.165.170 stxf-mon0102.softlayer.local add
+172.26.165.171 stxf-mon0102a.softlayer.local add
+172.26.165.172 stxf-mon0102b.softlayer.local add
+172.26.165.173 stxf-mon0102a-rlm.softlayer.local add
+172.26.165.174 stxf-mon0102b-rlm.softlayer.local add
+172.26.165.175 stxf-mon0102-ad-tunnel.softlayer.local add
+172.26.165.176 stxf-mon0102-vs00.softlayer.local add
+172.26.165.177 stxf-mon0102-zapi.softlayer.local add

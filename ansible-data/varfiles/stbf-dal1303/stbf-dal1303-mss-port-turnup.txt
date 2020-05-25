@@ -1,0 +1,64 @@
+Please turn up ports 1 thru 8 on
+
+  - mss49.sr01.dal13
+  - mss50.sr01.dal13
+
+All ports and port-channels should be access ports on VLAN 30.
+
+All ports and port-channels should have flow control disabled.
+
+All port-channels should use LACP.
+
+Enable portfast on all included physical interfaces and port channels
+
+Do not configure for auto speed negotiation
+
+Port descriptions:
+
+================
+mss50.sr01.dal13
+================
+
+Port 01 ==> stbf-dal1303a:e1a
+Port 02 ==> stbf-dal1303a:e1c
+Port 03 ==> stbf-dal1303a:e10a
+Port 04 ==> stbf-dal1303a:e10c
+Port 05 ==> stbf-dal1303b:e1a
+Port 06 ==> stbf-dal1303b:e1c
+Port 07 ==> stbf-dal1303b:e10a
+Port 08 ==> stbf-dal1303b:e10c
+
+
+Port Channels on mss50.sr01.dal13
+=============
+
+01+03 ==> stbf-dal1303a:a0a
+02+04 ==> stbf-dal1303a:a0c
+05+07 ==> stbf-dal1303b:a0a
+06+08 ==> stbf-dal1303b:a0c
+
+
+================
+mss49.sr01.dal13
+================
+
+Port 01 ==> stbf-dal1303a:e1b
+Port 02 ==> stbf-dal1303a:e1d
+Port 03 ==> stbf-dal1303a:e10b
+Port 04 ==> stbf-dal1303a:e10d
+Port 05 ==> stbf-dal1303b:e1b
+Port 06 ==> stbf-dal1303b:e1d
+Port 07 ==> stbf-dal1303b:e10b
+Port 08 ==> stbf-dal1303b:e10d
+
+
+Port Channels on mss49.sr01.dal13
+=============
+
+01+03 ==> stbf-dal1303a:a0b
+02+04 ==> stbf-dal1303a:a0d
+05+07 ==> stbf-dal1303b:a0b
+06+08 ==> stbf-dal1303b:a0d
+
+Thank you for your support.
+

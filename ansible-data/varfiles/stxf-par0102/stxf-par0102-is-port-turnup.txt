@@ -1,0 +1,8 @@
+Please turn up the ports listed below on is09.sr02.par01 on VLAN 112, no flowcontrol, no spanning-tree portfast (switches downstream).
+
+Port descriptions:
+
+  - Eth1: ncs9.sr02.par01
+  - Eth2: ncs10.sr02.par01
+  - Eth3: stxf-par0102a
+  - Eth4: stxf-par0102b

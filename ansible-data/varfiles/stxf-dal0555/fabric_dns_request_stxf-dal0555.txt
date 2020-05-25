@@ -1,0 +1,6 @@
+*Please add to service.softlayer.com zone:*
+
+fsf-dal0555a-fz      600   IN NS    fsf-dal0555a.service.softlayer.com.
+fsf-dal0555a         86400 IN A     10.2.110.34
+fsf-dal0555b-fz      600   IN NS    fsf-dal0555b.service.softlayer.com.
+fsf-dal0555b         86400 IN A     10.2.110.35

@@ -1,0 +1,6 @@
+*Please add to service.softlayer.com zone:*
+
+fsf-mon0199a-fz      600   IN NS    fsf-mon0199a.service.softlayer.com.
+fsf-mon0199a         86400 IN A     10.3.126.173
+fsf-mon0199b-fz      600   IN NS    fsf-mon0199b.service.softlayer.com.
+fsf-mon0199b         86400 IN A     10.3.126.174

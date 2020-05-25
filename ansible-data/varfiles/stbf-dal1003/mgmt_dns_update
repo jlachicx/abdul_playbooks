@@ -1,0 +1,10 @@
+172.17.245.32 ncs15.sr03.dal10.softlayer.local add
+172.17.245.33 ncs16.sr03.dal10.softlayer.local add
+172.17.245.34 stbf-dal1003.softlayer.local add
+172.17.245.35 stbf-dal1003a.softlayer.local add
+172.17.245.36 stbf-dal1003b.softlayer.local add
+172.17.245.37 stbf-dal1003a-rlm.softlayer.local add
+172.17.245.38 stbf-dal1003b-rlm.softlayer.local add
+172.17.245.39 stbf-dal1003-ad-tunnel.softlayer.local add
+172.17.245.40 stbf-dal1003-vs00.softlayer.local add
+172.17.245.41 stbf-dal1003-zapi.softlayer.local add

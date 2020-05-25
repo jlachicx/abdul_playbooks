@@ -1,0 +1,36 @@
+---
+ - name: loop control
+   hosts: localhost
+   gather_facts: no
+
+   vars:
+     portchannelmsstwo: [ a0a, a0c ]
+     mssportssequence: [ 1,2, 5,6, 9,10, 13,14, 17,18, 21,22, 25,26, 29,30, 33,34, 37,38, 41,42, 45,46, 49,50, 53,54, 57,58, 61,62, 65,66, 69,70, 73,74, 77,78]
+     mss_start: 45
+     nodes: [ test1, test2, test3, test4, test5, test6, test7, test8 ]
+   
+   tasks:
+   - set_fact:
+       mss_twoportchlist: []
+       mss_oneportchlist: []
+   
+   - set_fact:
+       mss_twoportchlist: "{{ mss_twoportchlist + [ {'first_port': mssportssequence[(idx|int)] + mss_start|int -1, 'sec_port':  mssportssequence[(idx|int)]+1 + mss_start|int, 'ntap_port': (item[0]+':'+item[1]) } ] }}"
+     with_nested:
+       - "{{ nodes }}"
+       - "{{ portchannelmsstwo }}"
+     loop_control:
+        index_var: idx
+   - debug: var=mss_twoportchlist
+   - pause:
+ 
+  # - set_fact:
+  #     Platforms: "{{ Platforms |default([]) + [item] }}"
+  #   with_items:
+  #     - "--------------------------------------------"
+  #     - "| Available platforms:                     |"
+  #     - "|                                          |"
+     #loop_control:
+     #  label: ""
+
+   - debug: var=Platforms

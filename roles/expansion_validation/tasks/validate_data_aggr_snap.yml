@@ -1,0 +1,52 @@
+  - name              : Getting aggregates snap sched
+    na_ontap_command  :
+      hostname        : "{{ hostname                                                                                            }}"
+      username        : "{{ username                                                                                            }}"
+      password        : "{{ password                                                                                            }}"
+      https           : true
+      validate_certs  : false
+      ontapi          : "{{ ontap_facts.ontap_version                                                                           }}"
+      command         : ['run -node * snap sched -A'                                                                            ]
+    register          : tmpsnapsched
+  
+  - name              : parse xml output
+    xml               :
+      xmlstring       : "{{ tmpsnapsched.msg                                                                                     }}"
+      namespaces      :
+        ns            : http://www.netapp.com/filer/admin
+      xpath           : "/ns:results/ns:cli-output"
+      content         : 'text'
+    register          : clioutput
+ 
+  - set_fact          :
+      snapsched       : "{{ snapsched|default([]) + [ { 'name': name, 'schedw': schedw, 'schedd': schedd, 'schedh': schedh } ]  }}"
+    vars              :
+      tmpline         : "{{ item|regex_replace(' {2,}',' ')|trim                                                                }}"
+      name            : "{{ tmpline.split(' ')[1].replace(':','')                                                               }}"
+      schedw          : "{{ tmpline.split(' ')[2]                                                                               }}"
+      schedd          : "{{ tmpline.split(' ')[3]                                                                               }}"
+      schedh          : "{{ tmpline.split(' ')[4]                                                                               }}"
+    with_items        : "{{ (clioutput.matches[0]['{http://www.netapp.com/filer/admin}cli-output']).split('\n')                 }}"
+    when              :
+                        - "'Aggregate' in item"
+                        - "'aggr0' not in item"
+ 
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [ ] Data aggregate ' + item.name + ' snap sched set to 0 0 0 : passed' ]      }}"
+      testpassed      : "{{ testpassed   + [ '    [ ] Data aggregate ' + item.name + ' snap sched set to 0 0 0 : passed' ]      }}"
+    with_items        : "{{ snapsched                                                                                           }}"
+    when              :
+                        - item.schedw == '0'
+                        - item.schedd == '0'
+                        - item.schedh == '0'
+                        - data_aggregates | selectattr('name','equalto',item.name) | list | length > 0
+      
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [!] Data aggregate ' + item.name + ' snap sched set to 0 0 0 : !! failed !!'] }}"
+      testfailed      : "{{ testfailed   + [ '    [!] Data aggregate ' + item.name + ' snap sched set to 0 0 0 : !! failed !!'] }}"
+    with_items        : "{{ snapsched                                                                                           }}"
+    when              : >
+                        (item.schedw != '0') or (item.schedd != '0') or (item.schedh != '0')         and
+                        data_aggregates | selectattr('name','equalto',item.name) | list | length > 0     or
+                        data_aggregates | selectattr('name','equalto',item.name) | list | length == 0
+          

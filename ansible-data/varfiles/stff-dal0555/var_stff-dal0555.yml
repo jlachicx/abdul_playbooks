@@ -1,0 +1,312 @@
+####################################################
+#### Template version                           ####
+####################################################
+template_version: 1.0.0d
+# END template version
+
+####################################################
+#### Cluster Name                               ####
+####################################################
+cluster_name: stff-dal0555
+# END Cluster Name
+
+####################################################
+#### DataCenter                                 ####
+####################################################
+datacenter: dal05
+# END DataCenter
+
+####################################################
+#### Rack Layout                                ####
+####################################################
+##### Top of dal05.sr01.rk234 #####
+mss03.sr01.dal05_location: dal05.sr01.rk234.sl04
+ncs5.sr01.dal05_location: dal05.sr01.rk234.sl06
+stff-dal0555ab-shelf01_location: dal05.sr01.rk234.sl15
+stff-dal0555ab-shelf00_location: dal05.sr01.rk234.sl17
+stff-dal0555a_location: dal05.sr01.rk234.sl19
+stff-dal0555b_location: dal05.sr01.rk234.sl23
+
+##### Top of dal05.sr01.rk235 #####
+mss04.sr01.dal05_location: dal05.sr01.rk235.sl04
+ncs6.sr01.dal05_location: dal05.sr01.rk235.sl06
+stff-dal0555ab-shelf11_location: dal05.sr01.rk235.sl15
+stff-dal0555ab-shelf10_location: dal05.sr01.rk235.sl17
+# END Rack Layout
+
+####################################################
+#### Netapp Cluster Switch (NCS)                ####
+####################################################
+ncs1: ncs5.sr01.dal05
+ncs2: ncs6.sr01.dal05
+# END Netapp Cluster Switch
+
+####################################################
+#### Internal Switch (IS)                       ####
+####################################################
+is1: is08.sr01.dal05
+is1_start_port: 1
+is1_rack: 321
+# END Internal Switch
+
+####################################################
+#### Internal Switch Port Turnup                ####
+####################################################
+# 
+# Please turn up the ports listed below on is08.sr01.dal05 on VLAN 112, no flowcontrol, no spanning-tree portfast (switches downstream).
+#  
+# Port descriptions:
+#  
+#   - Eth1: ncs5.sr01.dal05
+#   - Eth2: ncs6.sr01.dal05
+#   - Eth3: stff-dal0555a
+#   - Eth4: stff-dal0555b
+#  
+# Thank you for your support.
+# END IS Port Turnup
+
+####################################################
+#### Netapp Management Switch (NMS)             ####
+####################################################
+# END Netapp Management Switch
+
+####################################################
+#### Netapp Management Switch (NMS) Port turnup ####
+####################################################
+# END NMS Port Turnup
+
+####################################################
+#### Master Services Switches (MSS)             ####
+####################################################
+mss1: mss03.sr01.dal05
+mss2: mss04.sr01.dal05
+# END Master Services Switches
+
+####################################################
+#### Master Services Switches Port Turnup       ####
+####################################################
+# 
+# Please turn up ports 1 thru 8 on
+#  
+#   - mss03.sr01.dal05
+#   - mss04.sr01.dal05
+#  
+# Please make sure that:
+#  
+#   - All ports and port-channels are access ports on VLAN 30
+#   - All ports and port-channels have flow control disabled
+#   - Portfast is enabled on all included physical interfaces and port channels
+#   - All port are 10 gb/sec
+#   - Ports are not configured for auto speed negotiation
+#  
+# Port descriptions:
+#  
+# ============================================
+#  mss04.sr01.dal05
+# ============================================
+#  
+#   - Port 01  ==> stff-dal0555a:e1a
+#   - Port 02  ==> stff-dal0555a:e1c
+#   - Port 03  ==> stff-dal0555a:e10a
+#   - Port 04  ==> stff-dal0555a:e10c
+#   - Port 05  ==> stff-dal0555b:e1a
+#   - Port 06  ==> stff-dal0555b:e1c
+#   - Port 07  ==> stff-dal0555b:e10a
+#   - Port 08  ==> stff-dal0555b:e10c
+# 
+# ============================================
+#  Port Channels on mss04.sr01.dal05
+# ============================================
+#  
+#   - 01+03 stff-dal0555a:a0a
+#   - 02+04 stff-dal0555a:a0c
+#   - 05+07 stff-dal0555b:a0a
+#   - 06+08 stff-dal0555b:a0c
+#  
+# ============================================
+#  mss03.sr01.dal05
+# ============================================
+#  
+#   - Port 01  ==> stff-dal0555a:e1b
+#   - Port 02  ==> stff-dal0555a:e1d
+#   - Port 03  ==> stff-dal0555a:e10b
+#   - Port 04  ==> stff-dal0555a:e10d
+#   - Port 05  ==> stff-dal0555b:e1b
+#   - Port 06  ==> stff-dal0555b:e1d
+#   - Port 07  ==> stff-dal0555b:e10b
+#   - Port 08  ==> stff-dal0555b:e10d
+#  
+# ============================================
+#  Port Channels on mss03.sr01.dal05
+# ============================================
+#  
+#   - 01+03 stff-dal0555a:a0b
+#   - 02+04 stff-dal0555a:a0d
+#   - 05+07 stff-dal0555b:a0b
+#   - 06+08 stff-dal0555b:a0d
+#  
+# Thank you for your support.
+# END MSS Port Turnup
+
+####################################################
+#### Interface IPs                              ####
+####################################################
+ncs_a: { ip: '172.18.107.180', name: 'ncs5.sr01.dal05.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+ncs_b: { ip: '172.18.107.181', name: 'ncs6.sr01.dal05.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+cluster_mgmt: { ip: '172.18.107.172', name: 'stff-dal0555.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_a_mgmt: { ip: '172.18.107.173', name: 'stff-dal0555a.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_b_mgmt: { ip: '172.18.107.174', name: 'stff-dal0555b.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_a_sp: { ip: '172.18.107.175', name: 'stff-dal0555a-rlm.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_b_sp: { ip: '172.18.107.176', name: 'stff-dal0555b-rlm.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+svm_ad_auth: { ip: '172.18.107.182', name: 'stff-dal0555-ad-tunnel.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+svm_vs00_mgmt: { ip: '172.18.107.177', name: 'stff-dal0555-vs00.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+cluster_zapi: { ip: '172.18.107.178', name: 'stff-dal0555-zapi.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+smiclna_01: { ip: '10.2.110.186', name: 'smiclna_01.stff-dal0555', mask: '255.255.255.0', gateway: '10.2.110.1'}
+smiclnb_01: { ip: '10.2.110.187', name: 'smiclnb_01.stff-dal0555', mask: '255.255.255.0', gateway: '10.2.110.1'}
+fslifna_01: { ip: '10.2.110.188', name: 'fsf-dal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+fslifnb_01: { ip: '10.2.110.189', name: 'fsf-dal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+fslifna_02: { ip: '10.2.110.190', name: 'fsf-dal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+fslifnb_02: { ip: '10.2.110.191', name: 'fsf-dal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+fslifna_03: { ip: '10.2.110.192', name: 'fsf-dal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+fslifnb_03: { ip: '10.2.110.193', name: 'fsf-dal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+fslifna_04: { ip: '10.2.110.194', name: 'fsf-dal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+fslifnb_04: { ip: '10.2.110.195', name: 'fsf-dal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+fslifna_05: { ip: '10.2.110.202', name: 'fsf-dal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+fslifnb_05: { ip: '10.2.110.203', name: 'fsf-dal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+fslifna_06: { ip: '10.2.110.204', name: 'fsf-dal0555a-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+fslifnb_06: { ip: '10.2.110.205', name: 'fsf-dal0555b-fz.service.softlayer.com', mask: '255.255.255.0', gateway: '10.2.110.1'}
+# END Interface IPs
+
+####################################################
+#### DNS Servers and Domain                     ####
+####################################################
+dnsdomain: softlayer.local
+dns_server1: 172.18.18.21
+dns_server2: 172.18.18.20
+# END DNS Servers and Domain
+
+####################################################
+#### AutoSupport                                ####
+####################################################
+mailhosts: mx-outbound.softlayer.local
+mailto: storsys@softlayer.com
+mailfrom: stff-dal0555@softlayer.com
+transport: https
+# END AutoSupport
+
+####################################################
+#### NTP Servers                                ####
+####################################################
+ntpserver: time.softlayer.local
+# END NTP Servers
+
+####################################################
+#### ONTAP Version                              ####
+####################################################
+ontap_version: 9.5P5
+# END ONTAP Version
+
+############  Ansible Playbook Variable Information ##################
+
+####################################################
+#### Base Config Playbook Vars                  ####
+####################################################
+node_location:
+  - { name: 'stff-dal0555b', location: 'dal05.sr01.rk234.sl23' }
+  - { name: 'stff-dal0555a', location: 'dal05.sr01.rk234.sl19' }
+zapi_ip:
+  - { svm: 'stff-dal0555', name: 'zapi_mgmt', port: 'e0M', node: 'stff-dal0555a', ip: '172.18.107.178', mask: '255.255.255.0' }
+cluster_routes:
+  - { svm: 'stff-dal0555', dest: '10.0.0.0/8', gw: '10.2.110.1', metric: 20 }
+  - { svm: 'stff-dal0555', dest: '0.0.0.0/0', gw: '172.18.107.1', metric: 20 }
+firewall_policy:
+  - { vserver: 'stff-dal0555', policy: 'deny-all', service: 'telnet' }
+  - { vserver: 'stff-dal0555', policy: 'deny-all', service: 'ssh' }
+  - { vserver: 'stff-dal0555', policy: 'deny-all', service: 'snmp' }
+  - { vserver: 'stff-dal0555', policy: 'deny-all', service: 'rsh' }
+  - { vserver: 'stff-dal0555', policy: 'deny-all', service: 'ntp' }
+  - { vserver: 'stff-dal0555', policy: 'deny-all', service: 'ndmps' }
+  - { vserver: 'stff-dal0555', policy: 'deny-all', service: 'ndmp' }
+  - { vserver: 'stff-dal0555', policy: 'deny-all', service: 'https' }
+  - { vserver: 'stff-dal0555', policy: 'deny-all', service: 'http' }
+  - { vserver: 'stff-dal0555', policy: 'deny-all', service: 'dns' }
+data_aggregates:
+  - { name: 'aggr_stff_dal0555a_ssd01', node: 'stff-dal0555a', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
+  - { name: 'aggr_stff_dal0555b_ssd01', node: 'stff-dal0555b', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
+autosupport_budget:
+  - { subsystem: 'networking', sizelimit: '4MB', timelimit: '1m' }
+  - { subsystem: 'splog_latest', sizelimit: '1MB', timelimit: '4m' }
+  - { subsystem: 'SAN', sizelimit: '800MB', timelimit: '5m' }
+  - { subsystem: 'NFS', sizelimit: '10MB', timelimit: '4m' }
+  - { subsystem: 'Platform', sizelimit: '4MB', timelimit: '8m' }
+  - { subsystem: 'wafl', sizelimit: '30MB', timelimit: '10m' }
+  - { subsystem: 'kernel', sizelimit: '6MB', timelimit: '4m' }
+  - { subsystem: 'asup_ems', sizelimit: '4MB', timelimit: '2m' }
+  - { subsystem: 'storage', sizelimit: '26MB', timelimit: '12m' }
+  - { subsystem: 'mhost', sizelimit: '17MB', timelimit: '4m' }
+  - { subsystem: 'performance', sizelimit: '200MB', timelimit: '30m' }
+  - { subsystem: 'performance_asup', sizelimit: '800MB', timelimit: '25m' }
+# END Base config Playbook vars
+
+####################################################
+#### Advanced Config Playbook Vars              ####
+####################################################
+vserver_detail:
+  - { name: 'stff-dal0555_vs00', vol: 'stff_dal0555_vs00_root', sec_style: 'unix', ss_pol: 'none', subtype: 'default', allowed_protocols: [nfs], domains: 'softlayer.local', nameservers: '172.18.18.21,172.18.18.20' }
+svm_mgmt_lif:
+  - { svm: 'stff-dal0555_vs00', name: 'mgmt1', port: 'e0M', node: stff-dal0555a, ip: '172.18.107.177', mask: '255.255.255.0' }
+smicl_ip:
+  - { svm: 'stff-dal0555', name: 'smiclna_01.stff-dal0555', port: 'a0a', node: 'stff-dal0555a', ip: '10.2.110.186', mask: '255.255.255.0' }
+  - { svm: 'stff-dal0555', name: 'smiclnb_01.stff-dal0555', port: 'a0b', node: 'stff-dal0555b', ip: '10.2.110.187', mask: '255.255.255.0' }
+nfs_ip:
+  - { svm: 'stff-dal0555_vs00', name: 'fslifna_01', port: 'a0a', node: 'stff-dal0555a', fqdn: 'fsf-dal0555a-fz.service.softlayer.com', ip: '10.2.110.188', mask: '255.255.255.0' }
+  - { svm: 'stff-dal0555_vs00', name: 'fslifna_02', port: 'a0b', node: 'stff-dal0555a', fqdn: 'fsf-dal0555a-fz.service.softlayer.com', ip: '10.2.110.190', mask: '255.255.255.0' }
+  - { svm: 'stff-dal0555_vs00', name: 'fslifna_03', port: 'a0c', node: 'stff-dal0555a', fqdn: 'fsf-dal0555a-fz.service.softlayer.com', ip: '10.2.110.192', mask: '255.255.255.0' }
+  - { svm: 'stff-dal0555_vs00', name: 'fslifna_04', port: 'a0a', node: 'stff-dal0555a', fqdn: 'fsf-dal0555a-fz.service.softlayer.com', ip: '10.2.110.194', mask: '255.255.255.0' }
+  - { svm: 'stff-dal0555_vs00', name: 'fslifna_05', port: 'a0b', node: 'stff-dal0555a', fqdn: 'fsf-dal0555a-fz.service.softlayer.com', ip: '10.2.110.202', mask: '255.255.255.0' }
+  - { svm: 'stff-dal0555_vs00', name: 'fslifna_06', port: 'a0c', node: 'stff-dal0555a', fqdn: 'fsf-dal0555a-fz.service.softlayer.com', ip: '10.2.110.204', mask: '255.255.255.0' }
+  - { svm: 'stff-dal0555_vs00', name: 'fslifnb_01', port: 'a0a', node: 'stff-dal0555b', fqdn: 'fsf-dal0555b-fz.service.softlayer.com', ip: '10.2.110.189', mask: '255.255.255.0' }
+  - { svm: 'stff-dal0555_vs00', name: 'fslifnb_02', port: 'a0b', node: 'stff-dal0555b', fqdn: 'fsf-dal0555b-fz.service.softlayer.com', ip: '10.2.110.191', mask: '255.255.255.0' }
+  - { svm: 'stff-dal0555_vs00', name: 'fslifnb_03', port: 'a0d', node: 'stff-dal0555b', fqdn: 'fsf-dal0555b-fz.service.softlayer.com', ip: '10.2.110.193', mask: '255.255.255.0' }
+  - { svm: 'stff-dal0555_vs00', name: 'fslifnb_04', port: 'a0a', node: 'stff-dal0555b', fqdn: 'fsf-dal0555b-fz.service.softlayer.com', ip: '10.2.110.195', mask: '255.255.255.0' }
+  - { svm: 'stff-dal0555_vs00', name: 'fslifnb_05', port: 'a0b', node: 'stff-dal0555b', fqdn: 'fsf-dal0555b-fz.service.softlayer.com', ip: '10.2.110.203', mask: '255.255.255.0' }
+  - { svm: 'stff-dal0555_vs00', name: 'fslifnb_06', port: 'a0d', node: 'stff-dal0555b', fqdn: 'fsf-dal0555b-fz.service.softlayer.com', ip: '10.2.110.205', mask: '255.255.255.0' }
+nfs_config:
+  - { svm: 'stff-dal0555_vs00', nfsv3: 'enabled', nfsv4: 'enabled', nfsv41: 'enabled', tcp: 'enabled', udp: 'disabled', nfsv41_pnfs: 'disabled', showmount: 'disabled', nfsv4_id_domain: 'slnfsv4.com', vstorage_state: 'disabled' }
+export_policies:
+  - { name: 'stff-dal0555_vs00_ep', svm: 'stff-dal0555_vs00' }
+nfs_rules:
+  - { name: 'default', svm: 'stff-dal0555_vs00', clientmatch: '1.1.1.1', rorule: 'never', rwrule: 'never', protocol: 'nfs,cifs', anon: 65534, allowdev: true, allowsuid: no, superuser: 'none' }
+  - { name: 'stff-dal0555_vs00_ep', svm: 'stff-dal0555_vs00', clientmatch: '0.0.0.0/0', rorule: 'any', rwrule: 'never', protocol: 'nfs,cifs', anon: 65534, allowdev: false, allowsuid: no, superuser: 'none' }
+nfs_root_vol:
+  - { svm: 'stff-dal0555_vs00', volume: 'stff_dal0555_vs00_root', policy: 'stff-dal0555_vs00_ep', unixperm: '711', unixtxtperm: '---rwx--x--x' }
+quota_policies:
+  - { name: 'stff-dal0555_vs00_tracking', svm: 'stff-dal0555_vs00' }
+  - { name: 'stff-dal0555_vs00_qp', svm: 'stff-dal0555_vs00' }
+svm_routes:
+  - { svm: 'stff-dal0555_vs00', dest: '10.0.0.0/8', gw: '10.2.110.1', metric: 20 }
+  - { svm: 'stff-dal0555_vs00', dest: '172.16.0.0/12', gw: '172.18.107.1', metric: 20 }
+efficiency_policies:
+  - { name: 'pp_dedupe_thresh_pct_1', svm: 'stff-dal0555_vs00', thresholdpercent: '1' }
+  - { name: 'pp_dedupe_thresh_pct_10', svm: 'stff-dal0555_vs00', thresholdpercent: '10' }
+  - { name: 'pp_dedupe_thresh_pct_2', svm: 'stff-dal0555_vs00', thresholdpercent: '2' }
+  - { name: 'pp_dedupe_thresh_pct_20', svm: 'stff-dal0555_vs00', thresholdpercent: '20' }
+  - { name: 'pp_dedupe_thresh_pct_25', svm: 'stff-dal0555_vs00', thresholdpercent: '25' }
+  - { name: 'pp_dedupe_thresh_pct_3', svm: 'stff-dal0555_vs00', thresholdpercent: '3' }
+  - { name: 'pp_dedupe_thresh_pct_5', svm: 'stff-dal0555_vs00', thresholdpercent: '5' }
+ls_mirror:
+  - { source_path: 'stff-dal0555://stff-dal0555_vs00/stff_dal0555_vs00_root', destination_path: 'stff-dal0555://stff-dal0555_vs00/stff_dal0555_vs00_root_m2', aggregate: 'aggr_stff_dal0555b_ssd01', vserver: 'stff-dal0555_vs00', destination_volume: 'stff_dal0555_vs00_root_m2', relationship_type: 'load_sharing', schedule: '5min' }
+  - { source_path: 'stff-dal0555://stff-dal0555_vs00/stff_dal0555_vs00_root', destination_path: 'stff-dal0555://stff-dal0555_vs00/stff_dal0555_vs00_root_m1', aggregate: 'aggr_stff_dal0555a_ssd01', vserver: 'stff-dal0555_vs00', destination_volume: 'stff_dal0555_vs00_root_m1', relationship_type: 'load_sharing', schedule: '5min' }
+# END Advanced config Playbook vars
+
+####################################################
+#### Control Section                            ####
+####################################################
+operation: 'newinstall'
+usrinputs: { cluster: 'stff-dal0555', ontap_version: '9.5P5', server_room: '1', rack: '234', adj_rack: '235', ncs_start: '5', internal_switch: '8', is_start_port: '1', is_rack: '321', mgmt_vlan: '112', ms_switch: '3', data_vlan: '30', adn: '0', platform: 'AFF-A700', a_version: '2.8.4', cmdline: '/usr/bin/python2 /usr/bin/ansible-playbook -b -K pb_new_cluster_deployment.yml' }
+netinfos:
+  - { subnet: '10.2.110.0', mask: '24', netmask: '255.255.255.0', description: 'storage #3 (netapp)', gateway: '10.2.110.1', freehosts: 176 }
+  - { subnet: '172.18.107.0', mask: '24', netmask: '255.255.255.0', description: 'storage devices', gateway: '172.18.107.1', freehosts: 83 }
+varfile_version: 'pb_new_cluster_deployment.yml v 1.0.0b'
+testenv: yes
+# END Control Section

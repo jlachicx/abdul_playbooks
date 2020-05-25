@@ -1,0 +1,6 @@
+*Please add to service.softlayer.com zone:*
+
+fsf-par0102a-fz      600   IN NS    fsf-par0102a.service.softlayer.com.
+fsf-par0102a         86400 IN A     10.2.158.225
+fsf-par0102b-fz      600   IN NS    fsf-par0102b.service.softlayer.com.
+fsf-par0102b         86400 IN A     10.2.158.226

@@ -1,0 +1,10 @@
+172.22.203.117 ncs13.sr01.dal13.softlayer.local add
+172.22.203.118 ncs14.sr01.dal13.softlayer.local add
+172.22.203.119 stbf-dal1303.softlayer.local add
+172.22.203.120 stbf-dal1303a.softlayer.local add
+172.22.203.121 stbf-dal1303b.softlayer.local add
+172.22.203.122 stbf-dal1303a-rlm.softlayer.local add
+172.22.203.123 stbf-dal1303b-rlm.softlayer.local add
+172.22.203.124 stbf-dal1303-ad-tunnel.softlayer.local add
+172.22.203.125 stbf-dal1303-vs00.softlayer.local add
+172.22.203.126 stbf-dal1303-zapi.softlayer.local add

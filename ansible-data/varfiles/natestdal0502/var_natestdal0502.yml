@@ -1,0 +1,11 @@
+#pb_pre_check.yml test varfile for natestdal0502
+ontap_version: 9.5P5
+cluster_mgmt: { 'ip': '172.18.107.112', 'name': natestdal0502.softlayer.local, 'mask': '255.255.255.0', 'gateway': '172.18.107.1'}
+node_a_mgmt: { 'ip': '172.18.107.113', 'name': natestdal0502a.softlayer.local, 'mask': '255.255.255.0', 'gateway': '172.18.107.1'}
+node_b_mgmt: { 'ip': '172.18.107.114', 'name': natestdal0502b.softlayer.local, 'mask': '255.255.255.0', 'gateway': '172.18.107.1'}
+node_a_sp: { 'ip': '172.18.107.115', 'name': natestdal0502a-rlm.softlayer.local, 'mask': '255.255.255.0', 'gateway': '172.18.107.1'}
+node_b_sp: { 'ip': '172.18.107.116', 'name': natestdal0502b-rlm.softlayer.local, 'mask': '255.255.255.0', 'gateway': '172.18.107.1'}
+varfile_version: '0.9.7h'
+node_location:
+  - { name: natestdal0502a, location: dal05.sr03.rk284.sl34 }
+  - { name: natestdal0502b, location: dal05.sr03.rk284.sl37 }

@@ -1,0 +1,58 @@
+---
+  - name: Validation
+    hosts: localhost
+    gather_facts: no
+            
+    vars:
+      hostname: abdultest
+      username: admin
+      password: Temp12345
+      
+    
+    tasks:
+    - pause             :
+        prompt          : "Enter the STORSYS JIRA Request Number for this expansion validation"
+      register          : cr_number
+        
+    - debug             : var=cr_number.user_input
+        
+    - fail:
+        msg             : "The Change Request Number entered is invalid"
+      when:
+                        - cr_number.user_input == ""
+                        - not cr_number.user_input is regex("^[0-9]+$")
+
+    - include_vars:
+        file            : "{{ playbook_dir + '/ansible-data/varfiles/' + hostname + '/var_' + hostname + '_' + cr_number.user_input + '.yml' }}"
+    
+    - set_fact:
+        check_result    : ["Check result for cluster '{{ hostname }}'"]
+        testpassed      : []
+        testfailed      : []
+        cmdlines        : []
+     
+    - name              : Get NetApp info (Password Authentication)
+      na_ontap_info     :
+        state           : info
+        hostname        : "192.168.2.136"
+        username        : "admin"
+        password        : "Temp12345"
+        validate_certs  : no
+        https           : no
+        gather_subset   :
+                         - "!volume_info"
+                         - "!lun_info"
+      register          : ontap_info
+
+    - set_fact          :
+        ontap_facts     : "{{ ontap_info.ontap_info                                                                         }}"
+     
+    - set_fact          :
+        check_result    : "{{ check_result + [ ' | POST-CHECK SECTION' ]                                                    }}"
+
+    - include_role:
+        name: expansion_validation
+                                
+    - debug             : var=testpassed
+    - debug             : var=testfailed
+    

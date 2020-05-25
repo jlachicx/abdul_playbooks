@@ -3,6 +3,9 @@
   hosts: localhost
 
   vars:
+   adn_answer: ["no", "yes", "both"]
+   mgmt_vlan_standard: [ 106, 113 ]
+
    proto: 'abc, dyz, 445'
    svm_clone:
      dict1: {hostname: "test", ip: "127.0.0.1"}
@@ -13,7 +16,14 @@
      list_dict3: 
        - {hostname: "test4", ip: [ "127.0.0.4", "127.0.0.5", "127.0.0.6" ] }
 
+   expansion: no
+
+
   tasks:
+
+    - debug: var=adn_answer
+    - pause:
+
     - debug:
         msg: '{{ proto }}'
     - pause:

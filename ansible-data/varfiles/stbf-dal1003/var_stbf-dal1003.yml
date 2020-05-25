@@ -1,0 +1,290 @@
+####################################################
+#### Template version                           ####
+####################################################
+template_version: 1.0.0d
+# END template version
+
+####################################################
+#### Cluster Name                               ####
+####################################################
+cluster_name: stbf-dal1003
+# END Cluster Name
+
+####################################################
+#### DataCenter                                 ####
+####################################################
+datacenter: dal10
+# END DataCenter
+
+####################################################
+#### Rack Layout                                ####
+####################################################
+##### Top of dal10.sr03.rk63 #####
+mss79.sr03.dal10_location: dal10.sr03.rk63.sl04
+ncs15.sr03.dal10_location: dal10.sr03.rk63.sl06
+stbf-dal1003ab-shelf01_location: dal10.sr03.rk63.sl15
+stbf-dal1003ab-shelf00_location: dal10.sr03.rk63.sl17
+stbf-dal1003a_location: dal10.sr03.rk63.sl19
+stbf-dal1003b_location: dal10.sr03.rk63.sl23
+
+##### Top of dal10.sr03.rk64 #####
+mss80.sr03.dal10_location: dal10.sr03.rk64.sl04
+ncs16.sr03.dal10_location: dal10.sr03.rk64.sl06
+stbf-dal1003ab-shelf11_location: dal10.sr03.rk64.sl15
+stbf-dal1003ab-shelf10_location: dal10.sr03.rk64.sl17
+# END Rack Layout
+
+####################################################
+#### Netapp Cluster Switch (NCS)                ####
+####################################################
+ncs1: ncs15.sr03.dal10
+ncs2: ncs16.sr03.dal10
+# END Netapp Cluster Switch
+
+####################################################
+#### Internal Switch (IS)                       ####
+####################################################
+is1: is36.sr03.dal10
+is1_rack: 61
+# END Internal Switch
+
+####################################################
+#### Internal Switch Port Turnup                ####
+####################################################
+# 
+# Please turn up the ports listed below on is36.sr03.dal10 on VLAN 106, no flowcontrol, no spanning-tree portfast (switches downstream).
+#  
+# Port descriptions:
+#  
+#   - Eth1: ncs15.sr03.dal10
+#   - Eth2: ncs16.sr03.dal10
+#   - Eth3: stbf-dal1003a
+#   - Eth4: stbf-dal1003b
+#  
+# Thank you for your support.
+# END IS Port Turnup
+
+####################################################
+#### Netapp Management Switch (NMS)             ####
+####################################################
+# END Netapp Management Switch
+
+####################################################
+#### Netapp Management Switch (NMS) Port turnup ####
+####################################################
+# END NMS Port Turnup
+
+####################################################
+#### Master Services Switches (MSS)             ####
+####################################################
+mss1: mss79.sr03.dal10
+mss2: mss80.sr03.dal10
+# END Master Services Switches
+
+####################################################
+#### Master Services Switches Port Turnup       ####
+####################################################
+# 
+# Please turn up ports 1 thru 8 on
+#  
+#   - mss79.sr03.dal10
+#   - mss80.sr03.dal10
+#  
+# Please make sure that:
+#  
+#   - All ports and port-channels are access ports on VLAN 30
+#   - All ports and port-channels have flow control disabled
+#   - Portfast is enabled on all included physical interfaces and port channels
+#   - All port are 10 gb/sec
+#   - Ports are not configured for auto speed negotiation
+#  
+# Port descriptions:
+#  
+# ============================================
+#  mss80.sr03.dal10
+# ============================================
+#  
+#   - Port 01  ==> stbf-dal1003a:e1a
+#   - Port 02  ==> stbf-dal1003a:e1c
+#   - Port 03  ==> stbf-dal1003a:e10a
+#   - Port 04  ==> stbf-dal1003a:e10c
+#   - Port 05  ==> stbf-dal1003b:e1a
+#   - Port 06  ==> stbf-dal1003b:e1c
+#   - Port 07  ==> stbf-dal1003b:e10a
+#   - Port 08  ==> stbf-dal1003b:e10c
+# 
+# ============================================
+#  Port Channels on mss80.sr03.dal10
+# ============================================
+#  
+#   - 01+03 stbf-dal1003a:a0a
+#   - 02+04 stbf-dal1003a:a0c
+#   - 05+07 stbf-dal1003b:a0a
+#   - 06+08 stbf-dal1003b:a0c
+#  
+# ============================================
+#  mss79.sr03.dal10
+# ============================================
+#  
+#   - Port 01  ==> stbf-dal1003a:e1b
+#   - Port 02  ==> stbf-dal1003a:e1d
+#   - Port 03  ==> stbf-dal1003a:e10b
+#   - Port 04  ==> stbf-dal1003a:e10d
+#   - Port 05  ==> stbf-dal1003b:e1b
+#   - Port 06  ==> stbf-dal1003b:e1d
+#   - Port 07  ==> stbf-dal1003b:e10b
+#   - Port 08  ==> stbf-dal1003b:e10d
+#  
+# ============================================
+#  Port Channels on mss79.sr03.dal10
+# ============================================
+#  
+#   - 01+03 stbf-dal1003a:a0b
+#   - 02+04 stbf-dal1003a:a0d
+#   - 05+07 stbf-dal1003b:a0b
+#   - 06+08 stbf-dal1003b:a0d
+#  
+# Thank you for your support.
+# END MSS Port Turnup
+
+####################################################
+#### Interface IPs                              ####
+####################################################
+ncs_a: { ip: '172.17.245.32', name: 'ncs15.sr03.dal10.softlayer.local', mask: '255.255.255.0', gateway: '172.17.245.1'}
+ncs_b: { ip: '172.17.245.33', name: 'ncs16.sr03.dal10.softlayer.local', mask: '255.255.255.0', gateway: '172.17.245.1'}
+cluster_mgmt: { ip: '172.17.245.34', name: 'stbf-dal1003.softlayer.local', mask: '255.255.255.0', gateway: '172.17.245.1'}
+node_a_mgmt: { ip: '172.17.245.35', name: 'stbf-dal1003a.softlayer.local', mask: '255.255.255.0', gateway: '172.17.245.1'}
+node_b_mgmt: { ip: '172.17.245.36', name: 'stbf-dal1003b.softlayer.local', mask: '255.255.255.0', gateway: '172.17.245.1'}
+node_a_sp: { ip: '172.17.245.37', name: 'stbf-dal1003a-rlm.softlayer.local', mask: '255.255.255.0', gateway: '172.17.245.1'}
+node_b_sp: { ip: '172.17.245.38', name: 'stbf-dal1003b-rlm.softlayer.local', mask: '255.255.255.0', gateway: '172.17.245.1'}
+svm_ad_auth: { ip: '172.17.245.39', name: 'stbf-dal1003-ad-tunnel.softlayer.local', mask: '255.255.255.0', gateway: '172.17.245.1'}
+svm_vs00_mgmt: { ip: '172.17.245.40', name: 'stbf-dal1003-vs00.softlayer.local', mask: '255.255.255.0', gateway: '172.17.245.1'}
+cluster_zapi: { ip: '172.17.245.41', name: 'stbf-dal1003-zapi.softlayer.local', mask: '255.255.255.0', gateway: '172.17.245.1'}
+smiclna_01: { ip: '10.200.94.74', name: 'smiclna_01.stbf-dal1003', mask: '255.255.255.0', gateway: '10.200.94.1'}
+smiclnb_01: { ip: '10.200.94.75', name: 'smiclnb_01.stbf-dal1003', mask: '255.255.255.0', gateway: '10.200.94.1'}
+iscsilifna_01_adn: { ip: '161.26.98.183', name: 'stbf-dal1003a_iscsi_lif_adn', mask: '255.255.255.0', gateway: '161.26.98.1'}
+iscsilifnb_01_adn: { ip: '161.26.98.184', name: 'stbf-dal1003b_iscsi_lif_adn', mask: '255.255.255.0', gateway: '161.26.98.1'}
+iscsilifna_02_adn: { ip: '161.26.98.185', name: 'stbf-dal1003a_iscsi_lif_adn', mask: '255.255.255.0', gateway: '161.26.98.1'}
+iscsilifnb_02_adn: { ip: '161.26.98.186', name: 'stbf-dal1003b_iscsi_lif_adn', mask: '255.255.255.0', gateway: '161.26.98.1'}
+iscsilifna_03_adn: { ip: '161.26.98.187', name: 'stbf-dal1003a_iscsi_lif_adn', mask: '255.255.255.0', gateway: '161.26.98.1'}
+iscsilifnb_03_adn: { ip: '161.26.98.188', name: 'stbf-dal1003b_iscsi_lif_adn', mask: '255.255.255.0', gateway: '161.26.98.1'}
+# END Interface IPs
+
+####################################################
+#### DNS Servers and Domain                     ####
+####################################################
+dnsdomain: softlayer.local
+dns_server1: 172.17.210.20
+dns_server2: 172.17.210.21
+# END DNS Servers and Domain
+
+####################################################
+#### AutoSupport                                ####
+####################################################
+mailhosts: mx-outbound.softlayer.local
+mailto: storsys@softlayer.com
+mailfrom: stbf-dal1003@softlayer.com
+transport: https
+# END AutoSupport
+
+####################################################
+#### NTP Servers                                ####
+####################################################
+ntpserver: time.softlayer.local
+# END NTP Servers
+
+####################################################
+#### ONTAP Version                              ####
+####################################################
+ontap_version: 9.5P5
+# END ONTAP Version
+
+############  Ansible Playbook Variable Information ##################
+
+####################################################
+#### Base Config Playbook Vars                  ####
+####################################################
+node_location:
+  - { name: 'stbf-dal1003b', location: 'dal10.sr03.rk63.sl23' }
+  - { name: 'stbf-dal1003a', location: 'dal10.sr03.rk63.sl19' }
+zapi_ip:
+  - { svm: 'stbf-dal1003', name: 'zapi_mgmt', port: 'e0M', node: 'stbf-dal1003a', ip: '172.17.245.41', mask: '255.255.255.0' }
+cluster_routes:
+  - { svm: 'stbf-dal1003', dest: '10.0.0.0/8', gw: '10.200.94.1', metric: 20 }
+  - { svm: 'stbf-dal1003', dest: '0.0.0.0/0', gw: '172.17.245.1', metric: 20 }
+firewall_policy:
+  - { vserver: 'stbf-dal1003', policy: 'deny-all', service: 'telnet' }
+  - { vserver: 'stbf-dal1003', policy: 'deny-all', service: 'ssh' }
+  - { vserver: 'stbf-dal1003', policy: 'deny-all', service: 'snmp' }
+  - { vserver: 'stbf-dal1003', policy: 'deny-all', service: 'rsh' }
+  - { vserver: 'stbf-dal1003', policy: 'deny-all', service: 'ntp' }
+  - { vserver: 'stbf-dal1003', policy: 'deny-all', service: 'ndmps' }
+  - { vserver: 'stbf-dal1003', policy: 'deny-all', service: 'ndmp' }
+  - { vserver: 'stbf-dal1003', policy: 'deny-all', service: 'https' }
+  - { vserver: 'stbf-dal1003', policy: 'deny-all', service: 'http' }
+  - { vserver: 'stbf-dal1003', policy: 'deny-all', service: 'dns' }
+data_aggregates:
+  - { name: 'aggr_stbf_dal1003a_ssd01', node: 'stbf-dal1003a', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
+  - { name: 'aggr_stbf_dal1003b_ssd01', node: 'stbf-dal1003b', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
+autosupport_budget:
+  - { subsystem: 'networking', sizelimit: '4MB', timelimit: '1m' }
+  - { subsystem: 'splog_latest', sizelimit: '1MB', timelimit: '4m' }
+  - { subsystem: 'SAN', sizelimit: '800MB', timelimit: '5m' }
+  - { subsystem: 'NFS', sizelimit: '10MB', timelimit: '4m' }
+  - { subsystem: 'Platform', sizelimit: '4MB', timelimit: '8m' }
+  - { subsystem: 'wafl', sizelimit: '30MB', timelimit: '10m' }
+  - { subsystem: 'kernel', sizelimit: '6MB', timelimit: '4m' }
+  - { subsystem: 'asup_ems', sizelimit: '4MB', timelimit: '2m' }
+  - { subsystem: 'storage', sizelimit: '26MB', timelimit: '12m' }
+  - { subsystem: 'mhost', sizelimit: '17MB', timelimit: '4m' }
+  - { subsystem: 'performance', sizelimit: '200MB', timelimit: '30m' }
+  - { subsystem: 'performance_asup', sizelimit: '800MB', timelimit: '25m' }
+# END Base config Playbook vars
+
+####################################################
+#### Advanced Config Playbook Vars              ####
+####################################################
+vserver_detail:
+  - { name: 'stbf-dal1003_vs00', vol: 'stbf_dal1003_vs00_root', sec_style: 'unix', ss_pol: 'none', subtype: 'default', allowed_protocols: [iscsi], domains: 'softlayer.local', nameservers: '172.17.210.20,172.17.210.21' }
+svm_mgmt_lif:
+  - { svm: 'stbf-dal1003_vs00', name: 'mgmt1', port: 'e0M', node: stbf-dal1003a, ip: '172.17.245.40', mask: '255.255.255.0' }
+smicl_ip:
+  - { svm: 'stbf-dal1003', name: 'smiclna_01.stbf-dal1003', port: 'a0a', node: 'stbf-dal10031', ip: '10.200.94.74', mask: '255.255.255.0' }
+  - { svm: 'stbf-dal1003', name: 'smiclnb_01.stbf-dal1003', port: 'a0b', node: 'stbf-dal10031', ip: '10.200.94.75', mask: '255.255.255.0' }
+iscsi_ip:
+  - { svm: 'stbf-dal1003_vs00', name: 'iscsilifna_01_adn', port: 'a0a', node: 'stbf-dal1003a', ip: '161.26.98.183', mask: '255.255.255.0' }
+  - { svm: 'stbf-dal1003_vs00', name: 'iscsilifna_02_adn', port: 'a0b', node: 'stbf-dal1003a', ip: '161.26.98.185', mask: '255.255.255.0' }
+  - { svm: 'stbf-dal1003_vs00', name: 'iscsilifna_03_adn', port: 'a0c', node: 'stbf-dal1003a', ip: '161.26.98.187', mask: '255.255.255.0' }
+  - { svm: 'stbf-dal1003_vs00', name: 'iscsilifnb_01_adn', port: 'a0a', node: 'stbf-dal1003b', ip: '161.26.98.184', mask: '255.255.255.0' }
+  - { svm: 'stbf-dal1003_vs00', name: 'iscsilifnb_02_adn', port: 'a0b', node: 'stbf-dal1003b', ip: '161.26.98.186', mask: '255.255.255.0' }
+  - { svm: 'stbf-dal1003_vs00', name: 'iscsilifnb_03_adn', port: 'a0d', node: 'stbf-dal1003b', ip: '161.26.98.188', mask: '255.255.255.0' }
+iscsi_portset:
+  - { name: 'iscsips_nab01_adn', svm: 'stbf-dal1003_vs00', portname: [iscsilifna_01_adn,iscsilifnb_02_adn] }
+  - { name: 'iscsips_nab02_adn', svm: 'stbf-dal1003_vs00', portname: [iscsilifna_02_adn,iscsilifnb_01_adn] }
+  - { name: 'iscsips_nab03_adn', svm: 'stbf-dal1003_vs00', portname: [iscsilifna_03_adn,iscsilifnb_03_adn] }
+svm_routes:
+  - { svm: 'stbf-dal1003_vs00', dest: '7.0.0.0/8', gw: '161.26.98.1', metric: 20 }
+  - { svm: 'stbf-dal1003_vs00', dest: '161.26.0.0/16', gw: '161.26.98.1', metric: 20 }
+  - { svm: 'stbf-dal1003_vs00', dest: '10.0.0.0/8', gw: '161.26.98.1', metric: 20 }
+  - { svm: 'stbf-dal1003_vs00', dest: '172.16.0.0/12', gw: '172.17.245.1', metric: 20 }
+efficiency_policies:
+  - { name: 'pp_dedupe_thresh_pct_1', svm: 'stbf-dal1003_vs00', thresholdpercent: '1' }
+  - { name: 'pp_dedupe_thresh_pct_10', svm: 'stbf-dal1003_vs00', thresholdpercent: '10' }
+  - { name: 'pp_dedupe_thresh_pct_2', svm: 'stbf-dal1003_vs00', thresholdpercent: '2' }
+  - { name: 'pp_dedupe_thresh_pct_20', svm: 'stbf-dal1003_vs00', thresholdpercent: '20' }
+  - { name: 'pp_dedupe_thresh_pct_25', svm: 'stbf-dal1003_vs00', thresholdpercent: '25' }
+  - { name: 'pp_dedupe_thresh_pct_3', svm: 'stbf-dal1003_vs00', thresholdpercent: '3' }
+  - { name: 'pp_dedupe_thresh_pct_5', svm: 'stbf-dal1003_vs00', thresholdpercent: '5' }
+# END Advanced config Playbook vars
+
+####################################################
+#### Control Section                            ####
+####################################################
+operation: 'newinstall'
+usrinputs: { cluster: 'stbf-dal1003', ontap_version: '9.5P5', server_room: '3', rack: '63', adj_rack: '64', ncs_start: '15', internal_switch: '36', mgmt_port_start: '1', mgmt_vlan: '106', ms_switch: '79', data_vlan: '30', adn: '1', platform: 'AFF-A700', a_version: '2.9.1', cmdline: '/usr/local/venv/bin/python2 /usr/local/venv/bin/ansible-playbook -b -K /usr/local/ansible/pb_new_cluster_deployment.yml' }
+netinfos:
+  - { subnet: '161.26.98.0', mask: '24', netmask: '255.255.255.0', description: 'DAL10 ADN netapp.service', gateway: '161.26.98.1', freehosts: 72 }
+  - { subnet: '10.200.94.0', mask: '24', netmask: '255.255.255.0', description: 'DAL10 netapp.service 10.x', gateway: '10.200.94.1', freehosts: 164 }
+  - { subnet: '172.17.245.0', mask: '24', netmask: '255.255.255.0', description: 'storage.internal', gateway: '172.17.245.1', freehosts: 253 }
+varfile_version: '/usr/local/ansible/pb_new_cluster_deployment.yml v 0.9.9s'
+# END Control Section

@@ -1,0 +1,10 @@
+172.20.139.90 ncs9.sr02.par01.softlayer.local add
+172.20.139.91 ncs10.sr02.par01.softlayer.local add
+172.20.139.92 stxf-par0102.softlayer.local add
+172.20.139.93 stxf-par0102a.softlayer.local add
+172.20.139.94 stxf-par0102b.softlayer.local add
+172.20.139.95 stxf-par0102a-rlm.softlayer.local add
+172.20.139.96 stxf-par0102b-rlm.softlayer.local add
+172.20.139.97 stxf-par0102-ad-tunnel.softlayer.local add
+172.20.139.98 stxf-par0102-vs00.softlayer.local add
+172.20.139.99 stxf-par0102-zapi.softlayer.local add

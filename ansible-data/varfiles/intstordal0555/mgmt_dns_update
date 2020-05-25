@@ -1,0 +1,9 @@
+172.18.107.53 ncs5.sr01.dal05.softlayer.local add
+172.18.107.54 ncs6.sr01.dal05.softlayer.local add
+172.18.107.55 intstordal0555.softlayer.local add
+172.18.107.56 intstordal0555a.softlayer.local add
+172.18.107.57 intstordal0555b.softlayer.local add
+172.18.107.58 intstordal0555a-rlm.softlayer.local add
+172.18.107.59 intstordal0555b-rlm.softlayer.local add
+172.18.107.60 intstordal0555-ad-tunnel.softlayer.local add
+172.18.107.61 intstordal0555-vs0.softlayer.local add

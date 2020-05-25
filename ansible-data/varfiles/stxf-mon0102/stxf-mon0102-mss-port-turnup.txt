@@ -1,0 +1,64 @@
+Please turn up ports 1 thru 8 on
+
+  - mss25.sr02.mon01
+  - mss26.sr02.mon01
+
+All ports and port-channels should be access ports on VLAN 30.
+
+All ports and port-channels should have flow control disabled.
+
+All port-channels should use LACP.
+
+Enable portfast on all included physical interfaces and port channels
+
+ 10Gb/s port speed. Do not configure for auto speed negotiation.
+
+Port descriptions:
+
+================
+mss26.sr02.mon01
+================
+
+Port 01 ==> stxf-mon0102a:e1a
+Port 02 ==> stxf-mon0102a:e1c
+Port 03 ==> stxf-mon0102a:e10a
+Port 04 ==> stxf-mon0102a:e10c
+Port 05 ==> stxf-mon0102b:e1a
+Port 06 ==> stxf-mon0102b:e1c
+Port 07 ==> stxf-mon0102b:e10a
+Port 08 ==> stxf-mon0102b:e10c
+
+
+Port Channels on mss26.sr02.mon01
+=============
+
+01+03 ==> stxf-mon0102a:a0a
+02+04 ==> stxf-mon0102a:a0c
+05+07 ==> stxf-mon0102b:a0a
+06+08 ==> stxf-mon0102b:a0c
+
+
+================
+mss25.sr02.mon01
+================
+
+Port 01 ==> stxf-mon0102a:e1b
+Port 02 ==> stxf-mon0102a:e1d
+Port 03 ==> stxf-mon0102a:e10b
+Port 04 ==> stxf-mon0102a:e10d
+Port 05 ==> stxf-mon0102b:e1b
+Port 06 ==> stxf-mon0102b:e1d
+Port 07 ==> stxf-mon0102b:e10b
+Port 08 ==> stxf-mon0102b:e10d
+
+
+Port Channels on mss25.sr02.mon01
+=============
+
+01+03 ==> stxf-mon0102a:a0b
+02+04 ==> stxf-mon0102a:a0d
+05+07 ==> stxf-mon0102b:a0b
+06+08 ==> stxf-mon0102b:a0d
+
+Thank you for your support.
+

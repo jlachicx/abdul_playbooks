@@ -1,0 +1,11 @@
+
+Please turn up the ports listed below on is36.sr03.dal10 on VLAN 106, no flowcontrol, no spanning-tree portfast (switches downstream).
+ 
+Port descriptions:
+ 
+  - Eth1: ncs15.sr03.dal10
+  - Eth2: ncs16.sr03.dal10
+  - Eth3: stbf-dal1003a
+  - Eth4: stbf-dal1003b
+ 
+Thank you for your support.

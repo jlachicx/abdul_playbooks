@@ -1,0 +1,7 @@
+taggedinfo:
+       - { "gateway": "10.2.110.1", "idx": "0", "ipaddress": "10.2.110.162", "lifname": "iscsilifnc_01", "name": "stbf-dal0555c_iscsi_lif", "netmask": "255.255.255.0", "targetnode": "stbf-dal0555l" }
+       - { "gateway": "10.2.110.1", "idx": "1", "ipaddress": "10.2.110.163", "lifname": "iscsilifnd_01", "name": "stbf-dal0555d_iscsi_lif", "netmask": "255.255.255.0", "targetnode": "stbf-dal0555l" }
+       - { "gateway": "10.2.110.1", "idx": "2", "ipaddress": "10.2.110.164", "lifname": "iscsilifne_01", "name": "stbf-dal0555e_iscsi_lif", "netmask": "255.255.255.0", "targetnode": "stbf-dal0555l" }
+       - { "gateway": "10.2.110.1", "idx": "3", "ipaddress": "10.2.110.165", "lifname": "iscsilifnf_01", "name": "stbf-dal0555f_iscsi_lif", "netmask": "255.255.255.0", "targetnode": "stbf-dal0555l" } 
+       
+      

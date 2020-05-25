@@ -1,0 +1,292 @@
+########################################
+#### Template version               ####
+########################################
+template_version: 1.0.0a
+# END template version
+
+########################################
+#### Cluster Name                   ####
+########################################
+cluster_name: stbf-wdc0403
+# END Cluster Name
+
+########################################
+#### DataCenter                     ####
+########################################
+datacenter: wdc04
+# END DataCenter
+
+########################################
+#### Rack Layout                    ####
+########################################
+##### Top of wdc04.sr07.rk166 #####
+mss39.sr07.wdc04_location: wdc04.sr07.rk166.sl04
+ncs1.sr07.wdc04_location: wdc04.sr07.rk166.sl06
+stbf-wdc0403ab-shelf01_location: wdc04.sr07.rk166.sl15
+stbf-wdc0403ab-shelf00_location: wdc04.sr07.rk166.sl17
+stbf-wdc0403a_location: wdc04.sr07.rk166.sl19
+stbf-wdc0403b_location: wdc04.sr07.rk166.sl23
+
+##### Top of wdc04.sr07.rk167 #####
+mss40.sr07.wdc04_location: wdc04.sr07.rk167.sl04
+ncs2.sr07.wdc04_location: wdc04.sr07.rk167.sl06
+stbf-wdc0403ab-shelf11_location: wdc04.sr07.rk167.sl15
+stbf-wdc0403ab-shelf10_location: wdc04.sr07.rk167.sl17
+# END Rack Layout
+
+########################################
+#### Cluster Interconnect Switches  ####
+########################################
+ncs1: ncs1.sr07.wdc04
+ncs2: ncs2.sr07.wdc04
+# END NCS Switches
+
+########################################
+#### IS Switch                      ####
+########################################
+is1: is10.sr07.wdc04
+# END IS Switch
+
+########################################
+#### IS Port Turnup                 ####
+########################################
+# Please turn up the ports listed below on is10.sr07.wdc04 on VLAN 106, no flowcontrol, no spanning-tree portfast (switches downstream).
+#
+# Port descriptions:
+#
+#
+#  - Eth1: ncs1.sr07.wdc04
+#  - Eth2: ncs2.sr07.wdc04
+#  - Eth3: stbf-wdc0403a
+#  - Eth4: stbf-wdc0403b
+#
+#
+# END IS Port Turnup
+
+########################################
+#### NMS Switches                   ####
+########################################
+# END NMS Switches
+
+########################################
+#### NMS Port Turnup                ####
+########################################
+# END NMS Port Turnup
+
+########################################
+#### MSS Switches                   ####
+########################################
+mss1: mss39.sr07.wdc04
+mss2: mss40.sr07.wdc04
+# END MSS Switches
+
+########################################
+#### MSS Port Turnup                ####
+########################################
+#
+# Please turn up ports 1 thru 8 
+#
+# on
+#
+#  - mss39.sr07.wdc04
+#  - mss40.sr07.wdc04
+#
+# All ports and port-channels should be access ports on VLAN 30.
+#
+# All ports and port-channels should have flow control disabled.
+#
+# All port-channels should use LACP.
+#
+# Enable portfast on all included physical interfaces and port channels
+#
+# 10Gb/s port speed. Do not configure for auto speed negotiation.
+#
+# Port descriptions:
+#
+#============================================
+# mss40.sr07.wdc04
+#============================================
+#
+#  - Port 01 ==> stbf-wdc0403a:e1a
+#  - Port 02 ==> stbf-wdc0403a:e1c
+#  - Port 03 ==> stbf-wdc0403a:e10a
+#  - Port 04 ==> stbf-wdc0403a:e10c
+#  - Port 05 ==> stbf-wdc0403b:e1a
+#  - Port 06 ==> stbf-wdc0403b:e1c
+#  - Port 07 ==> stbf-wdc0403b:e10a
+#  - Port 08 ==> stbf-wdc0403b:e10c
+
+#
+#============================================
+# Port Channels on mss40.sr07.wdc04
+#============================================
+#
+#  - 01+03 ==> stbf-wdc0403a:a0a
+#  - 02+04 ==> stbf-wdc0403a:a0c
+#  - 05+07 ==> stbf-wdc0403b:a0a
+#  - 06+08 ==> stbf-wdc0403b:a0c
+#
+#
+#============================================
+# mss39.sr07.wdc04
+#============================================
+#
+#  - Port 01 ==> stbf-wdc0403a:e1b
+#  - Port 02 ==> stbf-wdc0403a:e1d
+#  - Port 03 ==> stbf-wdc0403a:e10b
+#  - Port 04 ==> stbf-wdc0403a:e10d
+#  - Port 05 ==> stbf-wdc0403b:e1b
+#  - Port 06 ==> stbf-wdc0403b:e1d
+#  - Port 07 ==> stbf-wdc0403b:e10b
+#  - Port 08 ==> stbf-wdc0403b:e10d
+#
+#
+#============================================
+# Port Channels on mss39.sr07.wdc04
+#============================================
+#
+#  - 01+03 ==> stbf-wdc0403a:a0b
+#  - 02+04 ==> stbf-wdc0403a:a0d
+#  - 05+07 ==> stbf-wdc0403b:a0b
+#  - 06+08 ==> stbf-wdc0403b:a0d
+#
+# Thank you for your support.
+#
+# END MSS Port Turnup
+
+########################################
+#### Interface IPs                  ####
+########################################
+ncs_a: { 'ip': '172.17.125.32', 'name': ncs1.sr07.wdc04.softlayer.local, 'mask': '255.255.255.0', 'gateway': '172.17.125.1'}
+ncs_b: { 'ip': '172.17.125.33', 'name': ncs2.sr07.wdc04.softlayer.local, 'mask': '255.255.255.0', 'gateway': '172.17.125.1'}
+cluster_mgmt: { 'ip': '172.17.125.34', 'name': stbf-wdc0403.softlayer.local, 'mask': '255.255.255.0', 'gateway': '172.17.125.1'}
+node_a_mgmt: { 'ip': '172.17.125.35', 'name': stbf-wdc0403a.softlayer.local, 'mask': '255.255.255.0', 'gateway': '172.17.125.1'}
+node_b_mgmt: { 'ip': '172.17.125.36', 'name': stbf-wdc0403b.softlayer.local, 'mask': '255.255.255.0', 'gateway': '172.17.125.1'}
+node_a_sp: { 'ip': '172.17.125.37', 'name': stbf-wdc0403a-rlm.softlayer.local, 'mask': '255.255.255.0', 'gateway': '172.17.125.1'}
+node_b_sp: { 'ip': '172.17.125.38', 'name': stbf-wdc0403b-rlm.softlayer.local, 'mask': '255.255.255.0', 'gateway': '172.17.125.1'}
+svm_ad_auth: { 'ip': '172.17.125.39', 'name': stbf-wdc0403-ad-tunnel.softlayer.local, 'mask': '255.255.255.0', 'gateway': '172.17.125.1'}
+svm_vs00_mgmt: { 'ip': '172.17.125.40', 'name': stbf-wdc0403-vs00.softlayer.local, 'mask': '255.255.255.0', 'gateway': '172.17.125.1'}
+cluster_zapi: { 'ip': '172.17.125.41', 'name': stbf-wdc0403-zapi.softlayer.local, 'mask': '255.255.255.0', 'gateway': '172.17.125.1'}
+smiclna_01: { 'ip': '10.201.14.32', 'name': smiclna_01.stbf-wdc0403, 'mask': '255.255.255.0', 'gateway': '10.201.14.1'}
+smiclnb_01: { 'ip': '10.201.14.33', 'name': smiclnb_01.stbf-wdc0403, 'mask': '255.255.255.0', 'gateway': '10.201.14.1'}
+iscsilifna_01: { 'ip': '10.201.14.34', 'name': stbf-wdc0403a_iscsi_lif, 'mask': '255.255.255.0', 'gateway': '10.201.14.1'}
+iscsilifnb_01: { 'ip': '10.201.14.35', 'name': stbf-wdc0403b_iscsi_lif, 'mask': '255.255.255.0', 'gateway': '10.201.14.1'}
+iscsilifna_02: { 'ip': '10.201.14.36', 'name': stbf-wdc0403a_iscsi_lif, 'mask': '255.255.255.0', 'gateway': '10.201.14.1'}
+iscsilifnb_02: { 'ip': '10.201.14.37', 'name': stbf-wdc0403b_iscsi_lif, 'mask': '255.255.255.0', 'gateway': '10.201.14.1'}
+iscsilifna_03: { 'ip': '10.201.14.38', 'name': stbf-wdc0403a_iscsi_lif, 'mask': '255.255.255.0', 'gateway': '10.201.14.1'}
+iscsilifnb_03: { 'ip': '10.201.14.39', 'name': stbf-wdc0403b_iscsi_lif, 'mask': '255.255.255.0', 'gateway': '10.201.14.1'}
+# END Interface IPs
+
+########################################
+#### DNS Servers and Domain         ####
+########################################
+dnsdomain: softlayer.local
+dns_server1: 172.17.82.20
+dns_server2: 172.17.82.21
+# END DNS Servers and Domain
+
+########################################
+#### AutoSupport                    ####
+########################################
+mailhosts: mx-outbound.softlayer.local
+mailto: storsys@softlayer.com
+mailfrom: stbf-wdc0403@softlayer.com
+transport: https
+# END AutoSupport
+
+########################################
+#### NTP Servers                    ####
+########################################
+ntpserver: time.softlayer.local
+# END NTP Servers
+
+########################################
+#### ONTAP Version                  ####
+########################################
+ontap_version: 9.5P5 
+# END ONTAP Version
+
+############  Ansible Playbook Variable Information ##################
+
+########################################
+#### Base Config Playbook Vars      ####
+########################################
+zapi_ip:
+  - { svm: stbf-wdc0403, name: 'zapi_mgmt', port: e0M, node: stbf-wdc0403a, ip: 172.17.125.41, mask: 255.255.255.0 }
+cluster_routes:
+  - { svm: stbf-wdc0403, dest: '10.0.0.0/8', gw: '10.201.14.1', metric: 20 }
+  - { svm: stbf-wdc0403, dest: '0.0.0.0/0', gw: '172.17.125.1', metric: 20 }
+data_aggregates:
+  - { name: aggr_stbf_wdc0403a_ssd01, node: stbf-wdc0403a, diskcount: 47, raidsize: 24, raidtype: raid_dp }
+  - { name: aggr_stbf_wdc0403b_ssd01, node: stbf-wdc0403b, diskcount: 47, raidsize: 24, raidtype: raid_dp }
+node_location:
+  - { name: 'stbf-wdc0403b', location: 'wdc04.sr07.rk166.sl23' }
+  - { name: 'stbf-wdc0403a', location: 'wdc04.sr07.rk166.sl19' }
+firewall_policy:
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'telnet' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'ssh' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'snmp' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'rsh' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'ntp' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'ndmps' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'ndmp' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'https' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'http' }
+  - { vserver: 'stxf-mon0102', policy: 'deny-all', service: 'dns' }
+autosupport_budget:
+  - { subsystem: 'networking', sizelimit: '4MB', timelimit: '1m' }
+  - { subsystem: 'splog_latest', sizelimit: '1MB', timelimit: '4m' }
+  - { subsystem: 'SAN', sizelimit: '800MB', timelimit: '5m' }
+  - { subsystem: 'NFS', sizelimit: '10MB', timelimit: '4m' }
+  - { subsystem: 'Platform', sizelimit: '4MB', timelimit: '8m' }
+  - { subsystem: 'wafl', sizelimit: '30MB', timelimit: '10m' }
+  - { subsystem: 'kernel', sizelimit: '6MB', timelimit: '4m' }
+  - { subsystem: 'asup_ems', sizelimit: '4MB', timelimit: '2m' }
+  - { subsystem: 'storage', sizelimit: '26MB', timelimit: '12m' }
+  - { subsystem: 'mhost', sizelimit: '17MB', timelimit: '4m' }
+  - { subsystem: 'performance', sizelimit: '200MB', timelimit: '30m' }
+  - { subsystem: 'performance_asup', sizelimit: '800MB', timelimit: '25m' }
+# END Base config Playbook vars
+
+########################################
+#### Advanced Config Playbook Vars  ####
+########################################
+vserver_detail:
+  - { name: stbf-wdc0403_vs00, vol: stbf_wdc0403_vs00_root, sec_style: unix, ss_pol: none, subtype: default, allowed_protocols: [iscsi], domains: softlayer.local, nameservers: '172.17.82.20,172.17.82.21' }
+svm_mgmt_lif:
+  - { svm: stbf-wdc0403_vs00, name: mgmt1, port: e0M, node: stbf-wdc0403a, ip: 172.17.125.40, mask: 255.255.255.0 }
+smicl_ip:
+  - { svm: stbf-wdc0403, name: smiclna_01.stbf-wdc0403, port: a0a, node: stbf-wdc0403a, ip: 10.201.14.32, mask: 255.255.255.0 }
+  - { svm: stbf-wdc0403, name: smiclnb_01.stbf-wdc0403, port: a0b, node: stbf-wdc0403b, ip: 10.201.14.33, mask: 255.255.255.0 }
+iscsi_ip:
+  - { svm: stbf-wdc0403_vs00, name: iscsilifna_01, port: a0a, node: stbf-wdc0403a, ip: 10.201.14.34, mask: 255.255.255.0 }
+  - { svm: stbf-wdc0403_vs00, name: iscsilifnb_01, port: a0a, node: stbf-wdc0403b, ip: 10.201.14.35, mask: 255.255.255.0 }
+  - { svm: stbf-wdc0403_vs00, name: iscsilifna_02, port: a0b, node: stbf-wdc0403a, ip: 10.201.14.36, mask: 255.255.255.0 }
+  - { svm: stbf-wdc0403_vs00, name: iscsilifnb_02, port: a0b, node: stbf-wdc0403b, ip: 10.201.14.37, mask: 255.255.255.0 }
+  - { svm: stbf-wdc0403_vs00, name: iscsilifna_03, port: a0c, node: stbf-wdc0403a, ip: 10.201.14.38, mask: 255.255.255.0 }
+  - { svm: stbf-wdc0403_vs00, name: iscsilifnb_03, port: a0d, node: stbf-wdc0403b, ip: 10.201.14.39, mask: 255.255.255.0 }
+iscsi_portset:
+  - { name: iscsips_nab01, svm: stbf-wdc0403_vs00, portname: [iscsilifna_01,iscsilifnb_02] }
+  - { name: iscsips_nab02, svm: stbf-wdc0403_vs00, portname: [iscsilifna_02,iscsilifnb_01] }
+  - { name: iscsips_nab03, svm: stbf-wdc0403_vs00, portname: [iscsilifna_03,iscsilifnb_03] }
+svm_routes:
+  - { svm: stbf-wdc0403_vs00, dest: '172.16.0.0/12', gw: '172.17.125.1', metric: 20 }
+  - { svm: stbf-wdc0403_vs00, dest: '10.0.0.0/8', gw: '10.201.14.1', metric: 20 }
+efficiency_policies:
+  - { name: pp_dedupe_thresh_pct_1, svm: stbf-wdc0403_vs00, thresholdpercent: 1 }
+  - { name: pp_dedupe_thresh_pct_2, svm: stbf-wdc0403_vs00, thresholdpercent: 2 }
+  - { name: pp_dedupe_thresh_pct_3, svm: stbf-wdc0403_vs00, thresholdpercent: 3 }
+  - { name: pp_dedupe_thresh_pct_5, svm: stbf-wdc0403_vs00, thresholdpercent: 5 }
+  - { name: pp_dedupe_thresh_pct_10, svm: stbf-wdc0403_vs00, thresholdpercent: 10 }
+  - { name: pp_dedupe_thresh_pct_20, svm: stbf-wdc0403_vs00, thresholdpercent: 20 }
+  - { name: pp_dedupe_thresh_pct_25, svm: stbf-wdc0403_vs00, thresholdpercent: 25 }
+
+#############################
+###    CONTROL SECTION    ###
+#############################
+operation: 'newinstall'
+usrinputs: { cluster: 'stbf-wdc0403', ontap_version: '9.5P5 ', server_room: '7', rack: '166', adj_rack: '167', switch_start: '1', is_switch: '10', mgmt_port_start: '1', mgmt_vlan: '106', mss_switch: '39', data_vlan: '30', adn: '0', platform: 'AFF-A700' }
+netinfos:
+  - { subnet: '172.17.125.0', mask: '24', netmask: '255.255.255.0', description: 'storage.internal', gateway: '172.17.125.1', freehosts: '253' }
+  - { subnet: '10.201.14.0', mask: '24', netmask: '255.255.255.0', description: 'WDC04-pod4 netapp.service', gateway: '10.201.14.1', freehosts: '221' }
+varfile_version: '0.9.9i'
