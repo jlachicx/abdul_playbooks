@@ -1,0 +1,7 @@
+## Author: Abdul Moeed
+
+## Deploy Application
+
+- name: Deploy Application - "{{ APP_NAME }}"
+  debug:
+     msg: "Deploy role selected"

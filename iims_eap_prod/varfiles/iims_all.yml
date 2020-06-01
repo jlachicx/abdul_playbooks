@@ -1,0 +1,3 @@
+APP_NAME    : "IIMS PROD"
+SVC_NAME    : "jboss-eap-rhel.service"
+ACTION      : start

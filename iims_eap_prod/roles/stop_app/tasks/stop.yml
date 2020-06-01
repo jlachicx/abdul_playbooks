@@ -1,0 +1,7 @@
+## Author: Abdul Moeed
+
+## Stop Application
+
+- name:               Stop Application - "{{ APP_NAME }}"
+  debug:
+     msg:             "Stop role selected"

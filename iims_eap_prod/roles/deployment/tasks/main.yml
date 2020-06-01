@@ -1,0 +1,173 @@
+---
+- name: stopping the eap
+  command: sudo /bin/systemctl stop jboss-eap-rhel.service
+#  shell: /apps/devjboss/jboss-eap-7.1/shutdown-iims.sh  
+#  args:
+#    executable: /bin/bash
+    
+- name: sleep for 10 seconds and continue with play
+  wait_for: timeout=10
+
+- name: delete the old git dir from gitclone
+  file:
+    path: "/apps/qajboss/jboss-eap-7.1/scripts/"
+    state: absent
+    
+- name: Backing up symphonyear.ear
+  copy:
+    src: /apps/qajboss/jboss-eap-7.1/standalone/deployments/symphonyear.ear
+    dest: /apps/qajboss/jboss-eap-7.1/standalone/deployments/symphonyear.ear
+    remote_src: yes 
+    backup: yes
+
+- name: Removing old deployed files -- failed files??
+  file:
+    path: "/apps/qajboss/jboss-eap-7.1/standalone/deployments/{{ item }}"
+    state: absent
+  with_items:
+    - symphonyear.ear
+    - symphonyear.ear.deployed
+    - wmq.jmsra.rar.deployed   
+
+- name: cloning the qa-eap repository from git to the qa server
+  git:
+    repo: git@cami-gitlab.genworth.net:iims/qa-eap.git
+    dest: /apps/qajboss/jboss-eap-7.1/scripts/
+#    version: "{{ version }}"
+
+#- name: Download file new symphonyear.ear from artifactory -- if version changes you have to chnage the version in the url or git clone??
+#  get_url:
+#    url: http://cami-repo.genworth.net/artifactory/libs-snapshot-local/com/genworth/symphony/qa/symphonyear/1.0.0-SNAPSHOT/symphonyear-1.0.0-SNAPSHOT.ear
+#    dest: /apps/qajboss/jboss-eap-7.1/standalone/deployments/symphonyear.ear
+
+- name: copying the new symphonyear.ear file from git clone to the qa server
+  copy:
+    remote_src: true
+    src: "{{ item }}" 
+    dest: /apps/qajboss/jboss-eap-7.1/standalone/deployments
+    owner: qajboss
+    group: qajboss
+    mode: 0750
+#    backup: yes
+  with_items:
+    - /apps/qajboss/jboss-eap-7.1/scripts/IIMS_11g/IIMSQaBuild/symphony/domainConfiguration/qa/apps/qajboss/jboss-eap-7.1/standalone/deployments/symphonyear.ear
+     
+#- name: copying the new appConfigProperties directory from git clone to the qa server
+#  copy:
+#    remote_src: true
+#    src: "{{ item }}" 
+#    dest: /apps/qajboss/jboss-eap-7.1/standalone/appConfigProperties/iims.properties
+#    owner: qajboss
+#    group: qajboss
+#    mode: 0750
+#    backup: yes
+#  with_items:
+#    - /apps/qajboss/jboss-eap-7.1/scripts/IIMS_11g/IIMSQaBuild/symphony/domainConfiguration/qa/apps/qajboss/jboss-eap-7.1/standalone/appConfigProperties/iims.properties
+
+#- name: copying the new modules directory from git clone to the qa server
+#  copy:
+#    remote_src: true
+#    src: "{{ item }}" 
+#    dest: /apps/qajboss/jboss-eap-7.1/modules/com/jars/thirdpartyjar/main/module.xml
+#    owner: qajboss
+#    group: qajboss
+#    mode: 0750
+#    backup: yes
+#  with_items:
+#    - /apps/qajboss/jboss-eap-7.1/scripts/IIMS_11g/IIMSQaBuild/symphony/domainConfiguration/qa/apps/qajboss/jboss-eap-7.1/modules/com/jars/thirdpartyjar/main/module.xml
+
+#- name: copying the new modules directory from git clone to the qa server
+#  synchronize:
+#    src: /apps/qajboss/jboss-eap-7.1/scripts/IIMS_11g/IIMSQaBuild/symphony/domainConfiguration/qa/apps/qajboss/jboss-eap-7.1/modules/com
+#    dest: /apps/qajboss/jboss-eap-7.1/modules/com
+#    recursive: yes
+
+
+#- name: copying the new batch directory from git clone to the qa server
+#  copy:
+#    remote_src: true
+#    src: "{{ item }}" 
+#    dest: /apps/qajboss/symphony/qa-iims/batch/Batch.properties
+#    owner: qajboss
+#    group: qajboss
+#    mode: 0750
+#    backup: yes
+#  with_items:
+#    - /apps/qajboss/jboss-eap-7.1/scripts/IIMS_11g/IIMSQaBuild/symphony/domainConfiguration/qa/apps/qajboss/symphony/qa-iims/batch/Batch.properties
+
+#- name: copying the new batch directory from git clone to the qa server
+#copy:
+#   remote_src: true
+#    src: "{{ item }}" 
+#    dest: /apps/qajboss/symphony/qa-iims/batch/startMDBAll.sh
+#    owner: qajboss
+#    group: qajboss
+#    mode: 0750
+#    backup: yes
+#  with_items:
+#    - /apps/qajboss/jboss-eap-7.1/scripts/IIMS_11g/IIMSQaBuild/symphony/domainConfiguration/qa/apps/qajboss/symphony/qa-iims/batch/startMDBAll.sh
+
+#- name: copying the new batch directory from git clone to the qa server
+#  copy:
+#    remote_src: true
+#    src: "{{ item }}" 
+#    dest: /apps/qajboss/symphony/qa-iims/batch/startMDBSingle.sh
+#    owner: qajboss
+#    group: qajboss
+#    mode: 0750
+#    backup: yes
+#  with_items:
+#    - /apps/qajboss/jboss-eap-7.1/scripts/IIMS_11g/IIMSQaBuild/symphony/domainConfiguration/qa/apps/qajboss/symphony/qa-iims/batch/startMDBSingle.sh
+
+#- name: copying the new batch directory from git clone to the qa server
+#  copy:
+#    remote_src: true
+#    src: "{{ item }}" 
+#    dest: /apps/qajboss/symphony/qa-iims/batch/stopMDBAll.sh
+#    owner: qajboss
+#    group: qajboss
+#    mode: 0750
+#    backup: yes
+#  with_items:
+#    - /apps/qajboss/jboss-eap-7.1/scripts/IIMS_11g/IIMSQaBuild/symphony/domainConfiguration/qa/apps/qajboss/symphony/qa-iims/batch/stopMDBAll.sh
+
+#- name: copying the new batch directory from git clone to the qa server
+#  copy:
+#    remote_src: true
+#    src: "{{ item }}" 
+#    dest: /apps/qajboss/symphony/qa-iims/batch/stopMDBSingle.sh
+#    owner: qajboss
+#    group: qajboss
+#    mode: 0750
+#    backup: yes
+#  with_items:
+#    - /apps/qajboss/jboss-eap-7.1/scripts/IIMS_11g/IIMSQaBuild/symphony/domainConfiguration/qa/apps/qajboss/symphony/qa-iims/batch/stopMDBSingle.sh
+
+
+#- name: copying the new batch directory from git clone to the qa server
+#  synchronize:
+#    src: /apps/qajboss/jboss-eap-7.1/scripts/IIMS_11g/IIMSQaBuild/symphony/domainConfiguration/qa/apps/qajboss/symphony/qa-iims/batch
+#    dest: /apps/qajboss/symphony/qa-iims/batch
+#    recursive: yes
+
+
+
+- name: starting the eap
+  command: sudo /bin/systemctl start jboss-eap-rhel.service
+#  shell: /apps/devjboss/jboss-eap-7.1/start-iims.sh
+#  environment:
+#    JAVA_HOME: /apps/devjboss/jdk1.8.0_172
+#    JBOSS_HOME: /apps/devjboss/jboss-eap-7.1
+#  args:
+#    executable: /bin/bash
+
+- name: sleep for 120 seconds and continue with play
+  wait_for: timeout=120
+  
+- name: Change the working directory to batch directory before executing the startMDBAll.cli script.
+  shell: /apps/qajboss/symphony/qa-iims/batch/startMDBAll.sh /apps/qajboss/symphony/qa-iims/batch/Batch.properties
+  environment:
+    JAVA_HOME: /apps/qajboss/jdk_latest
+    EAP_HOME: /apps/qajboss/jboss-eap-7.1
+  args:
+    executable: /bin/bash

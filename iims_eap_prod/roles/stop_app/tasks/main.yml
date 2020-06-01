@@ -1,0 +1,4 @@
+## calling tasks in main file
+
+- name: Import Stop task for {{ APP_NAME }}
+  import_tasks: stop.yml

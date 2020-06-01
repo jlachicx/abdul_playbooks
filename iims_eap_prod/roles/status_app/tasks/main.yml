@@ -1,0 +1,4 @@
+## calling tasks in main file
+
+- name: Import Status task for {{ APP_NAME }}
+  import_tasks: status.yml

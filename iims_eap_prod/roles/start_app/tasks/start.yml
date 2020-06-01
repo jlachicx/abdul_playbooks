@@ -1,0 +1,7 @@
+## Author: Abdul Moeed
+
+## Start Application
+
+- name: Start Application "{{ APP_NAME }}"
+  debug:
+     msg: "Start role selected"

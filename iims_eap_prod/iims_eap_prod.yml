@@ -1,0 +1,36 @@
+---
+- name:               IIMS EAP Deployment 
+  hosts:              localhost
+  gather_facts:       no
+  
+  tasks:
+  - include_vars:
+      file:           "{{ playbook_dir + '/varfiles/iims_all.yml' }}"
+
+  - include_role:
+      name:           status_app
+    when:             >
+                      ACTION == 'stop'      or
+                      ACTION == 'deploy'    or
+                      ACTION == 'start'     or
+                      ACTION == 'status'
+
+  - include_role:
+      name:           stop_app
+    when:             >
+                      ACTION == 'stop'      or
+                      ACTION == 'deploy'
+  
+  - include_role:
+      name:           deploy_app
+    when:             >
+                      ACTION == 'deploy'
+
+  - include_role:
+      name:           start_app
+    when:             >
+                      ACTION == 'start'     or
+                      ACTION == 'deploy'  
+
+  
+
