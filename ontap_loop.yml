@@ -4,12 +4,51 @@
     gather_facts: no
 
     vars:
-      host_info:
-        - { host: station1, ip: 192.168.2.10, netmask: 255.255.255.0 }
+      is_port:
+       - { host: station1, interface: Ethernet6 }
+       - { host: station2, interface: Ethernet5 }
+       # - { host: station1, ip: 192.168.2.10, netmask: 255.255.255.0 }
        # - { host: station2, ip: 192.168.2.20, netmask: 255.255.255.0 }
        # - { host: station3, ip: 192.168.2.30, netmask: 255.255.255.0 }
 
     tasks:
+    - set_fact:
+        #start_port: "{{ start_port |default ([]) + [ { 'name': item.host, 'interface': item.interface|replace('Ethernet','') } ] }}"
+        is_interface: "{{ is_interface |default ([]) + [ item.interface|replace('Ethernet','') ] }}"
+      with_items: "{{ is_port }}"
+    
+    - set_fact: 
+        is_interface: "{{ is_interface|sort|last }}"
+      
+    - set_fact:
+        is_start_port: "{{is_interface|int + 1 }}"
+    
+    - debug: var=is_start_port
+
+    - pause:
+        prompt: "Default start port is {{ is_start_port }}, Enter new port if override default: "
+        echo: yes
+      register: is_port_new
+    
+    - set_fact:
+         is_start_port: "{{ is_start_port | int }}"
+      when: is_port_new.user_input == ""
+
+    - set_fact:
+         is_start_port: "{{ is_port_new.user_input | int }}"
+      when: is_port_new.user_input != ""
+    
+    - fail              :
+        msg             : "New start port number entered is invalid"
+      when              : 
+                          - not is_port_new.user_input is regex('^[0-9]+$')
+                          - is_port_new.user_input != ""
+   
+         
+    - debug: var=is_start_port
+
+    - pause: 
+    
     - debug:
         msg: "{{ item.host }}" #  +  item.ip + item.cert |default(omit) }}" 
        # msg: "{{ item.host  +  item.ip + item.cert |default(omit) }}" 

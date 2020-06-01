@@ -186,8 +186,10 @@ dns_server2: 172.18.18.20
 #### AutoSupport                                ####
 ####################################################
 mailhosts: mx-outbound.softlayer.local
-mailto: storsys@softlayer.com
-mailfrom: stbf-dal0555@softlayer.com
+#mailto: storsys@softlayer.com
+mailto: amoeed78@gmail.com
+#mailfrom: stbf-dal0555@softlayer.com
+mailfrom: testing@softlayer.com
 transport: https
 # END AutoSupport
 
@@ -213,7 +215,7 @@ node_location:
   - { name: 'abdultest-02', location: 'dal05.sr03.rk284.sl19' }
   
 data_aggregates:
-  - { name: 'aggr1_abdultest_03', node: 'abdultest-01', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
+  - { name: 'aggr1_abdultest_01', node: 'abdultest-01', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
   - { name: 'aggr1_abdultest_02', node: 'abdultest-02', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
   
 autosupport_budget:
