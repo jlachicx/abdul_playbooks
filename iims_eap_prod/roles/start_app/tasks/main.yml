@@ -1,4 +1,4 @@
 ## calling tasks in main file
 
-- name: Import Start task for {{ APP_NAME }}
+- name: Import Start task for {{ app_name }}
   import_tasks: start.yml

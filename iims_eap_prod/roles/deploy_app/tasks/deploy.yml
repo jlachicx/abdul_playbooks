@@ -1,7 +1,32 @@
 ## Author: Abdul Moeed
+## All variables defined in varfiles/iims_all.yml file
 
 ## Deploy Application
 
-- name: Deploy Application - "{{ APP_NAME }}"
-  debug:
-     msg: "Deploy role selected"
+- name:                 Backing up Deployment file - {{ dep_file }}
+  archive:
+    path:               "{{ dep_path }}/{{ dep_file }}"
+    format:             zip
+    remove:             yes
+
+- name:                 Removing old deployed files
+  file:
+    path:               "{{ dep_path}} /{{ item }}"
+    state:              absent
+  with_items:           "{{ delete_file }}"
+
+- name:                 Delete old GIT directory {{ git_path }}/{{ git_dir }}
+  file:
+    path:               "{{ git_dir }}"
+    state:              absent
+
+#- name:                 Clone latest GIT repository 
+#  git:
+#    repo:               "{{ git_repo }}"
+#    dest:               "{{ git_dir }}"
+#    version:            "{{ git_version }}"
+
+
+
+
+

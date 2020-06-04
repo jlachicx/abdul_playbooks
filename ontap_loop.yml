@@ -14,7 +14,7 @@
     tasks:
     - set_fact:
         #start_port: "{{ start_port |default ([]) + [ { 'name': item.host, 'interface': item.interface|replace('Ethernet','') } ] }}"
-        is_interface: "{{ is_interface |default ([]) + [ item.interface|replace('Ethernet','') ] }}"
+        is_interface: "{{ is_interface |default ([]) + [ item ].interface|replace('Ethernet','') ] }}"
       with_items: "{{ is_port }}"
     
     - set_fact: 

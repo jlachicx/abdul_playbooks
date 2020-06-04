@@ -1,0 +1,14 @@
+## Author: Abdul Moeed
+
+## Start Application
+
+- name:               Start Application "{{ app_name }}"
+  systemd:
+     name:            "{{ svc_name }}"
+     state:           started
+  
+  when:               svc_status == 'stopped'
+
+- debug:
+    msg:              "{{ svc_name }} already running"
+  when:               svc_status == 'running'

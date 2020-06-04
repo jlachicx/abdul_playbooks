@@ -1,7 +1,50 @@
 ## Author: Abdul Moeed
+## All variables defined in varfiles/iims_all.yml file
 
 ## Stop Application
 
-- name:               Stop Application - "{{ APP_NAME }}"
-  debug:
-     msg:             "Stop role selected"
+  - set_fact:
+      action: "stop"
+    when: deploy == 'deploy'
+
+  - name: "Verify {{ svc_name }} is already stopped"
+    debug:
+      msg:              
+                        - "**********************************************"
+                        - "***                                        ***"
+                        - "*** {{ svc_name }} is already stopped ***"
+                        - "***                                        ***"
+                        - "**********************************************"
+    when:               svc_status != 'running'
+
+  - block:
+    - name:             Stop Application "{{ app_name }}"
+      shell:            "{{ svc_action }}"
+      register:         stop_reg
+
+    - name:             Wait {{ time }} seconds for {{ svc_name }} to {{ action }}
+      wait_for:         timeout="{{ time }}"
+
+    when:               svc_status != 'stopped'
+  
+  - name:               Verify {{ svc_name }} status after {{ action }}
+    include_role:
+      name:             status_app
+
+  - name:               "Verify {{ svc_name }} is successfully {{ action }}"
+    debug:
+      msg:              
+                        - "***************************************************"
+                        - "***                                             ***"
+                        - "*** {{ svc_name }} is successfully stopped ***"
+                        - "***                                             ***"
+                        - "***************************************************"
+    when:               svc_status == "stopped" and stop_reg.changed 
+
+  - name:               "{{ svc_name }} failed to {{ action }}"
+    fail:
+      msg:              "{{ svc_name }} failed to {{ action }}"
+    when:               svc_status != "stopped" and stop_reg.changed
+  
+  
+

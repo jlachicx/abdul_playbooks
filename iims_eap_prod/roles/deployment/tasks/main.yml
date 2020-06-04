@@ -27,7 +27,7 @@
   with_items:
     - symphonyear.ear
     - symphonyear.ear.deployed
-    - wmq.jmsra.rar.deployed   
+    - wmq.jmsra.rar.deployed
 
 - name: cloning the qa-eap repository from git to the qa server
   git:

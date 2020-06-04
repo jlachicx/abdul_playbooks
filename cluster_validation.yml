@@ -1,77 +1,118 @@
 ---
-- name                : Cluster Expansion Validation
-  hosts               : localhost
-  gather_facts        : no
-            
-  vars                :
-    hostname          : abdultest
-    username          : admin
-    password          : Temp12345
-          
-  tasks               :
-  - pause             :
-      prompt          : "Enter the STORSYS JIRA Request Number for this expansion validation"
-    register          : cr_number
-          
-  - debug             : var=cr_number.user_input
-          
-  - fail              :
-      msg             : "The Change Request Number entered is invalid"
-    when              :
-                        - cr_number.user_input == ""
-                        - not cr_number.user_input is regex("^[0-9]+$")
+- name                  : Cluster Expansion Validation
+  hosts                 : localhost
+  gather_facts          : no
 
-  - include_vars      :
-      file            : "{{ playbook_dir + '/ansible-data/varfiles/' + hostname + '/var_' + hostname + '_' + cr_number.user_input + '.yml' }}"
+  vars_prompt           :
+    - name              : netapp_hostname
+      prompt            : Enter the NetApp cluster name
+      default           : "abdultest"
+      private           : no
+    - name              : netapp_username
+      prompt            : Enter the NetApp cluster account
+      default           : "admin"
+      private           : no
+    - name              : netapp_password
+      prompt            : Enter the NetApp cluster password
+      default           : "Temp12345"
+      no_log            : true
+
+  vars                  :
+    input               : &input
+      hostname          : "{{ netapp_hostname }}"
+      username          : "{{ netapp_username }}"
+      password          : "{{ netapp_password }}"
+    showfailed          : yes
+    showpassed          : yes
+    showresult          : yes
+    showstats           : yes
+    showcmdlines        : yes          
+  
+  tasks                 :
+  - pause               :
+      prompt            : "Enter the STORSYS JIRA Request Number for this expansion validation"
+    register            : cr_number
+          
+  - debug               : var=cr_number.user_input
+          
+  - fail                :
+      msg               : "The Change Request Number entered is invalid"
+    when                :
+                          - cr_number.user_input == ""
+                          - not cr_number.user_input is regex("^[0-9]+$")
+
+  - include_vars        :
+      file              : "{{ playbook_dir + '/ansible-data/varfiles/' + netapp_hostname + '/var_' + netapp_hostname + '_' + cr_number.user_input + '.yml' }}"
       
-  - set_fact          :
-      check_result    : ["Check result for cluster '{{ hostname }}'"]
-      testpassed      : []
-      testfailed      : []
-      cmdlines        : []
+  - set_fact            :
+      check_result      : ["Check result for cluster '{{ netapp_hostname }}'"]
+      testpassed        : []
+      testfailed        : []
+      cmdlines          : []
           
-  - name              : Get NetApp info (Password Authentication)
-    na_ontap_info     :
-      state           : info
-      hostname        : "{{ hostname }}"
-      username        : "admin"
-      password        : "Temp12345"
-      validate_certs  : no
-      https           : no
-      gather_subset   :
-                        - "!volume_info"
-                        - "!lun_info"
-    register          : ontap_info
+  - name                : Get NetApp info (Password Authentication)
+    na_ontap_info       :
+      state             : info
+      hostname          : "{{ netapp_hostname }}"
+      username          : "admin"
+      password          : "Temp12345"
+      validate_certs    : no
+      https             : no
+      gather_subset     :
+                          - "!volume_info"
+                          - "!lun_info"
+    register            : ontap_info
 
-  - set_fact          :
-      ontap_facts     : "{{ ontap_info.ontap_info                                                                               }}"
+  - set_fact            :
+      ontap_facts       : "{{ ontap_info.ontap_info                                                                               }}"
 
-  - name              : Create list of unique node model
+  - name                : Create list of unique node model
     set_fact:
-      uniq_node_model  : "{{ uniq_node_model |default([]) + [ { 'model' : model} ]                                              }}"
+      uniq_node_model   : "{{ uniq_node_model |default([]) + [ { 'model' : model} ]                                              }}"
     with_items          : "{{ ontap_facts.system_node_info }}"
     vars                :
       model             : "{{ ontap_facts.system_node_info[item].node_model                                                     }}"
 
-  - set_fact          :
-      model           : "{{ item.model                                                                                          }}"
-    with_items: "{{ uniq_node_model | unique }}"
+  - set_fact            :
+      model             : "{{ item.model                                                                                          }}"
+    with_items          : "{{ uniq_node_model | unique }}"
   
-  - set_fact          :
-      clucheck        : "{{ hostname                                                                                            }}"
-    #when              : model != 'SIMBOX' - original setting
-    when              : model == 'SIMBOX' # for testing
+  - set_fact            :
+      clucheck          : "{{ netapp_hostname                                                                                      }}"
+    when                : model != 'SIMBOX' - original setting
+    #when              : model == 'SIMBOX' # for testing
   
-  #- set_fact          :
-  #    clucheck        : "cDOT96"
-  #  when              : model == 'SIMBOX'
+  - set_fact            :
+      clucheck          : "cDOT96"
+    when                : model == 'SIMBOX'
     
-  - set_fact          :
-      check_result    : "{{ check_result + [ ' | POST-CHECK SECTION' ]                                                          }}"
+  - set_fact            :
+      check_result      : "{{ check_result + [ ' | POST-CHECK SECTION' ]                                                          }}"
 
-  - include_role      :
-      name            : expansion_validation
+  - include_role        :
+      name              : expansion_validation
+    vars                :
+                      <<: *input
                                   
-  - debug             : var=testpassed
-  - debug             : var=testfailed
+  - debug               : var=check_result
+    when                : showresult
+  
+  - debug               : var=testpassed
+    when                : showpassed
+  
+  - debug               : var=testfailed
+    when                : showfailed
+  
+  - debug               : var=cmdlines
+    when                : showcmdlines
+  
+  - debug               :
+      msg               :
+                          - "-----------------------------------|"
+                          - "{{ '|   Number of passed tests: % 4d   |'|format(testpassed|length|int) }}"
+                          - "{{ '|   Number of failed tests: % 4d   |'|format(testfailed|length|int) }}"
+                          - "|                           ----   |"
+                          - "{{ '|    Number of tests TOTAL: % 4d   |'|format(testfailed|length|int + testpassed|length|int) }}"
+                          - "-----------------------------------|"
+    when                : showstats
       

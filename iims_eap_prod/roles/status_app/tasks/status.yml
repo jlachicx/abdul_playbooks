@@ -1,8 +1,11 @@
 ## Author: Abdul Moeed
 ## Status Check for Application
 
-- name:               Application Status Check- "{{ APP_NAME }}"
+- name:               Application Status Check- "{{ app_name }}"
   service_facts:
- 
+
 - set_fact: 
-    svc_status:       "{{ ansible_facts.services[SVC_NAME].state }}"
+    svc_status:       "{{ ansible_facts.services[svc_name].state }}"
+
+
+

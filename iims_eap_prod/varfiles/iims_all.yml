@@ -1,3 +1,22 @@
-APP_NAME    : "IIMS PROD"
-SVC_NAME    : "jboss-eap-rhel.service"
-ACTION      : start
+app_name        : "IIMS PROD"
+app_path        : "apps/qajboss/jboss-eap-7.1"             # C update path
+dep_path        : "{{ app_path }}/standalone/deployments" 
+
+dep_file        : "symphonyear.ear"
+delete_file     : [ symphonyear.ear.deployed, wmq.jmsra.rar.deployed ]
+time            : 10
+
+action          : 
+deploy          : deploy
+
+svc_name        : "salt-minion.service"
+svc_action      : "sudo systemctl {{ action }} {{ svc_name }}"
+
+git_user        : path
+git_password    : "#Spectrum"
+git_path        : "{{ app_path }}/scripts"                  # C update path
+git_dir         : "prod-eap"
+git_repo        : "https://{{ git_user }}:{{ git_password }}@cami-gitlab.genworth.net/iims/prod-eap.git"
+git_version     : "master"
+
+

@@ -1,7 +1,49 @@
 ## Author: Abdul Moeed
+## All variables defined in varfiles/iims_all.yml file
 
 ## Start Application
+  - set_fact:
+      action: "start"
+    when: deploy == 'deploy'
 
-- name: Start Application "{{ APP_NAME }}"
-  debug:
-     msg: "Start role selected"
+  - name:               Verify {{ svc_name }} is running
+    debug:
+      msg:              
+                        - "**********************************************"
+                        - "***                                        ***"
+                        - "*** {{ svc_name }} is already running ***"
+                        - "***                                        ***"
+                        - "**********************************************"
+    when:               svc_status == 'running'
+
+  - block:
+    - name:             Start Application "{{ app_name }}"
+      shell:            "{{ svc_action }}"
+      register:         start_reg
+
+    - name:             Wait {{ time }} seconds for {{ svc_name }} to {{ action }}
+      wait_for:         timeout="{{ time }}"
+
+    when:               svc_status != 'running'
+  
+  - name:               Verify {{ svc_name }} status after {{ action }}
+    include_role:
+      name:             status_app
+
+  - name:               Verify {{ svc_name }} is successfully {{ action }}
+    debug:
+      msg:              
+                        - "***************************************************"
+                        - "***                                             ***"
+                        - "*** {{ svc_name }} is successfully started ***"
+                        - "***                                             ***"
+                        - "***************************************************"
+    when:               svc_status == "running" and start_reg.changed 
+
+  - name:               "{{ svc_name }} failed to {{ action }}"
+    fail:
+      msg:              "{{ svc_name }} failed to {{ action }}"
+    when:               svc_status != "running" and start_reg.changed
+  
+  
+
