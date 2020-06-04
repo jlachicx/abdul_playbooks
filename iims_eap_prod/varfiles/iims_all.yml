@@ -1,5 +1,5 @@
 app_name        : "IIMS PROD"
-app_path        : "apps/qajboss/jboss-eap-7.1"             # C update path
+app_path        : "./apps/qajboss/jboss-eap-7.1"             # C update path
 dep_path        : "{{ app_path }}/standalone/deployments" 
 
 dep_file        : "symphonyear.ear"

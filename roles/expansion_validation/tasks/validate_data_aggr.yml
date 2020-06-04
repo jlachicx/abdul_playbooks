@@ -19,66 +19,68 @@
   - set_fact          :
       check_result    : "{{ check_result + [ '    [ ] Data aggregate name ' + item.name + ' : passed' ]                         }}"
       testpassed      : "{{ testpassed   + [ '    [ ] Data aggregate name ' + item.name + ' : passed' ]                         }}"
-    with_items        : "{{ dataaggrs                                                                                           }}"
-    when              : data_aggregates | selectattr('name','equalto',item.name)|list|length > 0
+    with_items        : "{{ data_aggregates                                                                                           }}"
+#    with_items        : "{{ dataaggrs                                                                                           }}"
+    when              : dataaggrs | selectattr('name','equalto',item.name)|list|length > 0
 
   - set_fact          :
       check_result    : "{{ check_result + [ '    [!] Data aggregate name ' + item.name + ' : !! failed !!' ]                   }}"
       testfailed      : "{{ testfailed   + [ '    [!] Data aggregate name ' + item.name + ' : !! failed !!' ]                   }}"
-    with_items        : "{{ dataaggrs                                                                                           }}"
-    when              : data_aggregates | selectattr('name','equalto',item.name) | list | length == 0
+    with_items        : "{{ data_aggregates                                                                                           }}"
+    when              : dataaggrs | selectattr('name','equalto',item.name) | list | length == 0
+#    when              : data_aggregates | selectattr('name','equalto',item.name) | list | length == 0
 
   # Aggredate (s) status verification
   - set_fact          :
       check_result    : "{{ check_result + [ '    [ ] Data aggregate ' + item.name + ' state is online : passed' ]              }}"
       testpassed      : "{{ testpassed   + [ '    [ ] Data aggregate ' + item.name + ' state is online : passed' ]              }}"
-    with_items        : "{{ dataaggrs                                                                                           }}"
+    with_items        : "{{ data_aggregates                                                                                          }}"
     when              :  
-                        - data_aggregates | selectattr('name','equalto',item.name) | list | length > 0
-                        - item.state == 'online'
+                        - dataaggrs | selectattr('name','equalto',item.name) | list | length > 0
+                        - dataaggrs | selectattr('state') == 'online' | list | length > 0                        
 
   - set_fact          :
       check_result    : "{{ check_result + [ '    [!] Data aggregate ' + item.name + ' state is online : !! failed !!' ]        }}"
       testfailed      : "{{ testfailed   + [ '    [!] Data aggregate ' + item.name + ' state is online : !! failed !!' ]        }}"
-    with_items        : "{{ dataaggrs                                                                                           }}"
+    with_items        : "{{ data_aggregates                                                                                        }}"
     when              : >
-                        data_aggregates | selectattr('name','equalto',item.name) | list | length > 0  and
-                        item.state != 'online'                                                        or
-                        data_aggregates | selectattr('name','equalto',item.name)|list|length == 0
-    
+                        dataaggrs | selectattr('name','equalto',item.name) | list | length > 0  and
+                        dataaggrs | selectattr('state') != 'online' | list | length == 0        or
+                        dataaggrs | selectattr('name','equalto',item.name) | list | length == 0
+
   # Aggredate (s) raid type verification
   - set_fact          :
       check_result    : "{{ check_result + [ '    [ ] Data aggregate ' + item.name + ' raid type is raid_dp : passed' ]         }}"
       testpassed      : "{{ testpassed   + [ '    [ ] Data aggregate ' + item.name + ' raid type is raid_dp : passed' ]         }}"
-    with_items        : "{{ dataaggrs                                                                                           }}"
+    with_items        : "{{ data_aggregates                                                                                      }}"
     when              : 
-                        - data_aggregates | selectattr('name','equalto',item.name) | list | length > 0
-                        - item.raid_type == 'raid_dp'
+                        - dataaggrs | selectattr('name','equalto',item.name) | list | length > 0
+                        - dataaggrs | selectattr('raid_type','equalto',item.raidtype) | list | length > 0  
       
   - set_fact          :
       check_result    : "{{ check_result + [ '    [!] Data aggregate ' + item.name + ' raid type is raid_dp : !! failed !!' ]   }}"
       testfailed      : "{{ testfailed   + [ '    [!] Data aggregate ' + item.name + ' raid type is raid_dp : !! failed !!' ]   }}"
-    with_items        : "{{ dataaggrs                                                                                           }}"
+    with_items        : "{{ data_aggregates                                                                                           }}"
     when              : > 
-                        data_aggregates | selectattr('name','equalto',item.name) | list | length > 0 and
-                        item.raid_type != 'raid_dp'                                                  or 
-                        data_aggregates | selectattr('name','equalto',item.name) | list | length == 0
+                        dataaggrs | selectattr('name','equalto',item.name) | list | length > 0            and
+                        dataaggrs | selectattr('raid_type','equalto',item.raidtype) | list | length == 0  or
+                        dataaggrs | selectattr('name','equalto',item.name) | list | length == 0
 
   # Aggredate (s) ha policy verification
   - set_fact          :
       check_result    : "{{ check_result + [ '    [ ] Data aggregate ' + item.name + ' ha policy is sfo : passed' ]             }}"
       testpassed      : "{{ testpassed   + [ '    [ ] Data aggregate ' + item.name + ' ha policy is sfo : passed' ]             }}"
-    with_items        : "{{ dataaggrs                                                                                           }}"
+    with_items        : "{{ data_aggregates                                                                                      }}"
     when              :  
-                        - data_aggregates | selectattr('name','equalto',item.name) | list | length > 0
-                        - item.ha_policy == 'sfo'
+                        - dataaggrs | selectattr('name','equalto',item.name) | list | length > 0
+                        - dataaggrs | selectattr('ha_policy') == 'sfo' | list | length > 0                        
   
   - set_fact          :
       check_result    : "{{ check_result + [ '    [!] Data aggregate ' + item.name + ' ha policy is sfo : !! failed !!' ]       }}"
       testfailed      : "{{ testfailed   + [ '    [!] Data aggregate ' + item.name + ' ha policy is sfo : !! failed !!' ]       }}"
-    with_items        : "{{ dataaggrs                                                                                           }}"
+    with_items        : "{{ data_aggregates                                                                                           }}"
     when              : >
-                        data_aggregates | selectattr('name','equalto',item.name) | list | length > 0  and
-                        item.ha_policy != 'sfo'                                                       or
-                        data_aggregates | selectattr('name','equalto',item.name) | list | length == 0
-                        
+                        dataaggrs | selectattr('name','equalto',item.name) | list | length > 0  and
+                        dataaggrs | selectattr('ha_policy') != 'sfo' | list | length == 0       or
+                        dataaggrs | selectattr('name','equalto',item.name) | list | length == 0
+               

@@ -11,9 +11,9 @@
 
 - name:                 Removing old deployed files
   file:
-    path:               "{{ dep_path}} /{{ item }}"
+    path:               "{{ dep_path}}/{{ item }}"
     state:              absent
-  with_items:           "{{ delete_file }}"
+  loop:                "{{ delete_file }}"
 
 - name:                 Delete old GIT directory {{ git_path }}/{{ git_dir }}
   file:
@@ -25,6 +25,8 @@
 #    repo:               "{{ git_repo }}"
 #    dest:               "{{ git_dir }}"
 #    version:            "{{ git_version }}"
+
+
 
 
 
