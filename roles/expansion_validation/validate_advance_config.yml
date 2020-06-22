@@ -1,0 +1,136 @@
+######## Checking smicl_ip
+
+  - set_fact            :
+      smicl_ip_list     : "{{ smicl_ip_list | default([]) + [ { 'name': item.name, 'ip': item.ip } ]      }}"
+    with_items          : "{{ smicl_ip                                                                    }}"
+    when                : 
+                          - smicl_ip is defined
+
+  - name              : Pinging all smicl_ip lifs
+    shell             : ping -c 2 -W 2 {{ item.ip     }}
+    failed_when       : false
+    changed_when      : false
+    ignore_errors     : yes
+    with_items        : "{{ smicl_ip_list             }}"
+    register          : smicl_ping_result
+
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [ ] Pinging ' + item.item.name + ' ( ' + item.item.ip + ' ) : passed' ]   }}"
+      testpassed      : "{{ testpassed   + [ '    [ ] Pinging ' + item.item.name + ' ( ' + item.item.ip + ' ) : passed' ]   }}"
+    with_items        : "{{ smicl_ping_result.results                                                                       }}"
+    loop_control      :
+      label           : "{{ item.item.name            }}"
+    when              :
+                        - item.rc | int == 0
+    
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [!] Pinging ' + item.item.name + ' ( ' + item.item.ip + ') : !! failed !!' ]  }}"
+      testfailed      : "{{ testfailed   + [ '    [!] Pinging ' + item.item.name + ' ( ' + item.item.ip + ') : !! failed !!' ]  }}"
+    with_items        : "{{ smicl_ping_result.results                                                                           }}"
+    loop_control      :
+      label           : "{{ item.item.name            }}"
+    when              :
+                        - item.rc | int == 1
+
+######## Checking iscsi_ip
+
+  - set_fact            :
+      iscsi_ip_list     : "{{ iscsi_ip_list | default([]) + [ { 'name': item.name, 'ip': item.ip } ]      }}"
+    with_items          : "{{ iscsi_ip                                                                    }}"
+    when                : 
+                          - iscsi_ip is defined
+
+  - name              : Pinging all iscsi_ip lifs
+    shell             : ping -c 2 -W 2 {{ item.ip     }}
+    failed_when       : false
+    changed_when      : false
+    ignore_errors     : yes
+    with_items        : "{{ iscsi_ip_list             }}"
+    register          : iscsi_ping_result
+
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [ ] Pinging ' + item.item.name + ' ( ' + item.item.ip + ' ) : passed' ]   }}"
+      testpassed      : "{{ testpassed   + [ '    [ ] Pinging ' + item.item.name + ' ( ' + item.item.ip + ' ) : passed' ]   }}"
+    with_items        : "{{ iscsi_ping_result.results                                                                       }}"
+    loop_control      :
+      label           : "{{ item.item.name            }}"
+    when              :
+                        - item.rc | int == 0
+    
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [!] Pinging ' + item.item.name + ' ( ' + item.item.ip + ') : !! failed !!' ]  }}"
+      testfailed      : "{{ testfailed   + [ '    [!] Pinging ' + item.item.name + ' ( ' + item.item.ip + ') : !! failed !!' ]  }}"
+    with_items        : "{{ iscsi_ping_result.results                                                                           }}"
+    loop_control      :
+      label           : "{{ item.item.name            }}"
+    when              :
+                        - item.rc | int == 1
+
+######## Checking portset 
+
+  - name              : Getting portsets from svms
+    na_ontap_command  :
+      hostname        : "{{ hostname                  }}"
+      username        : "{{ username                  }}"
+      password        : "{{ password                  }}"
+      https           : true
+      validate_certs  : false
+      ontapi          : "{{ ontap_facts.ontap_version }}"
+      command         : ['rows 0;portset show -fields vserver,portset,port-name']
+    register          : tmpportsets
+    changed_when      : tmpportsets == none
+
+  - name              : parse xml output
+    xml               :
+      xmlstring       : "{{ tmpportsets.msg }}"
+      namespaces      :
+        ns            : http://www.netapp.com/filer/admin
+      xpath           : "/ns:results/ns:cli-output"
+      content         : 'text'
+    register          : clioutput
+
+  - set_fact          :
+      portsets        : "{{ portsets | default([]) + [ { 'vserver': vserver, 'portset': portset,'port_name': portname } ]       }}"
+    vars              :
+      tmpline         : "{{ item | regex_replace(' {2,}',' ') | trim                                                            }}"
+      vserver         : "{{ tmpline.split(' ')[0]                                                                               }}"
+      portset         : "{{ tmpline.split(' ')[1]                                                                               }}"
+      portname        : "{{ tmpline.split(' ')[2].split(',')                                                                    }}"
+    with_items        : "{{ (clioutput.matches[0]['{http://www.netapp.com/filer/admin}cli-output']).split('\n')                 }}"
+    #when              :
+    #                    - "'vs0' in item"
+
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [ ] iSCSI portset ' + item[0].name + ' presence on ' + item[0].svm + ' : passed' ]  }}"
+      testpassed      : "{{ testpassed   + [ '    [ ] iSCSI portset ' + item[0].name + ' presence on ' + item[0].svm + ' : passed' ]  }}"
+    with_nested       : 
+                        - "{{ iscsi_portset           }}"
+                        - "{{ portsets                }}"
+    when              : 
+                        - item[0].name == item[1].portset
+
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [!] iSCSI portset ' + item[0].name + ' presence on ' + item[0].svm + ' : failed' ]  }}"
+      testfailed      : "{{ testfailed   + [ '    [!] iSCSI portset ' + item[0].name + ' presence on ' + item[0].svm + ' : failed' ]  }}"
+    with_nested       : 
+                        - "{{ iscsi_portset           }}"
+                        - "{{ portsets                }}"
+    when              : 
+                        - item[0].name != item[1].portset
+
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [ ] iSCSI portset ' + item.name + ' portname list on ' + item.svm + ' : passed' ]  }}"
+      testpassed      : "{{ testpassed   + [ '    [ ] iSCSI portset ' + item.name + ' portname list on ' + item.svm + ' : passed' ]  }}"
+    with_items        : "{{ iscsi_portset             }}"
+    when              : 
+                        - item.portname | list | sort == ( portsets | map(attribute='port_name') | list)[0] | sort
+                        - item.name == portsets | map(attribute='portset')
+  
+
+  - set_fact          :
+      check_result    : "{{ check_result + [ '    [!] iSCSI portset ' + item.name + ' portname list on ' + item.svm + ' : failed' ]  }}"
+      testfailed      : "{{ testfailed   + [ '    [!] iSCSI portset ' + item.name + ' portname list on ' + item.svm + ' : failed' ]  }}"
+    with_items        : "{{ iscsi_portset             }}"
+    when              : 
+                        - item.portname | list | sort != ( portsets | map(attribute='port_name') | list)[0] | sort
+                        - item.name != portsets | map(attribute='portset')

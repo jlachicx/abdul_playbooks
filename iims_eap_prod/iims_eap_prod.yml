@@ -16,7 +16,7 @@
                       action == 'status'
 
   - include_role:
-      name:           stop_app
+    name:           stop_app 
     when:             >
                       action == 'stop'      or
                       deploy == 'deploy'

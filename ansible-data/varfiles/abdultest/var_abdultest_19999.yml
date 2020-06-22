@@ -211,12 +211,12 @@ ontap_version: 9.6P5
 #### Base Config Playbook Vars                  ####
 ####################################################
 node_location:
-  - { name: 'abdultest-01', location: 'dal05.sr03.rk284.sl23' }
-  - { name: 'abdultest-02', location: 'dal05.sr03.rk284.sl19' }
+ # - { name: 'stfx-dal0555a', location: 'dal05.sr03.rk284.sl23' }
+  - { name: 'stfx-dal0555b', location: 'dal05.sr03.rk284.sl19' }
   
 data_aggregates:
-  - { name: 'aggr1_abdultest_01', node: 'abdultest-01', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
-  - { name: 'aggr1_abdultest_02', node: 'abdultest-02', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
+ # - { name: 'aggr0_stfx_dal0555a', node: 'stfx-dal0555a', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
+  - { name: 'aggr0_stfx_dal0555b', node: 'stfx-dal0555b', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
   
 autosupport_budget:
   - { subsystem: 'raid', sizelimit: '4MB', timelimit: '2m' }

@@ -2,6 +2,12 @@
 - hosts: localhost
   gather_facts: no
   
+  vars_prompt           :
+    - name              : cluster
+      prompt            : Enter the NetApp cluster name
+      default           : "stfx-dal0555"
+      private           : no
+
   vars:
     node_name_series: [ 0, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z ]
     node_name_sequences: {a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9, j: 10, k: 11, l: 12, m: 13, n: 14, o: 15, p: 16, q: 17, r: 18, s: 19, t: 20, u: 21, v: 22, w: 23, x: 24, y: 25, z: 26 }
@@ -25,13 +31,15 @@
    #   prompt: Enter the NetApp cluster password
    #   no_log: true
   tasks:
-  - debug: var=disks
+  
+
+ # - debug: var=disks
       #msg: "{{ cluster_deploy_config[nodes_to_deploy]['disks'] }}" 
-  - pause:
+ # - pause:
   - name: Get Ontap facts
     na_ontap_info:
       state: info
-      hostname: "192.168.2.136"
+      hostname: "stxf-dal0555"
       username: "admin"
       password: "Temp12345"
       https: true
@@ -75,13 +83,10 @@
     set_fact: 
       total_count: "{{ num_of_new_nodes|int + last_node|int }}"
  
-  - pause:
-      prompt: "Enter cluster name "
-    register: cluster
-  
+    
   - name: set short name
     set_fact:
-      envshort: "{{ cluster.user_input[0:4] | lower }}"
+      envshort: "{{ cluster[0:4] | lower }}"
 
   - name: Refused if total cluster node count exceeds 22 - FAIL
     fail:
@@ -98,11 +103,20 @@
     when: 
       - envshort == "stbf" or envshort == "stxf"
       - total_count|int > 8
- 
+
   - set_fact:
       nodesequence: "{{ nodesequence|default([]) + [ node_name_series[item|int] ] }}"
     with_sequence: start="{{last_node|int+1}}" end="{{last_node|int + num_of_new_nodes|int }}"
  
-  - debug: var=nodesequence
+  - name: expansion cluster node set
+    set_fact:
+      expansion_node: "{{ nodesequence | join() }}"
+  
+  - debug: var=expansion_node
+
+  - set_fact:
+        clustervarfile: "{{ playbook_dir + '/ansible-data/varfiles/' + cluster + '/var_' + cluster + '_' + expansion_node  + '.yml' }}"
+
+  - debug: var=clustervarfile
 
 

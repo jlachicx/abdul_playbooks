@@ -1,0 +1,269 @@
+####################################################
+#### Template version                           ####
+####################################################
+template_version: 1.0.0d
+# END template version
+
+####################################################
+#### Cluster Name                               ####
+####################################################
+cluster_name: stxf-dal0555
+# END Cluster Name
+
+####################################################
+#### DataCenter                                 ####
+####################################################
+datacenter: dal05
+# END DataCenter
+
+####################################################
+#### Rack Layout                                ####
+####################################################
+# END Rack Layout
+
+####################################################
+#### Netapp Cluster Switch (NCS)                ####
+####################################################
+ncs0: ncs5.sr03.dal05
+ncs1: ncs6.sr03.dal05
+# END Netapp Cluster Switch
+
+####################################################
+#### Internal Switch (IS)                       ####
+####################################################
+# END Internal Switch
+
+####################################################
+#### Internal Switch Port Turnup                ####
+####################################################
+# END IS Port Turnup
+
+####################################################
+#### Netapp Management Switch (NMS)             ####
+####################################################
+# END Netapp Management Switch
+
+####################################################
+#### Netapp Management Switch (NMS) Port turnup ####
+####################################################
+# END NMS Port Turnup
+
+####################################################
+#### Master Services Switches (MSS)             ####
+####################################################
+mss0: mss07.sr03.dal00
+mss1: mss08.sr03.dal00
+# END Master Services Switches
+
+####################################################
+#### Master Services Switches Port Turnup       ####
+####################################################
+#
+# Please turn up ports 45 thru 52 on
+#
+#   - mss07.sr03.dal00
+#   - mss08.sr03.dal00
+#
+# Please make sure that:
+#
+#   - All ports and port-channels are access ports on VLAN 30
+#   - All ports and port-channels have flow control disabled
+#   - Portfast is enabled on all included physical interfaces and port channels
+#   - All port are 10 gb/sec
+#   - Ports are not configured for auto speed negotiation
+#
+# Port descriptions:
+#
+# ============================================
+#  mss08.sr03.dal00
+# ============================================
+#
+#   - Port 45  ==> stxf-dal0555e:e1a
+#   - Port 46  ==> stxf-dal0555e:e1c
+#   - Port 47  ==> stxf-dal0555e:e10a
+#   - Port 48  ==> stxf-dal0555e:e10c
+#   - Port 49  ==> stxf-dal0555f:e1a
+#   - Port 50  ==> stxf-dal0555f:e1c
+#   - Port 51  ==> stxf-dal0555f:e10a
+#   - Port 52  ==> stxf-dal0555f:e10c
+#   - Port 53  ==> stxf-dal0555g:e1a
+#   - Port 54  ==> stxf-dal0555g:e1c
+#   - Port 55  ==> stxf-dal0555g:e10a
+#   - Port 56  ==> stxf-dal0555g:e10c
+#   - Port 57  ==> stxf-dal0555h:e1a
+#   - Port 58  ==> stxf-dal0555h:e1c
+#   - Port 59  ==> stxf-dal0555h:e10a
+#   - Port 60  ==> stxf-dal0555h:e10c
+#
+# ============================================
+#  Port Channels on mss08.sr03.dal00
+# ============================================
+#
+#   - 45+47 stxf-dal0555e:a0a
+#   - 46+48 stxf-dal0555e:a0c
+#   - 49+51 stxf-dal0555f:a0a
+#   - 50+52 stxf-dal0555f:a0c
+#   - 53+55 stxf-dal0555g:a0a
+#   - 54+56 stxf-dal0555g:a0c
+#   - 57+59 stxf-dal0555h:a0a
+#   - 58+60 stxf-dal0555h:a0c
+#
+# ============================================
+#  mss07.sr03.dal00
+# ============================================
+#
+#   - Port 45  ==> stxf-dal0555e:e1b
+#   - Port 46  ==> stxf-dal0555e:e1d
+#   - Port 47  ==> stxf-dal0555e:e10b
+#   - Port 48  ==> stxf-dal0555e:e10d
+#   - Port 49  ==> stxf-dal0555f:e1b
+#   - Port 50  ==> stxf-dal0555f:e1d
+#   - Port 51  ==> stxf-dal0555f:e10b
+#   - Port 52  ==> stxf-dal0555f:e10d
+#   - Port 53  ==> stxf-dal0555g:e1b
+#   - Port 54  ==> stxf-dal0555g:e1d
+#   - Port 55  ==> stxf-dal0555g:e10b
+#   - Port 56  ==> stxf-dal0555g:e10d
+#   - Port 57  ==> stxf-dal0555h:e1b
+#   - Port 58  ==> stxf-dal0555h:e1d
+#   - Port 59  ==> stxf-dal0555h:e10b
+#   - Port 60  ==> stxf-dal0555h:e10d
+#
+# ============================================
+#  Port Channels on mss07.sr03.dal00
+# ============================================
+#
+#   - 45+47 stxf-dal0555e:a0b
+#   - 46+48 stxf-dal0555e:a0d
+#   - 49+51 stxf-dal0555f:a0b
+#   - 50+52 stxf-dal0555f:a0d
+#   - 53+55 stxf-dal0555g:a0b
+#   - 54+56 stxf-dal0555g:a0d
+#   - 57+59 stxf-dal0555h:a0b
+#   - 58+60 stxf-dal0555h:a0d
+#
+# Thank you for your support.
+# END MSS Port Turnup
+
+####################################################
+#### Interface IPs                              ####
+####################################################
+node_e_mgmt: { ip: '172.18.107.53', name: 'stxf-dal0555e.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_f_mgmt: { ip: '172.18.107.54', name: 'stxf-dal0555f.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_g_mgmt: { ip: '172.18.107.55', name: 'stxf-dal0555g.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_h_mgmt: { ip: '172.18.107.56', name: 'stxf-dal0555h.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_e_sp: { ip: '172.18.107.57', name: 'stxf-dal0555e-rlm.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_f_sp: { ip: '172.18.107.58', name: 'stxf-dal0555f-rlm.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_g_sp: { ip: '172.18.107.59', name: 'stxf-dal0555g-rlm.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+node_h_sp: { ip: '172.18.107.60', name: 'stxf-dal0555h-rlm.softlayer.local', mask: '255.255.255.0', gateway: '172.18.107.1'}
+smiclne_01: { ip: '10.1.154.94', name: 'smiclne_01.stxf-dal0555', mask: '255.255.255.0', gateway: '10.1.154.1'}
+smiclnf_01: { ip: '10.1.154.95', name: 'smiclnf_01.stxf-dal0555', mask: '255.255.255.0', gateway: '10.1.154.1'}
+smiclng_01: { ip: '10.1.154.96', name: 'smiclng_01.stxf-dal0555', mask: '255.255.255.0', gateway: '10.1.154.1'}
+smiclnh_01: { ip: '10.1.154.97', name: 'smiclnh_01.stxf-dal0555', mask: '255.255.255.0', gateway: '10.1.154.1'}
+iscsilifne_01: { ip: '10.1.154.98', name: 'stxf-dal0555e_iscsi_lif', mask: '255.255.255.0', gateway: '10.1.154.1'}
+iscsilifnf_01: { ip: '10.1.154.99', name: 'stxf-dal0555f_iscsi_lif', mask: '255.255.255.0', gateway: '10.1.154.1'}
+iscsilifng_01: { ip: '10.1.154.100', name: 'stxf-dal0555g_iscsi_lif', mask: '255.255.255.0', gateway: '10.1.154.1'}
+iscsilifnh_01: { ip: '10.1.154.101', name: 'stxf-dal0555h_iscsi_lif', mask: '255.255.255.0', gateway: '10.1.154.1'}
+iscsilifne_02: { ip: '10.1.154.102', name: 'stxf-dal0555e_iscsi_lif', mask: '255.255.255.0', gateway: '10.1.154.1'}
+iscsilifnf_02: { ip: '10.1.154.103', name: 'stxf-dal0555f_iscsi_lif', mask: '255.255.255.0', gateway: '10.1.154.1'}
+iscsilifng_02: { ip: '10.1.154.104', name: 'stxf-dal0555g_iscsi_lif', mask: '255.255.255.0', gateway: '10.1.154.1'}
+iscsilifnh_02: { ip: '10.1.154.105', name: 'stxf-dal0555h_iscsi_lif', mask: '255.255.255.0', gateway: '10.1.154.1'}
+iscsilifne_03: { ip: '10.1.154.106', name: 'stxf-dal0555e_iscsi_lif', mask: '255.255.255.0', gateway: '10.1.154.1'}
+iscsilifnf_03: { ip: '10.1.154.107', name: 'stxf-dal0555f_iscsi_lif', mask: '255.255.255.0', gateway: '10.1.154.1'}
+iscsilifng_03: { ip: '10.1.154.108', name: 'stxf-dal0555g_iscsi_lif', mask: '255.255.255.0', gateway: '10.1.154.1'}
+iscsilifnh_03: { ip: '10.1.154.109', name: 'stxf-dal0555h_iscsi_lif', mask: '255.255.255.0', gateway: '10.1.154.1'}
+# END Interface IPs
+
+####################################################
+#### DNS Servers and Domain                     ####
+####################################################
+dnsdomain: softlayer.local
+dns_server1: 172.18.18.21
+dns_server2: 172.18.18.20
+# END DNS Servers and Domain
+
+####################################################
+#### AutoSupport                                ####
+####################################################
+mailhosts: mx-outbound.softlayer.local
+#mailto: storsys@softlayer.com
+mailto: amoeed78@gmail.com
+#mailfrom: stxf-dal0555@softlayer.com
+mailfrom: testing@softlayer.com
+transport: https
+# END AutoSupport
+
+####################################################
+#### NTP Servers                                ####
+####################################################
+ntpserver: time.softlayer.local
+# END NTP Servers
+
+####################################################
+#### ONTAP Version                              ####
+####################################################
+ontap_version: 9.6P5
+# END ONTAP Version
+
+############  Ansible Playbook Variable Information ##################
+
+####################################################
+#### Base Config Playbook Vars                  ####
+####################################################
+node_location:
+  - { name: 'stxf-dal0555a', location: 'dal05.sr03.rk284.sl23' }
+  - { name: 'stxf-dal0555b', location: 'dal05.sr03.rk284.sl19' }
+  
+data_aggregates:
+  - { name: 'aggr_stxf_dal0555a_ssd01', node: 'stxf-dal0555a', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
+  - { name: 'aggr_stxf_dal0555b_ssd01', node: 'stxf-dal0555b', diskcount: '47', raidsize: '24', raidtype: 'raid_dp' }
+  
+autosupport_budget:
+  - { subsystem: 'raid', sizelimit: '4MB', timelimit: '2m' }
+  - { subsystem: 'networking', sizelimit: '4MB', timelimit: '4m' }
+  - { subsystem: 'splog_latest', sizelimit: '1MB', timelimit: '4m' }
+  - { subsystem: 'SAN', sizelimit: '800MB', timelimit: '5m' }
+  - { subsystem: 'NFS', sizelimit: '10MB', timelimit: '4m' }
+  - { subsystem: 'Platform', sizelimit: '4MB', timelimit: '8m' }
+  - { subsystem: 'wafl', sizelimit: '30MB', timelimit: '10m' }
+  - { subsystem: 'kernel', sizelimit: '6MB', timelimit: '8m' }
+  - { subsystem: 'asup_ems', sizelimit: '4MB', timelimit: '2m' }
+  - { subsystem: 'storage', sizelimit: '26MB', timelimit: '12m' }
+  - { subsystem: 'mhost', sizelimit: '17MB', timelimit: '4m' }
+  - { subsystem: 'performance', sizelimit: '200MB', timelimit: '30m' }
+  - { subsystem: 'performance_asup', sizelimit: '800MB', timelimit: '25m' }
+# END Base config Playbook vars
+
+####################################################
+#### Advanced Config Playbook Vars              ####
+####################################################
+smicl_ip:
+  - { svm: 'stxf-dal0555', name: 'smiclne_01', port: 'a0a', node: 'stxf-dal0555e', ip: '192.168.2.134', mask: '255.255.255.0' }
+  - { svm: 'stxf-dal0555', name: 'smiclnf_01', port: 'a0b', node: 'stxf-dal0555f', ip: '192.168.2.135', mask: '255.255.255.0' }
+  
+iscsi_ip:
+  - { svm: 'stxf-dal0555_vs00', name: 'iscsilifne_01', port: 'a0a', node: 'stxf-dal0555e', ip: '10.1.154.98', mask: '255.255.255.0' }
+  - { svm: 'stxf-dal0555_vs00', name: 'iscsilifne_02', port: 'a0b', node: 'stxf-dal0555e', ip: '10.1.154.102', mask: '255.255.255.0' }
+  - { svm: 'stxf-dal0555_vs00', name: 'iscsilifne_03', port: 'a0c', node: 'stxf-dal0555e', ip: '10.1.154.106', mask: '255.255.255.0' }
+  - { svm: 'stxf-dal0555_vs00', name: 'iscsilifnf_01', port: 'a0a', node: 'stxf-dal0555f', ip: '10.1.154.99', mask: '255.255.255.0' }
+  - { svm: 'stxf-dal0555_vs00', name: 'iscsilifnf_02', port: 'a0b', node: 'stxf-dal0555f', ip: '10.1.154.103', mask: '255.255.255.0' }
+  - { svm: 'stxf-dal0555_vs00', name: 'iscsilifnf_03', port: 'a0d', node: 'stxf-dal0555f', ip: '10.1.154.107', mask: '255.255.255.0' }
+ 
+iscsi_portset:
+  - { name: 'iscsips_nef01', svm: 'stxf-dal0555_vs00', portname: [iscsilifne_01,iscsilifnf_02] }
+  - { name: 'iscsips_nef02', svm: 'stxf-dal0555_vs00', portname: [iscsilifne_02,iscsilifnf_01] }
+  - { name: 'iscsips_nef03', svm: 'stxf-dal0555_vs00', portname: [iscsilifne_03,iscsilifnf_03] }
+  
+# END Advanced config Playbook vars
+
+####################################################
+#### Control Section                            ####
+####################################################
+operation: 'expansion,nodes'
+usrinputs: { cluster: 'stxf-dal0555', ontap_version: '9.6P5', server_room: '3', rack: '284', adj_rack: '284', ncs_start: '5', internal_switch: 'N/A', is_start_port: 'N/A', is_rack: 'N/A', mgmt_vlan: '112', ms_switch: '7', data_vlan: '30', adn: '0', platform: 'AFF-A700', a_version: '2.9.3', cmdline: '/home/riwalker/py3venv/bin/python3 /home/riwalker/py3venv/bin/ansible-playbook pb_cluster_expansion.yml -b -K' }
+netinfos:
+  - { subnet: '10.1.154.0', mask: '24', netmask: '255.255.255.0', description: 'dal05 netapp.service 10.x', gateway: '10.1.154.1', freehosts: 205 }
+  - { subnet: '172.18.107.0', mask: '24', netmask: '255.255.255.0', description: 'storage devices', gateway: '172.18.107.1', freehosts: 87 }
+  - { subnet: '10.2.110.0', mask: '24', netmask: '255.255.255.0', description: 'storage #3 (netapp)', gateway: '10.2.110.1', freehosts: 154 }
+varfile_version: 'pb_cluster_expansion.yml v 1.1.0g'
+# END Control Section

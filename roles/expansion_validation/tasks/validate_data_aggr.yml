@@ -14,73 +14,73 @@
       aggrowner       : "{{ ontap_facts.aggregate_info[item].aggr_ownership_attributes.owner_name                               }}"
     with_items        : "{{ ontap_facts.aggregate_info                                                                          }}"
     when              : ontap_facts.aggregate_info[item].aggr_raid_attributes.is_root_aggregate != 'true'
-    
+
   # Aggredate (s) name verification
-  - set_fact          :
+  - name              : Check Aggregates name - Passed
+    set_fact          :
       check_result    : "{{ check_result + [ '    [ ] Data aggregate name ' + item.name + ' : passed' ]                         }}"
       testpassed      : "{{ testpassed   + [ '    [ ] Data aggregate name ' + item.name + ' : passed' ]                         }}"
-    with_items        : "{{ data_aggregates                                                                                           }}"
-#    with_items        : "{{ dataaggrs                                                                                           }}"
-    when              : dataaggrs | selectattr('name','equalto',item.name)|list|length > 0
+    with_items        : "{{ data_aggregates                                                                                     }}"
+    when              : dataaggrs | selectattr('name','equalto',item.name) | list | length > 0
 
-  - set_fact          :
+  - name              : Check Aggregates name - Failed
+    set_fact          :
       check_result    : "{{ check_result + [ '    [!] Data aggregate name ' + item.name + ' : !! failed !!' ]                   }}"
       testfailed      : "{{ testfailed   + [ '    [!] Data aggregate name ' + item.name + ' : !! failed !!' ]                   }}"
-    with_items        : "{{ data_aggregates                                                                                           }}"
+    with_items        : "{{ data_aggregates                                                                                     }}"
     when              : dataaggrs | selectattr('name','equalto',item.name) | list | length == 0
-#    when              : data_aggregates | selectattr('name','equalto',item.name) | list | length == 0
 
   # Aggredate (s) status verification
   - set_fact          :
       check_result    : "{{ check_result + [ '    [ ] Data aggregate ' + item.name + ' state is online : passed' ]              }}"
       testpassed      : "{{ testpassed   + [ '    [ ] Data aggregate ' + item.name + ' state is online : passed' ]              }}"
-    with_items        : "{{ data_aggregates                                                                                          }}"
+    with_items        : "{{ data_aggregates                                                                                     }}"
     when              :  
                         - dataaggrs | selectattr('name','equalto',item.name) | list | length > 0
-                        - dataaggrs | selectattr('state') == 'online' | list | length > 0                        
+                        - ontap_facts.aggregate_info[item.name].aggr_raid_attributes.state == 'online'                       
 
   - set_fact          :
       check_result    : "{{ check_result + [ '    [!] Data aggregate ' + item.name + ' state is online : !! failed !!' ]        }}"
       testfailed      : "{{ testfailed   + [ '    [!] Data aggregate ' + item.name + ' state is online : !! failed !!' ]        }}"
-    with_items        : "{{ data_aggregates                                                                                        }}"
+    with_items        : "{{ data_aggregates                                                                                     }}"
     when              : >
-                        dataaggrs | selectattr('name','equalto',item.name) | list | length > 0  and
-                        dataaggrs | selectattr('state') != 'online' | list | length == 0        or
+                        dataaggrs | selectattr('name','equalto',item.name) | list | length > 0              and
+                        ontap_facts.aggregate_info[item.name].aggr_raid_attributes.state != 'online'        or
                         dataaggrs | selectattr('name','equalto',item.name) | list | length == 0
 
   # Aggredate (s) raid type verification
   - set_fact          :
       check_result    : "{{ check_result + [ '    [ ] Data aggregate ' + item.name + ' raid type is raid_dp : passed' ]         }}"
       testpassed      : "{{ testpassed   + [ '    [ ] Data aggregate ' + item.name + ' raid type is raid_dp : passed' ]         }}"
-    with_items        : "{{ data_aggregates                                                                                      }}"
+    with_items        : "{{ data_aggregates                                                                                     }}"
     when              : 
                         - dataaggrs | selectattr('name','equalto',item.name) | list | length > 0
-                        - dataaggrs | selectattr('raid_type','equalto',item.raidtype) | list | length > 0  
+                        - ontap_facts.aggregate_info[item.name].aggr_raid_attributes.raid_type == 'raid_dp'  
       
   - set_fact          :
       check_result    : "{{ check_result + [ '    [!] Data aggregate ' + item.name + ' raid type is raid_dp : !! failed !!' ]   }}"
       testfailed      : "{{ testfailed   + [ '    [!] Data aggregate ' + item.name + ' raid type is raid_dp : !! failed !!' ]   }}"
-    with_items        : "{{ data_aggregates                                                                                           }}"
+    with_items        : "{{ data_aggregates                                                                                     }}"
     when              : > 
-                        dataaggrs | selectattr('name','equalto',item.name) | list | length > 0            and
-                        dataaggrs | selectattr('raid_type','equalto',item.raidtype) | list | length == 0  or
+                        dataaggrs | selectattr('name','equalto',item.name) | list | length > 0              and
+                        ontap_facts.aggregate_info[item.name].aggr_raid_attributes.raid_type != 'raid_dp'   or
                         dataaggrs | selectattr('name','equalto',item.name) | list | length == 0
 
   # Aggredate (s) ha policy verification
   - set_fact          :
       check_result    : "{{ check_result + [ '    [ ] Data aggregate ' + item.name + ' ha policy is sfo : passed' ]             }}"
       testpassed      : "{{ testpassed   + [ '    [ ] Data aggregate ' + item.name + ' ha policy is sfo : passed' ]             }}"
-    with_items        : "{{ data_aggregates                                                                                      }}"
+    with_items        : "{{ data_aggregates                                                                                     }}"
     when              :  
                         - dataaggrs | selectattr('name','equalto',item.name) | list | length > 0
-                        - dataaggrs | selectattr('ha_policy') == 'sfo' | list | length > 0                        
+                        - ontap_facts.aggregate_info[item.name].aggr_raid_attributes.ha_policy == 'sfo'                        
   
   - set_fact          :
       check_result    : "{{ check_result + [ '    [!] Data aggregate ' + item.name + ' ha policy is sfo : !! failed !!' ]       }}"
       testfailed      : "{{ testfailed   + [ '    [!] Data aggregate ' + item.name + ' ha policy is sfo : !! failed !!' ]       }}"
-    with_items        : "{{ data_aggregates                                                                                           }}"
+    with_items        : "{{ data_aggregates                                                                                     }}"
     when              : >
-                        dataaggrs | selectattr('name','equalto',item.name) | list | length > 0  and
-                        dataaggrs | selectattr('ha_policy') != 'sfo' | list | length == 0       or
+                        dataaggrs | selectattr('name','equalto',item.name) | list | length > 0              and
+                        ontap_facts.aggregate_info[item.name].aggr_raid_attributes.ha_policy != 'sfo'       or
                         dataaggrs | selectattr('name','equalto',item.name) | list | length == 0
                

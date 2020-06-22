@@ -1,13 +1,15 @@
 ---
-  - name              : Import Node Name Verification task
-    import_tasks      : validate_node_name.yml
+ # - name              : Import Node Name Verification task
+ #   import_tasks      : validate_node_name.yml
 
-  - name              : Import Data Aggregate Verification task
-    import_tasks      : validate_data_aggr.yml
+ # - name              : Import Data Aggregate Verification task
+ #   import_tasks      : validate_data_aggr.yml
 
-  - name              : Import Data Aggregate Snap Verification task
-    import_tasks      : validate_data_aggr_snap.yml
+ # - name              : Import Data Aggregate Snap Verification task
+ #   import_tasks      : validate_data_aggr_snap.yml
 
-  - name              :  Import Autosupport Budget Verification task
-    import_tasks      : validate_autosupport.yml
+ # - name              :  Import Autosupport Budget Verification task
+ #   import_tasks      :  validate_autosupport.yml
  
+ - name              :  Import Advance Config Verification task
+   import_tasks      :  validate_advance_config.yml

@@ -8,16 +8,16 @@
   #2 entries were displayed.
 
   - set_fact          :
-      check_result    : "{{ check_result + [ '  - Checking Autosupport Configuration' ]                                                       }}"
+      check_result    : "{{ check_result + [ '  - Checking Autosupport Configuration' ]      }}"
 
   - name              : Getting autosupport settings from cluster
     na_ontap_command  :
-      hostname        : "{{ hostname                                                                                                          }}"
-      username        : "{{ username                                                                                                          }}"
-      password        : "{{ password                                                                                                          }}"
+      hostname        : "{{ hostname      }}"
+      username        : "{{ username      }}"
+      password        : "{{ password      }}"
       https           : true
       validate_certs  : false
-      ontapi          : "{{ ontap_facts.ontap_version                                                                                         }}"
+      ontapi          : "{{ ontap_facts.ontap_version                                                     }}"
       command         : ['rows 0;autosupport show -fields node, state, from, to, mail-hosts, transport']
     register          : tmpautosupport
     changed_when      : tmpautosupport == none
@@ -34,100 +34,119 @@
   - set_fact          :
       assetting       : "{{ assetting|default([]) + [ { 'name': name, 'state': asstate, 'mail_hosts': asmailhst, 'from': asfrom, 'to': asto, 'transport': astransport} ] }}"
     vars              :
-      tmpline         : "{{ item|regex_replace(' {2,}',' ')|trim                                                                              }}"
-      name            : "{{ tmpline.split(' ')[0]                                                                                             }}"
-      asstate         : "{{ tmpline.split(' ')[1]                                                                                             }}"
-      asmailhst       : "{{ tmpline.split(' ')[2]                                                                                             }}"
-      asfrom          : "{{ tmpline.split(' ')[3]                                                                                             }}"
-      asto            : "{{ tmpline.split(' ')[4]                                                                                             }}"
-      astransport     : "{{ tmpline.split(' ')[5]                                                                                             }}"
-    with_items        : "{{ (clioutput.matches[0]['{http://www.netapp.com/filer/admin}cli-output']).split('\n')                               }}"
+      tmpline         : "{{ item|regex_replace(' {2,}',' ') | trim                                        }}"
+      name            : "{{ tmpline.split(' ')[0]                                                         }}"
+      asstate         : "{{ tmpline.split(' ')[1]                                                         }}"
+      asmailhst       : "{{ tmpline.split(' ')[2]                                                         }}"
+      asfrom          : "{{ tmpline.split(' ')[3]                                                         }}"
+      asto            : "{{ tmpline.split(' ')[4]                                                         }}"
+      astransport     : "{{ tmpline.split(' ')[5]                                                         }}"
+    with_items        : "{{ (clioutput.matches[0]['{http://www.netapp.com/filer/admin}cli-output']).split('\n')   }}"
     when              : clucheck in item
   
   - set_fact          :
-      check_result    : "{{ check_result + [ '    [ ] AutoSupport enabled on (' + item.name + ') : passed' ]                                  }}"
-      testpassed      : "{{ testpassed   + [ '    [ ] AutoSupport enabled on (' + item.name + ') : passed' ]                                  }}"
-    with_items        : "{{ assetting                                                                                                         }}"
-    when              : >
-                        node_location | selectattr('name','equalto',item.name) | list | length > 0                and
-                        item.state == 'enable'
+      check_result    : "{{ check_result + [ '    [ ] AutoSupport enabled on (' + item[0].name + ') : passed' ]      }}"
+      testpassed      : "{{ testpassed   + [ '    [ ] AutoSupport enabled on (' + item[0].name + ') : passed' ]      }}"
+    with_nested       : 
+                        - "{{ node_location }}"
+                        - "{{ assetting       }}"
+    when              : 
+                        item[0].name == item[1].name                   and
+                        item[1].state == 'enable'
   
   - set_fact          :
-      check_result    : "{{ check_result + [ '    [!] AutoSupport enabled on (' + item.name + ') : !! failed !!' ]                            }}"
-      testfailed      : "{{ testfailed   + [ '    [!] AutoSupport enabled on (' + item.name + ') : !! failed !!' ]                            }}"
-    with_items        : "{{ assetting                                                                                                         }}"
-    when              : >
-                        node_location | selectattr('name','equalto',item.name) | list | length > 0                and 
-                        item.state != 'enable'                                                                    or
-                        node_location | selectattr('name','equalto',item.name) | list | length == 0
+      check_result    : "{{ check_result + [ '    [!] AutoSupport enabled on (' + item[0].name + ') : !! failed !!' ]  }}"
+      testfailed      : "{{ testfailed   + [ '    [!] AutoSupport enabled on (' + item[0].name + ') : !! failed !!' ]  }}"
+    with_nested       : 
+                        - "{{ node_location   }}"
+                        - "{{ assetting       }}"
+    when              : 
+                        item[0].name == item[1].name                   and
+                        item[1].state != 'enable'
   
   - set_fact          :
-      check_result    : "{{ check_result + [ '    [ ] AutoSupport transport set to ' + transport + ' on (' + item.name + ') : passed' ]       }}"
-      testpassed      : "{{ testpassed   + [ '    [ ] AutoSupport transport set to ' + transport + ' on (' + item.name + ') : passed' ]       }}"
-    with_items        : "{{ assetting                                                                                                             }}"
-    when              : >
-                        node_location | selectattr('name','equalto',item.name) | list | length > 0                and
-                        item.transport == transport
+      check_result    : "{{ check_result + [ '    [ ] AutoSupport transport set to ' + transport + ' on (' + item[0].name + ') : passed' ]   }}"
+      testpassed      : "{{ testpassed   + [ '    [ ] AutoSupport transport set to ' + transport + ' on (' + item[0].name + ') : passed' ]   }}"
+    with_nested       : 
+                        - "{{ node_location   }}"
+                        - "{{ assetting       }}"
+    when              : 
+                        item[0].name == item[1].name                   and
+                        item[1].transport == transport
+  
   
   - set_fact          :
-      check_result    : "{{ check_result + [ '    [!] AutoSupport transport set to ' + transport + ' on (' + item.name + ') : !! failed !!' ] }}"
-      testfailed      : "{{ testfailed   + [ '    [!] AutoSupport transport set to ' + transport + ' on (' + item.name + ') : !! failed !!' ] }}"
-    with_items        : "{{ assetting                                                                                                         }}"
-    when              : >
-                        node_location | selectattr('name','equalto',item.name) | list | length > 0      and 
-                        item.transport != transport                                                     or
-                        node_location | selectattr('name','equalto',item.name) | list | length == 0
+      check_result    : "{{ check_result + [ '    [!] AutoSupport transport set to ' + transport + ' on (' + item[0].name + ') : !! failed !!' ] }}"
+      testfailed      : "{{ testfailed   + [ '    [!] AutoSupport transport set to ' + transport + ' on (' + item[0].name + ') : !! failed !!' ] }}"
+    with_nested       : 
+                        - "{{ node_location   }}"
+                        - "{{ assetting       }}"
+    when              : 
+                        item[0].name == item[1].name                   and
+                        item[1].transport != transport
+                        
   
   - set_fact          :
-      check_result    : "{{ check_result + [ '    [ ] AutoSupport mail-hosts set to ' + mailhosts + ' on (' + item.name + ') : passed' ]      }}"
-      testpassed      : "{{ testpassed   + [ '    [ ] AutoSupport mail-hosts set to ' + mailhosts + ' on (' + item.name + ') : passed' ]      }}"
-    with_items        : "{{ assetting }}"
-    when              : >
-                        node_location | selectattr('name','equalto',item.name) | list | length > 0      and
-                        item.mail_hosts == mailhosts
+      check_result    : "{{ check_result + [ '    [ ] AutoSupport mail-hosts set to ' + mailhosts + ' on (' + item[0].name + ') : passed' ]  }}"
+      testpassed      : "{{ testpassed   + [ '    [ ] AutoSupport mail-hosts set to ' + mailhosts + ' on (' + item[0].name + ') : passed' ]  }}"
+    with_nested       : 
+                        - "{{ node_location   }}"
+                        - "{{ assetting       }}"
+    when              : 
+                        item[0].name == item[1].name                   and
+                        item[1].mail_hosts == mailhosts
   
   - set_fact          :
-      check_result    : "{{ check_result + [ '    [!] AutoSupport mail-hosts set to ' + mailhosts + ' on (' + item.name + ') : !! failed !!' ] }}"
-      testfailed      : "{{ testfailed   + [ '    [!] AutoSupport mail-hosts set to ' + mailhosts + ' on (' + item.name + ') : !! failed !!' ] }}"
-    with_items        : "{{ assetting                                                                                                          }}"
+      check_result    : "{{ check_result + [ '    [!] AutoSupport mail-hosts set to ' + mailhosts + ' on (' + item[0].name + ') : !! failed !!' ] }}"
+      testfailed      : "{{ testfailed   + [ '    [!] AutoSupport mail-hosts set to ' + mailhosts + ' on (' + item[0].name + ') : !! failed !!' ] }}"
+    with_nested       : 
+                        - "{{ node_location   }}"
+                        - "{{ assetting       }}"
     when              :
-                        node_location | selectattr('name','equalto',item.name) | list | length > 0      and
-                        item.mail_hosts != mailhosts                                                    or
-                        node_location | selectattr('name','equalto',item.name) | list | length == 0
+                        item[0].name == item[1].name                   and
+                        item[1].mail_hosts != mailhosts                                                   
   
   - set_fact          :
-      check_result    : "{{ check_result + [ '    [ ] AutoSupport mailfrom set to ' + mailfrom + ' on (' + item.name + ') : passed' ]         }}"
-      testpassed      : "{{ testpassed   + [ '    [ ] AutoSupport mailfrom set to ' + mailfrom + ' on (' + item.name + ') : passed' ]         }}"
-    with_items        : "{{ assetting                                                                                                         }}"
-    when              : > 
-                        node_location | selectattr('name','equalto',item.name) | list | length > 0      and
-                        item.from == mailfrom
+      check_result    : "{{ check_result + [ '    [ ] AutoSupport mailfrom set to ' + mailfrom + ' on (' + item[0].name + ') : passed' ]     }}"
+      testpassed      : "{{ testpassed   + [ '    [ ] AutoSupport mailfrom set to ' + mailfrom + ' on (' + item[0].name + ') : passed' ]     }}"
+    with_nested       : 
+                        - "{{ node_location   }}"
+                        - "{{ assetting       }}"
+    when              : 
+                        item[0].name == item[1].name                   and
+                        item[1].from == mailfrom
   
   - set_fact          :
-      check_result    : "{{ check_result + [ '    [!] AutoSupport mailfrom set to ' + mailfrom+' on (' + item.name + ') : !! failed !!' ]     }}"
-      testfailed      : "{{ testfailed   + [ '    [!] AutoSupport mailfrom set to ' + mailfrom+' on (' + item.name + ') : !! failed !!' ]     }}"
-    with_items        : "{{ assetting                                                                                                         }}"
-    when              : >
-                        node_location | selectattr('name','equalto',item.name) | list | length > 0      and
-                        item.from != mailfrom                                                           or
-                        node_location | selectattr('name','equalto',item.name) | list | length == 0
+      check_result    : "{{ check_result + [ '    [!] AutoSupport mailfrom set to ' + mailfrom+' on (' + item[0].name + ') : !! failed !!' ] }}"
+      testfailed      : "{{ testfailed   + [ '    [!] AutoSupport mailfrom set to ' + mailfrom+' on (' + item[0].name + ') : !! failed !!' ] }}"
+    with_nested       :
+                        - "{{ node_location   }}"
+                        - "{{ assetting       }}"
+    when              : 
+                        item[0].name == item[1].name                   and
+                        item[1].from != mailfrom                       
+                        
   
   - set_fact          :
-      check_result    : "{{ check_result + [ '    [ ] AutoSupport mailto set to ' + mailto + ' on (' + item.name + ') : passed' ]             }}"
-      testpassed      : "{{ testpassed   + [ '    [ ] AutoSupport mailto set to ' + mailto + ' on (' + item.name + ') : passed' ]             }}"
-    with_items        : "{{ assetting                                                                                                         }}"
-    when              : >
-                        node_location | selectattr('name','equalto',item.name) | list | length > 0      and
-                        item.to == mailto
+      check_result    : "{{ check_result + [ '    [ ] AutoSupport mailto set to ' + mailto + ' on (' + item[0].name + ') : passed' ]         }}"
+      testpassed      : "{{ testpassed   + [ '    [ ] AutoSupport mailto set to ' + mailto + ' on (' + item[0].name + ') : passed' ]         }}"
+    with_nested       : 
+                        - "{{ node_location   }}"
+                        - "{{ assetting       }}"
+    when              : 
+                        item[0].name == item[1].name                   and
+                        item[1].to == mailto
   
   - set_fact          :
-      check_result    : "{{ check_result + [ '    [!] AutoSupport mailto set to ' + mailto + ' on (' + item.name + ') : !! failed !!' ]       }}"
-      testfailed      : "{{ testfailed   + [ '    [!] AutoSupport mailto set to ' + mailto + ' on (' + item.name + ') : !! failed !!' ]       }}"
-    with_items        : "{{ assetting                                                                                                         }}"
-    when              : >
-                        node_location | selectattr('name','equalto',item.name) | list | length > 0      and
-                        item.to != mailto                                                               or
-                        node_location | selectattr('name','equalto',item.name) | list | length == 0
+      check_result    : "{{ check_result + [ '    [!] AutoSupport mailto set to ' + mailto + ' on (' + item[0].name + ') : !! failed !!' ]   }}"
+      testfailed      : "{{ testfailed   + [ '    [!] AutoSupport mailto set to ' + mailto + ' on (' + item[0].name + ') : !! failed !!' ]   }}"
+    with_nested       : 
+                        - "{{ node_location   }}"
+                        - "{{ assetting       }}"
+    when              : 
+                        item[0].name == item[1].name                   and
+                        item[1].to != mailto                           
+                        
   
   # Autosupport Budget Validation
 
@@ -158,12 +177,12 @@
   - set_fact          :
       asbudget        : "{{ asbudget|default([]) + [ { 'node': node, 'subsystem': subsystem, 'sizelimit': sizelimit, 'timelimit': timelimit} ]  }}"
     vars:
-      tmpline         : "{{ item|regex_replace(' {2,}',' ') | trim                                                                              }}"
-      node            : "{{ tmpline.split(' ')[0]                                                                                               }}"
-      subsystem       : "{{ tmpline.split(' ')[1]|lower                                                                                         }}"
-      timelimit       : "{{ tmpline.split(' ')[2]|lower                                                                                         }}"
-      sizelimit       :  "{{ tmpline.split(' ')[3]|lower                                                                                        }}"
-    with_items        : "{{ (clioutput.matches[0]['{http://www.netapp.com/filer/admin}cli-output']).split('\n')                                 }}"
+      tmpline         : "{{ item|regex_replace(' {2,}',' ') | trim                                                                        }}"
+      node            : "{{ tmpline.split(' ')[0]                                                                                         }}"
+      subsystem       : "{{ tmpline.split(' ')[1]|lower                                                                                   }}"
+      timelimit       : "{{ tmpline.split(' ')[2]|lower                                                                                   }}"
+      sizelimit       :  "{{ tmpline.split(' ')[3]|lower                                                                                  }}"
+    with_items        : "{{ (clioutput.matches[0]['{http://www.netapp.com/filer/admin}cli-output']).split('\n')                           }}"
     when              : 
                         - clucheck in item
   
@@ -173,8 +192,8 @@
     vars              :
       cursizel        : "{{ (asbudget | selectattr('node','equalto',item[0].name) | selectattr('subsystem','equalto',item[1].subsystem | lower) | map(attribute='sizelimit') | list)[0] }}"
     with_nested       :
-                        - "{{ node_location                                                                                                    }}"
-                        - "{{ autosupport_budget                                                                                                  }}"  
+                        - "{{ node_location       }}"
+                        - "{{ autosupport_budget  }}"  
     when              : 
                         - cursizel == item[1].sizelimit | lower
   
@@ -184,10 +203,10 @@
     vars              :
       cursizel        : "{{ (asbudget | selectattr('node','equalto',item[0].name) | selectattr('subsystem','equalto',item[1].subsystem | lower) | map(attribute='sizelimit') | list)[0] }}"
     with_nested       :
-                        - "{{ node_location                                                                                                   }}"
-                        - "{{ autosupport_budget                                                                                              }}"  
+                        - "{{ node_location       }}"
+                        - "{{ autosupport_budget  }}"  
     when              :  
-                        - cursizel != item[1].sizelimit|lower
+                        - cursizel != item[1].sizelimit | lower
 
   - set_fact          :
       check_result    : "{{ check_result + [ '    [ ] AutoSupport budget time limit set to ' + item[1].timelimit + ' for subsystem ' + item[1].subsystem + ' on (' + item[0].name + ') : passed' ]          }}"
@@ -195,10 +214,10 @@
     vars              :
       curtimel        : "{{ (asbudget | selectattr('node','equalto',item[0].name) | selectattr('subsystem','equalto',item[1].subsystem | lower) | map(attribute='timelimit') | list)[0] }}"
     with_nested       :
-                        - "{{ node_location                                                                                                   }}"
-                        - "{{ autosupport_budget                                                                                              }}"  
+                        - "{{ node_location       }}"
+                        - "{{ autosupport_budget  }}"  
     when              : 
-                        - curtimel == item[1].timelimit|lower
+                        - curtimel == item[1].timelimit | lower
   
   - set_fact:
       check_result    : "{{ check_result + [ '    [!] AutoSupport budget time limit set to ' + item[1].timelimit | lower + ' rather than ' + curtimel + ' for subsystem ' + item[1].subsystem +' on (' + item[0].name +') : !! failed !!' ]   }}"
@@ -206,7 +225,7 @@
     vars              :
       curtimel        : "{{ (asbudget | selectattr('node','equalto',item[0].name) | selectattr('subsystem','equalto',item[1].subsystem | lower) | map(attribute='timelimit') | list)[0]   }}"
     with_nested       :
-                        - "{{ node_location                                                                                                   }}"
-                        - "{{ autosupport_budget                                                                                              }}"
+                        - "{{ node_location       }}"
+                        - "{{ autosupport_budget  }}"
     when: 
-                        - curtimel != item[1].timelimit|lower
+                        - curtimel != item[1].timelimit | lower

@@ -6,7 +6,7 @@
   vars_prompt           :
     - name              : netapp_hostname
       prompt            : Enter the NetApp cluster name
-      default           : "abdultest"
+      default           : "stxf-dal0555"
       private           : no
     - name              : netapp_username
       prompt            : Enter the NetApp cluster account
@@ -65,7 +65,7 @@
 
   - set_fact            :
       ontap_facts       : "{{ ontap_info.ontap_info                                                                               }}"
-
+ 
   - name                : Create list of unique node model
     set_fact:
       uniq_node_model   : "{{ uniq_node_model |default([]) + [ { 'model' : model} ]                                              }}"
@@ -79,12 +79,12 @@
   
   - set_fact            :
       clucheck          : "{{ netapp_hostname                                                                                      }}"
-    when                : model != 'SIMBOX' - original setting
-    #when              : model == 'SIMBOX' # for testing
+    #when                : model != 'SIMBOX' - original setting
+    when              : model == 'SIMBOX' # for testing
   
-  - set_fact            :
-      clucheck          : "cDOT96"
-    when                : model == 'SIMBOX'
+  #- set_fact            :
+  #    clucheck          : "cDOT96"
+  #  when                : model == 'SIMBOX'
     
   - set_fact            :
       check_result      : "{{ check_result + [ ' | POST-CHECK SECTION' ]                                                          }}"
@@ -94,8 +94,8 @@
     vars                :
                       <<: *input
                                   
-  - debug               : var=check_result
-    when                : showresult
+ # - debug               : var=check_result
+ #   when                : showresult
   
   - debug               : var=testpassed
     when                : showpassed
@@ -103,16 +103,13 @@
   - debug               : var=testfailed
     when                : showfailed
   
-  - debug               : var=cmdlines
-    when                : showcmdlines
-  
   - debug               :
       msg               :
-                          - "-----------------------------------|"
-                          - "{{ '|   Number of passed tests: % 4d   |'|format(testpassed|length|int) }}"
-                          - "{{ '|   Number of failed tests: % 4d   |'|format(testfailed|length|int) }}"
+                          - "|----------------------------------|"
+                          - "{{ '|   Number of passed tests: % 4d   |'| format(testpassed | length | int)  }}"
+                          - "{{ '|   Number of failed tests: % 4d   |'| format(testfailed | length | int)  }}"
                           - "|                           ----   |"
-                          - "{{ '|    Number of tests TOTAL: % 4d   |'|format(testfailed|length|int + testpassed|length|int) }}"
-                          - "-----------------------------------|"
+                          - "{{ '|    Number of tests TOTAL: % 4d   |'| format(testfailed | length | int + testpassed | length | int) }}"
+                          - "|----------------------------------|"
     when                : showstats
       

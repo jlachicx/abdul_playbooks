@@ -34,29 +34,27 @@
     when              :
                         - "'Aggregate' in item"
                         - "'aggr0' not in item"
+                        
+ 
+  - debug: var=snapsched
+  - pause:
 
   - set_fact          :
-      check_result    : "{{ check_result + [ '    [ ] Data aggregate ' + item[0].name + ' snap sched set to 0 0 0 : passed' ]      }}"
-      testpassed      : "{{ testpassed   + [ '    [ ] Data aggregate ' + item[0].name + ' snap sched set to 0 0 0 : passed' ]      }}"
-    with_nested       : 
-                        - "{{ data_aggregates }}"
-                        - "{{ snapsched       }}"
-
+      check_result    : "{{ check_result + [ '    [ ] Data aggregate ' + item.name + ' snap sched set to 0 0 0 : passed' ]      }}"
+      testpassed      : "{{ testpassed   + [ '    [ ] Data aggregate ' + item.name + ' snap sched set to 0 0 0 : passed' ]      }}"
+    with_items        : "{{ snapsched                                                                                     }}"
     when              : 
-                        - item[0].name == item[1].name 
-                        - item[1].schedw == '0'
-                        - item[1].schedd == '0'
-                        - item[1].schedh == '0'
+                        - data_aggregates | selectattr('name','equalto',item.name) |list |length > 0 
+                        - item.schedw == '0'
+                        - item.schedd == '0'
+                        - item.schedh == '0'
                        
   - set_fact          :
-      check_result    : "{{ check_result + [ '    [!] Data aggregate ' + item[0].name + ' snap sched set to 0 0 0 : !! failed !!'] }}"
-      testfailed      : "{{ testfailed   + [ '    [!] Data aggregate ' + item[0].name + ' snap sched set to 0 0 0 : !! failed !!'] }}"
-    with_nested       : 
-                        - "{{ data_aggregates }}"
-                        - "{{ snapsched       }}"
-    when              : > 
-                        (( item[1].schedw != '0' ) or ( item[1].schedd != '0' ) or ( item[1].schedh != '0' ) ) and
-                        item[0].name   == item[1].name
-                        
-
-                        
+      check_result    : "{{ check_result + [ '    [!] Data aggregate ' + item.name + ' snap sched set to 0 0 0 : !! failed !!'] }}"
+      testfailed      : "{{ testfailed   + [ '    [!] Data aggregate ' + item.name + ' snap sched set to 0 0 0 : !! failed !!'] }}"
+    with_items        : "{{ snapsched                                                                                     }}"
+    when              : >
+                         ( item.schedw != '0' ) or ( item.schedd != '0' ) or ( item.schedh != '0' ) and
+                         data_aggregates | selectattr('name','equalto',item.name) | list | length > 0 or
+                         data_aggregates | selectattr('name','equalto',item.name) |list |length == 0
+                       
